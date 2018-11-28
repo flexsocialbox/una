@@ -18,7 +18,7 @@ $aConfig = array(
     'name' => 'bx_channels',
     'title' => 'Channels',
     'note' => 'Channels functionality.',
-    'version' => '9.0.1.DEV',
+    'version' => '9.0.3.DEV',
     'vendor' => 'BoonEx',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
@@ -62,6 +62,7 @@ $aConfig = array(
      * Page triggers.
      */
     'page_triggers' => array (
+        'trigger_page_profile_view_entry',
         'trigger_page_group_view_entry',
     ),
 

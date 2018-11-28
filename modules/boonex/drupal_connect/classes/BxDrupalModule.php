@@ -68,6 +68,7 @@ class BxDrupalModule extends BxBaseModConnectModule
             
             if ($iLocalProfileId && $oProfile = BxDolProfile::getInstance($iLocalProfileId)) {
                 // user already exists
+                bx_alert($this->getName(), 'login', 0, $oProfile->id(), array('remote_profile_info' => $aRemoteProfileInfo));
                 $this->setLogged($oProfile->id());
             }             
             else {  
@@ -101,8 +102,13 @@ class BxDrupalModule extends BxBaseModConnectModule
             $sLastName = $a['value'];
         }
 
+        if (empty($sFirstName)) {
+            if (isset($aProfileInfo['user']['mail']) && false !== ($iPos = mb_strpos($aProfileInfo['user']['mail'], '@')))
+                $sFirstName = mb_substr($aProfileInfo['user']['mail'], 0, $iPos);
+        }
+
         $aProfileFields['id'] = $aProfileInfo['user']['uid'];
-        $aProfileFields['name'] = $sFirstName;
+        $aProfileFields['name'] = empty($sFirstName) ? $aProfileInfo['user']['uid'] : $sFirstName;
         $aProfileFields['fullname'] = $sFirstName . (empty($sLastName) ? '' : ' ' . $sLastName);
         $aProfileFields['email'] = isset($aProfileInfo['user']['mail']) ? $aProfileInfo['user']['mail'] : '';
         $aProfileFields['picture'] = isset($aProfileInfo['user']['picture']) ? $aProfileInfo['user']['picture'] : '';
