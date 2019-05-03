@@ -15,7 +15,8 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 ('bx_polls_per_page_browse', '12', @iCategId, '_bx_polls_option_per_page_browse', 'digit', '', '', '', 10),
 ('bx_polls_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
 ('bx_polls_rss_num', '10', @iCategId, '_bx_polls_option_rss_num', 'digit', '', '', '', 20),
-('bx_polls_searchable_fields', 'text', @iCategId, '_bx_polls_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:8:"bx_polls";s:6:"method";s:21:"get_searchable_fields";}', 30);
+('bx_polls_searchable_fields', 'text', @iCategId, '_bx_polls_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:8:"bx_polls";s:6:"method";s:21:"get_searchable_fields";}', 30),
+('bx_polls_labels', '', @iCategId, '_sys_option_labels', 'text', '', '', '', 40);
 
 
 -- PAGE: create entry
@@ -208,7 +209,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_polls_view_actions', 'bx_polls', 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_polls_view_actions', 'bx_polls', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 270),
 ('bx_polls_view_actions', 'bx_polls', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_polls_view_actions', 'bx_polls', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_polls_view_actions', 'bx_polls', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_polls_view_actions', 'bx_polls', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_polls_view_actions', 'bx_polls', 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, 1, 0, 9999);

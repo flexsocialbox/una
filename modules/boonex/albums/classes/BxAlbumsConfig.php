@@ -28,7 +28,7 @@ class BxAlbumsConfig extends BxBaseModTextConfig
 
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'albums',
-        	'TABLE_ENTRIES_FULLTEXT' => 'title_text',
+            'TABLE_ENTRIES_FULLTEXT' => 'title_text',
             'TABLE_FILES2ENTRIES' => $aModule['db_prefix'] . 'files2albums',
             'TABLE_FILES' => $aModule['db_prefix'] . 'files',
 
@@ -43,11 +43,12 @@ class BxAlbumsConfig extends BxBaseModTextConfig
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
             'FIELD_PHOTO' => 'pictures',
             'FIELD_THUMB' => 'thumb',
-        	'FIELD_VIEWS' => 'views',
+            'FIELD_VIEWS' => 'views',
             'FIELD_COMMENTS' => 'comments',
-        	'FIELD_STATUS' => 'status',
-        	'FIELD_STATUS_ADMIN' => 'status_admin',
+            'FIELD_STATUS' => 'status',
+            'FIELD_STATUS_ADMIN' => 'status_admin',
             'FIELD_LOCATION_PREFIX' => 'location',
+            'FIELD_LABELS' => 'labels',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
 
             // page URIs
@@ -72,6 +73,7 @@ class BxAlbumsConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => 'bx_albums_plain_summary_chars',
             'PARAM_NUM_RSS' => 'bx_albums_rss_num',
         	'PARAM_SEARCHABLE_FIELDS' => 'bx_albums_searchable_fields',
+            'PARAM_LABELS' => 'bx_albums_labels',
 
             // objects
             'OBJECT_STORAGE' => 'bx_albums_files',

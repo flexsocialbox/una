@@ -101,6 +101,8 @@
 
     <string name="_bx_cnv_grid_action_delete"><![CDATA[Удалить]]></string>
     <string name="_bx_cnv_grid_action_compose"><![CDATA[Новое сообщение]]></string>
+    <string name="_bx_cnv_grid_filter_item_title_adm_all"><![CDATA[Все]]></string>
+    <string name="_bx_cnv_grid_filter_item_title_adm_unread"><![CDATA[Непрочитанные]]></string>
 
     <string name="_bx_cnv_collaborator_author"><![CDATA[автор]]></string>
     <string name="_bx_cnv_collaborator_last_replier"><![CDATA[последний ответивший]]></string>
@@ -130,5 +132,7 @@
 <p>Новый ответ в <a href="{PageUrl}">{PageTitle}</a> переписке от <a href="{SenderUrl}">{SenderDisplayName}</a>:</p>
 <hr />
 <p>{Message}</p>
+<hr />
+Не отвечайте на это письмо через email, чтобы ответить отправителю, нужно зайти на <a href="{PageUrl}">страницу с перепиской</a> и ответить там.
 {email_footer}]]></string>
 </resources>

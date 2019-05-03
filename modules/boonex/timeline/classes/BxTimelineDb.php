@@ -11,6 +11,8 @@
 
 class BxTimelineDb extends BxBaseModNotificationsDb
 {
+    protected $_sTableCache;
+
     protected $_sTableEvent2User;
     protected $_sTablesRepostTrack;
     protected $_sTableHotTrack;
@@ -24,6 +26,8 @@ class BxTimelineDb extends BxBaseModNotificationsDb
     function __construct(&$oConfig)
     {
         parent::__construct($oConfig);
+        $this->_sTableCache = $this->_sPrefix . 'cache';
+
         $this->_sTableEvent2User = $this->_sPrefix . 'events2users';
         $this->_sTableRepostsTrack = $this->_sPrefix . 'reposts_track';
         $this->_sTableHotTrack = $this->_sPrefix . 'hot_track';
@@ -54,7 +58,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
     	}
     }
 
-	public function activateModuleEvents($aData, $bActivate = true)
+    public function activateModuleEvents($aData, $bActivate = true)
     {
     	$iActivate = $bActivate ? 1 : 0;
 
@@ -387,6 +391,73 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         return (int)$this->query("REPLACE INTO `" . $this->_sTableHotTrack . "` SET " . $this->arrayToSQL($aTrack)) > 0;
     }
 
+    public function insertCache($aParamsSet)
+    {
+        if(empty($aParamsSet))
+            return false;
+
+        return (int)$this->query("REPLACE INTO `{$this->_sTableCache}` SET " . $this->arrayToSQL($aParamsSet)) > 0;
+    }
+
+    public function deleteCache($aParamsWhere)
+    {
+        if(empty($aParamsWhere))
+            return false;
+
+        return (int)$this->query("DELETE FROM `{$this->_sTableCache}` WHERE " . $this->arrayToSQL($aParamsWhere, ' AND ')) > 0;
+    }
+
+    public function clearCache()
+    {
+        return (int)$this->query("DELETE FROM `{$this->_sTableCache}` WHERE 1") > 0;
+    }
+
+    public function getCache($aParams)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+    	$aMethod = array('name' => 'getAll', 'params' => array(0 => 'query'));
+        
+        $sFieldsClause = '*';
+        $sWhereClause = $sLimitClause = '';
+
+        if(isset($aParams['start']) && !empty($aParams['per_page']))
+            $sLimitClause = $aParams['start'] . ", " . $aParams['per_page'];
+
+        switch($aParams['browse']) {
+            case 'list': // by type + owner profile (context) + viewer profile
+                $aMethod['name'] = 'getAllWithKey';
+                $aMethod['params'][1] = 'event_id';
+                $aMethod['params'][2] = array(
+                    'type' => $aParams['type'],
+                    'context_id' => $aParams['context_id'],
+                    'profile_id' => $aParams['profile_id']
+                );
+
+                //--- Apply custom check depending on Type
+                switch($aParams['type']) {
+                    case BX_BASE_MOD_NTFS_TYPE_PUBLIC:
+                        $aMethod['params'][2]['context_id'] = 0;
+                        break;
+
+                    case BX_TIMELINE_TYPE_OWNER_AND_CONNECTIONS:
+                        $aMethod['params'][2]['context_id'] = $aParams['profile_id'];
+                        break;
+                }
+
+                $sWhereClause .= " AND `type`=:type AND `context_id`=:context_id  AND `profile_id`=:profile_id";
+                break;
+        }
+
+        $sLimitClause = $sLimitClause ? "LIMIT " . $sLimitClause : "";
+
+        $aMethod['params'][0] = "SELECT " . $sFieldsClause . " 
+        FROM `{$this->_sTableCache}` 
+        WHERE 1" . $sWhereClause . " ORDER BY `date` DESC " . $sLimitClause;
+
+        return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
+    }
+
     protected function _getFilterAddon($iOwnerId, $sFilter)
     {
         switch($sFilter) {
@@ -426,14 +497,14 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         $sJoinClause = $sWhereClause = $sOrderClause = $sLimitClause = "";
 
         switch($aParams['browse']) {
-        	case 'owner_id':
-        		$sWhereClause = $this->prepareAsString("AND `{$this->_sTable}`.`owner_id`=? ", $aParams['value']);
-        		break;
+            case 'owner_id':
+                $sWhereClause = $this->prepareAsString("AND `{$this->_sTable}`.`owner_id`=? ", $aParams['value']);
+                break;
 
-        	case 'common_by_object':
-        		$sCommonPostPrefix = $this->_oConfig->getPrefix('common_post');
-        		$sWhereClause = $this->prepareAsString("AND SUBSTRING(`{$this->_sTable}`.`type`, 1, " . strlen($sCommonPostPrefix) . ")='" . $sCommonPostPrefix . "' AND `{$this->_sTable}`.`object_id`=? ", $aParams['value']);
-        		break;
+            case 'common_by_object':
+                $sCommonPostPrefix = $this->_oConfig->getPrefix('common_post');
+                $sWhereClause = $this->prepareAsString("AND SUBSTRING(`{$this->_sTable}`.`type`, 1, " . strlen($sCommonPostPrefix) . ")='" . $sCommonPostPrefix . "' AND `{$this->_sTable}`.`object_id`=? ", $aParams['value']);
+                break;
 
             case 'descriptor':
                 $sMethod = 'getRow';
@@ -465,37 +536,57 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                     $sSelectClause  = "DISTINCT " . $sSelectClause;
                 break;
 
+            case 'ids':
+                $sWhereClause = "AND `{$this->_sTable}`.`id` IN (" . $this->implode_escape($aParams['ids']) . ") ";
+                break;
+
             default:
             	list($sMethod, $sSelectClause, $sJoinClause, $sWhereClause, $sOrderClause, $sLimitClause) = parent::_getSqlPartsEvents($aParams);
         }
 
-		$sSelectClause .= ", DAYOFYEAR(FROM_UNIXTIME(`{$this->_sTable}`.`date`)) AS `days`, DAYOFYEAR(NOW()) AS `today`, ROUND((UNIX_TIMESTAMP() - `{$this->_sTable}`.`date`)/86400) AS `ago_days`, YEAR(FROM_UNIXTIME(`{$this->_sTable}`.`date`)) AS `year`";
-		if($aParams['browse'] == 'list') {
-			$sOrderClause = "";
+        $sSelectClause .= ", DAYOFYEAR(FROM_UNIXTIME(`{$this->_sTable}`.`date`)) AS `days`, DAYOFYEAR(NOW()) AS `today`, ROUND((UNIX_TIMESTAMP() - `{$this->_sTable}`.`date`)/86400) AS `ago_days`, YEAR(FROM_UNIXTIME(`{$this->_sTable}`.`date`)) AS `year`";
+        if(in_array($aParams['browse'], array('list', 'ids'))) {
+            $sOrderClause = "";
 
-			switch($aParams['type']) {
-				case BX_TIMELINE_TYPE_HOT:
+            switch($aParams['type']) {
+                case BX_TIMELINE_TYPE_HOT:
                     $sOrderClause = "`{$this->_sTableHotTrack}`.`value` DESC, ";
                     break;
 
-				case BX_BASE_MOD_NTFS_TYPE_PUBLIC:
-				case BX_BASE_MOD_NTFS_TYPE_CONNECTIONS:
-				case BX_TIMELINE_TYPE_OWNER_AND_CONNECTIONS:
-					$sOrderClause = "`{$this->_sTable}`.`sticked` DESC, ";
-					break;
+                    case BX_BASE_MOD_NTFS_TYPE_PUBLIC:
+                    case BX_BASE_MOD_NTFS_TYPE_CONNECTIONS:
+                    case BX_TIMELINE_TYPE_OWNER_AND_CONNECTIONS:
+                        $sOrderClause = "`{$this->_sTable}`.`sticked` DESC, ";
+                        break;
 
-				case BX_BASE_MOD_NTFS_TYPE_OWNER:
-					$sOrderClause = "`{$this->_sTable}`.`pinned` DESC, ";
-					break;
-			}
+                    case BX_BASE_MOD_NTFS_TYPE_OWNER:
+                        $sOrderClause = "`{$this->_sTable}`.`pinned` DESC, ";
+                        break;
+            }
 
             $sOrderClause = "ORDER BY " . $sOrderClause . "`{$this->_sTable}`.`date` DESC";
-		}
+        }
 
         if(isset($aParams['count']) && $aParams['count'] === true) {
             $sMethod = 'getOne';
             $sSelectClause = "COUNT(`{$this->_sTable}`.`id`)";
+            $sLimitClause = "";
         }
+
+        $aAlertParams = $aParams;
+        unset($aAlertParams['browse']);
+
+        bx_alert($this->_oConfig->getName(), 'get_events', 0, 0, array(
+            'browse' => $aParams['browse'],
+            'params' => $aAlertParams,
+            'table' => $this->_sTable,
+            'method' => &$sMethod,
+            'select_clause' => &$sSelectClause,
+            'join_clause' => &$sJoinClause,
+            'where_clause' => &$sWhereClause,
+            'order_clause' => &$sOrderClause,
+            'limit_clause' => &$sLimitClause
+        ));
 
         return array($sMethod, $sSelectClause, $sJoinClause, $sWhereClause, $sOrderClause, $sLimitClause);
     }
@@ -504,37 +595,35 @@ class BxTimelineDb extends BxBaseModNotificationsDb
     {
         $sCommonPostPrefix = $this->_oConfig->getPrefix('common_post');
 
-    	$sJoinClause = "";
-    	$sWhereClause = "AND `{$this->_sTable}`.`hidden`='0' ";
+    	$sJoinClause = $sWhereClause = "";
 
-		if(isset($aParams['active']))
-        	$sWhereClause .= $this->prepareAsString("AND `{$this->_sTable}`.`active`=? ", (int)$aParams['active']);
+        $sWhereClauseStatus = "AND `{$this->_sTable}`.`hidden`='0' ";
+        if(isset($aParams['active']))
+            $sWhereClauseStatus .= $this->prepareAsString("AND `{$this->_sTable}`.`active`=? ", (int)$aParams['active']);
 
-		//--- Apply filter
+        //--- Apply filter
+        $sWhereClauseFilter = "";
         if(isset($aParams['filter']))
-        	$sWhereClause .= $this->_getFilterAddon($aParams['owner_id'], $aParams['filter']);
+            $sWhereClauseFilter = $this->_getFilterAddon($aParams['owner_id'], $aParams['filter']);
 
-		//--- Apply timeline
-        if(isset($aParams['timeline']) && !empty($aParams['timeline'])) {
-        	$iYear = (int)$aParams['timeline'];
-            $sWhereClause .= $this->prepareAsString("AND `date`<=? ", mktime(23, 59, 59, 12, 31, $iYear));
-		}
+        //--- Apply timeline
+        $sWhereClauseTimeline = "";
+        if(isset($aParams['timeline']) && !empty($aParams['timeline']))
+            $sWhereClauseTimeline = $this->prepareAsString("AND `date`<=? ", mktime(23, 59, 59, 12, 31, (int)$aParams['timeline']));
 
-		//--- Apply modules or handlers filter
-        $sWhereModuleFilter = '';
+        //--- Apply modules or handlers filter
+        $sWhereClauseModules = "";
         if(!empty($aParams['modules']) && is_array($aParams['modules']))
-        	$sWhereModuleFilter = "AND `" . $this->_sTable . "`.`type` IN (" . $this->implode_escape($aParams['modules']) . ") ";
-
-		if($sWhereModuleFilter == '') {
-        	$aHidden = $this->_oConfig->getHandlersHidden();
-			$sWhereModuleFilter = !empty($aHidden) && is_array($aHidden) ? "AND `" . $this->_sTableHandlers . "`.`id` NOT IN (" . $this->implode_escape($aHidden) . ") " : "";
-		}
-
-		if($sWhereModuleFilter != '')
-			$sWhereClause .= $sWhereModuleFilter;
+            $sWhereClauseModules = "AND `" . $this->_sTable . "`.`type` IN (" . $this->implode_escape($aParams['modules']) . ") ";
+        
+        $sWhereClauseHidden = "";
+        if(empty($sWhereClauseModules)) {
+            $aHidden = $this->_oConfig->getHandlersHidden();
+            $sWhereClauseHidden = !empty($aHidden) && is_array($aHidden) ? "AND `" . $this->_sTableHandlers . "`.`id` NOT IN (" . $this->implode_escape($aHidden) . ") " : "";
+        }
 
         //--- Apply unpublished (date in future) filter
-        $sWhereClause .= $this->prepareAsString("AND IF(SUBSTRING(`{$this->_sTable}`.`type`, 1, " . strlen($sCommonPostPrefix) . ") = '" . $sCommonPostPrefix . "' AND `{$this->_sTable}`.`object_id` = ?, 1, `{$this->_sTable}`.`date` <= UNIX_TIMESTAMP()) ", bx_get_logged_profile_id());
+        $sWhereClauseUnpublished = $this->prepareAsString("AND IF(SUBSTRING(`{$this->_sTable}`.`type`, 1, " . strlen($sCommonPostPrefix) . ") = '" . $sCommonPostPrefix . "' AND `{$this->_sTable}`.`object_id` = ?, 1, `{$this->_sTable}`.`date` <= UNIX_TIMESTAMP()) ", bx_get_logged_profile_id());
 
 		//--- Check type
 		$sWhereSubclause = "";
@@ -574,14 +663,6 @@ class BxTimelineDb extends BxBaseModNotificationsDb
 
                         //--- Select Own Public (Direct) posts from Home Page Timeline (Public Feed).
                         $sWhereSubclause .= $this->prepareAsString(" OR (`{$this->_sTable}`.`owner_id` = '0' AND IF(SUBSTRING(`{$this->_sTable}`.`type`, 1, " . strlen($sCommonPostPrefix) . ") = '" . $sCommonPostPrefix . "', `{$this->_sTable}`.`object_id` = ?, 1))", $aParams['owner_id']);
-
-                        bx_alert($this->_oConfig->getName(), 'get_list_by_type', 0, 0, array(
-                            'type' => BX_BASE_MOD_NTFS_TYPE_OWNER,
-                            'owner_id' => $aParams['owner_id'],
-                            'table' => $this->_sTable,
-                            'where_clause' => &$sWhereClause,
-                            'where_subclause' => &$sWhereSubclause
-                        ));
                         break;
 
                     //--- Profile Connections Feed
@@ -643,10 +724,36 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                         break;
 		}
 
-		if(!empty($sWhereSubclause))
-		    $sWhereClause .= "AND (" . $sWhereSubclause . ") ";
+        $aAlertParams = $aParams;
+        unset($aAlertParams['type'], $aAlertParams['owner_id']);
 
-		return array($sJoinClause, $sWhereClause);
+        bx_alert($this->_oConfig->getName(), 'get_list_by_type', 0, 0, array(
+            'type' => $aParams['type'],
+            'owner_id' => $aParams['owner_id'],
+            'params' => $aAlertParams,
+            'table' => $this->_sTable,
+            'join_clause' => &$sJoinClause,
+            'where_clause' => &$sWhereClause,
+            'where_clause_status' => &$sWhereClauseStatus,
+            'where_clause_filter' => &$sWhereClauseFilter,
+            'where_clause_timeline' => &$sWhereClauseTimeline,
+            'where_clause_modules' => &$sWhereClauseModules,
+            'where_clause_hidden' => &$sWhereClauseHidden,
+            'where_clause_unpublished' => &$sWhereClauseUnpublished,
+            'where_subclause' => &$sWhereSubclause
+        ));
+
+        $sWhereClause .= $sWhereClauseStatus;
+        $sWhereClause .= $sWhereClauseFilter;
+        $sWhereClause .= $sWhereClauseTimeline;
+        $sWhereClause .= $sWhereClauseModules;
+        $sWhereClause .= $sWhereClauseHidden;
+        $sWhereClause .= $sWhereClauseUnpublished;
+
+        if(!empty($sWhereSubclause))
+            $sWhereClause .= "AND (" . $sWhereSubclause . ") ";
+
+        return array($sJoinClause, $sWhereClause);
     }
 
     function updateSimilarObject($iId, &$oAlert, $sDuration = 'day')

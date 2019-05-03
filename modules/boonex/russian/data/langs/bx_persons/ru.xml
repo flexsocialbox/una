@@ -30,6 +30,8 @@
     <string name="_bx_persons_form_profile_input_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_persons_form_profile_input_sys_allow_view_to"><![CDATA[Доступен для]]></string>
     <string name="_bx_persons_form_profile_input_allow_view_to"><![CDATA[Доступен для]]></string>
+    <string name="_bx_persons_form_profile_input_sys_allow_post_to"><![CDATA[Оставлять сообщения в профиле могут]]></string>
+    <string name="_bx_persons_form_profile_input_allow_post_to"><![CDATA[Оставлять сообщения в профиле могут]]></string>
 	<string name="_bx_persons_form_profile_input_sys_fullname"><![CDATA[Полное имя]]></string>
 	<string name="_bx_persons_form_profile_input_fullname"><![CDATA[Полное имя]]></string>
 	<string name="_bx_persons_form_profile_input_fullname_err"><![CDATA[Эта информация необходима. Пожалуйста, заполните это поле.]]></string>
@@ -51,8 +53,8 @@
     <string name="_bx_persons_form_profile_input_birthday_err"><![CDATA[Ваш возраст должен быть в интервале от 18 до 99 лет]]></string>
     <string name="_bx_persons_form_profile_input_sys_gender"><![CDATA[Пол]]></string>
     <string name="_bx_persons_form_profile_input_gender"><![CDATA[Пол]]></string>
-    <string name="_bx_persons_form_profile_input_sys_profile_email"><![CDATA[Имейл]]></string>
-    <string name="_bx_persons_form_profile_input_profile_email"><![CDATA[Имейл]]></string>
+    <string name="_bx_persons_form_profile_input_sys_profile_email"><![CDATA[Email]]></string>
+    <string name="_bx_persons_form_profile_input_profile_email"><![CDATA[Email]]></string>
     <string name="_bx_persons_form_profile_input_sys_profile_status"><![CDATA[Статус]]></string>
     <string name="_bx_persons_form_profile_input_profile_status"><![CDATA[Статус]]></string>
     <string name="_bx_persons_form_profile_input_sys_profile_ip"><![CDATA[IP]]></string>
@@ -61,6 +63,10 @@
     <string name="_bx_persons_form_profile_input_date_added"><![CDATA[Дата создания]]></string>
     <string name="_bx_persons_form_profile_input_sys_date_changed"><![CDATA[Дата обновления]]></string>
     <string name="_bx_persons_form_profile_input_date_changed"><![CDATA[Дата обновления]]></string>
+    <string name="_bx_persons_form_profile_input_sys_friends_count"><![CDATA[Количество друзей]]></string>
+    <string name="_bx_persons_form_profile_input_friends_count"><![CDATA[Количество друзей]]></string>
+    <string name="_bx_persons_form_profile_input_sys_followers_count"><![CDATA[Количество подписчиков]]></string>
+    <string name="_bx_persons_form_profile_input_followers_count"><![CDATA[Количество подписчиков]]></string>
 
 	<string name="_bx_persons_acl_action_create_profile"><![CDATA[Создать персональный профиль]]></string>
 	<string name="_bx_persons_acl_action_delete_profile"><![CDATA[Удалить персональный профиль]]></string>
@@ -96,6 +102,8 @@
     <string name="_bx_persons_page_title_friend_requests"><![CDATA[Приглашения в друзья]]></string>
 	<string name="_bx_persons_page_title_sys_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_persons_page_title_profile_subscriptions"><![CDATA[Подписки и подписчики]]></string>
+    <string name="_bx_persons_page_title_sys_profile_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_persons_page_title_profile_relations"><![CDATA[Связи]]></string>
     <string name="_bx_persons_page_title_sys_profile_comments"><![CDATA[Комментарии]]></string>
     <string name="_bx_persons_page_title_profile_comments"><![CDATA[Комментарии]]></string>
 	<string name="_bx_persons_page_title_sys_profile_info"><![CDATA[Инфо профиля]]></string>
@@ -114,37 +122,41 @@
 
     <string name="_bx_persons_page_block_title_profile_private"><![CDATA[Приватный профиль]]></string>
     <string name="_bx_persons_page_block_title_choose_type"><![CDATA[Выбрать тип профиля]]></string>
-	<string name="_bx_persons_page_block_title_create_profile"><![CDATA[Создать профиль - человек]]></string>
-	<string name="_bx_persons_page_block_title_edit_profile"><![CDATA[Редактировать профиль]]></string>
-	<string name="_bx_persons_page_block_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
-	<string name="_bx_persons_page_block_title_delete_profile"><![CDATA[Удалить профиль]]></string>
-	<string name="_bx_persons_page_block_title_profile_all_actions"><![CDATA[Все действия]]></string>
-	<string name="_bx_persons_page_block_title_profile_info_link"><![CDATA[<a href="{profile_link}">{display_name}</a> - Инфо]]></string>
-	<string name="_bx_persons_page_block_title_profile_info"><![CDATA[Инфо]]></string>
-	<string name="_bx_persons_page_block_title_system_profile_info"><![CDATA[Инфо]]></string>
-	<string name="_bx_persons_page_block_title_profile_membership"><![CDATA[Членство]]></string>
-	<string name="_bx_persons_page_block_title_system_profile_membership"><![CDATA[Членство]]></string>
-	<string name="_bx_persons_page_block_title_profile_description"><![CDATA[Описание]]></string>
-	<string name="_bx_persons_page_block_title_profile_favorites"><![CDATA[Избранные персоны]]></string>
-	<string name="_bx_persons_page_block_title_system_profile_favorites"><![CDATA[Избранные персоны]]></string>
-	<string name="_bx_persons_page_block_title_profile_friends_link"><![CDATA[<a href="{profile_link}">{display_name}</a> - Друзья]]></string>
-	<string name="_bx_persons_page_block_title_profile_friends"><![CDATA[Друзья]]></string>
-	<string name="_bx_persons_page_block_title_system_profile_friends"><![CDATA[Друзья]]></string>
+    <string name="_bx_persons_page_block_title_create_profile"><![CDATA[Создать профиль - человек]]></string>
+    <string name="_bx_persons_page_block_title_edit_profile"><![CDATA[Редактировать профиль]]></string>
+    <string name="_bx_persons_page_block_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
+    <string name="_bx_persons_page_block_title_delete_profile"><![CDATA[Удалить профиль]]></string>
+    <string name="_bx_persons_page_block_title_profile_all_actions"><![CDATA[Все действия]]></string>
+    <string name="_bx_persons_page_block_title_profile_info_link"><![CDATA[<a href="{profile_link}">{display_name}</a> - Инфо]]></string>
+    <string name="_bx_persons_page_block_title_profile_info"><![CDATA[Инфо]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_info"><![CDATA[Инфо]]></string>
+    <string name="_bx_persons_page_block_title_profile_membership"><![CDATA[Членство]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_membership"><![CDATA[Членство]]></string>
+    <string name="_bx_persons_page_block_title_profile_description"><![CDATA[Описание]]></string>
+    <string name="_bx_persons_page_block_title_profile_favorites"><![CDATA[Избранные персоны]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_favorites"><![CDATA[Избранные персоны]]></string>
+    <string name="_bx_persons_page_block_title_profile_friends_link"><![CDATA[<a href="{profile_link}">{display_name}</a> - Друзья]]></string>
+    <string name="_bx_persons_page_block_title_profile_friends"><![CDATA[Друзья]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_friends"><![CDATA[Друзья]]></string>
     <string name="_bx_persons_page_block_title_friend_requests_link"><![CDATA[<a href="{profile_link}">{display_name}</a> - Приглашения в друзья]]></string>
     <string name="_bx_persons_page_block_title_system_friend_requests"><![CDATA[Приглашения в друзья]]></string>
-	<string name="_bx_persons_page_block_title_profile_location"><![CDATA[Расположение]]></string>
-	<string name="_bx_persons_page_block_title_system_profile_subscriptions"><![CDATA[Подписки]]></string>
+    <string name="_bx_persons_page_block_title_profile_location"><![CDATA[Расположение]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_persons_page_block_title_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_persons_page_block_title_system_profile_subscribed_me"><![CDATA[Подписчики]]></string>
     <string name="_bx_persons_page_block_title_profile_subscribed_me"><![CDATA[Подписчики]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_relations"><![CDATA[Мои связи]]></string>
+    <string name="_bx_persons_page_block_title_profile_relations"><![CDATA[Мои связи]]></string>
+    <string name="_bx_persons_page_block_title_system_profile_related_me"><![CDATA[Связи со мной]]></string>
+    <string name="_bx_persons_page_block_title_profile_related_me"><![CDATA[Связи со мной]]></string>
     <string name="_bx_persons_page_block_title_profile_comments"><![CDATA[Комментарии]]></string>
     <string name="_bx_persons_page_block_title_profile_comments_link"><![CDATA[Комментарии к <a href="{entry_link}">{title}</a>]]></string>
-	<string name="_bx_persons_page_block_title_profile_actions"><![CDATA[Действия]]></string>
-	<string name="_bx_persons_page_block_title_featured_profiles"><![CDATA[Продвинутые пользователи]]></string>
-	<string name="_bx_persons_page_block_title_latest_profiles"><![CDATA[Новые пользователи]]></string>
-	<string name="_bx_persons_page_block_title_system_manage"><![CDATA[Управление собственными профилями]]></string>
-	<string name="_bx_persons_page_block_title_system_manage_administration"><![CDATA[Управление всеми профилями]]></string>
-	<string name="_bx_persons_page_block_title_manage"><![CDATA[Управление]]></string>
+    <string name="_bx_persons_page_block_title_profile_actions"><![CDATA[Действия]]></string>
+    <string name="_bx_persons_page_block_title_featured_profiles"><![CDATA[Продвинутые пользователи]]></string>
+    <string name="_bx_persons_page_block_title_latest_profiles"><![CDATA[Новые пользователи]]></string>
+    <string name="_bx_persons_page_block_title_system_manage"><![CDATA[Управление собственными профилями]]></string>
+    <string name="_bx_persons_page_block_title_system_manage_administration"><![CDATA[Управление всеми профилями]]></string>
+    <string name="_bx_persons_page_block_title_manage"><![CDATA[Управление]]></string>
     <string name="_bx_persons_page_block_title_active_profiles"><![CDATA[Активные пользователи]]></string>
     <string name="_bx_persons_page_block_title_online_profiles"><![CDATA[Онлайн пользователи]]></string>
     <string name="_bx_persons_page_block_title_search_form"><![CDATA[Форма поиска]]></string>
@@ -155,7 +167,7 @@
     <string name="_bx_persons_page_block_title_featured_entries_view_showcase"><![CDATA[Продвинутые профили]]></string>
     <string name="_bx_persons_page_block_title_sys_recommended_entries_view_showcase"><![CDATA[Рекомендованные профили (Витринный просмотр)]]></string>
     <string name="_bx_persons_page_block_title_recommended_entries_view_showcase"><![CDATA[Рекомендованные профили]]></string>
-	<string name="_bx_persons_page_block_title_sys_active_entries_view_showcase"><![CDATA[Активные профили (Витринный просмотр)]]></string>
+    <string name="_bx_persons_page_block_title_sys_active_entries_view_showcase"><![CDATA[Активные профили (Витринный просмотр)]]></string>
     <string name="_bx_persons_page_block_title_active_entries_view_showcase"><![CDATA[Активные профили]]></string>
 
 	<string name="_bx_persons_menu_title_submenu"><![CDATA[Персоны - Подменю]]></string>
@@ -189,6 +201,8 @@
     <string name="_bx_persons_menu_item_title_create_profile"><![CDATA[Персона]]></string>
     <string name="_bx_persons_menu_item_title_system_view_profile_friends"><![CDATA[Друзья]]></string>
     <string name="_bx_persons_menu_item_title_view_profile_friends"><![CDATA[Друзья]]></string>
+    <string name="_bx_persons_menu_item_title_system_view_profile_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_persons_menu_item_title_view_profile_relations"><![CDATA[Связи]]></string>
     <string name="_bx_persons_menu_item_title_system_view_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_persons_menu_item_title_view_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_persons_menu_item_title_system_view_profile_comments"><![CDATA[Комментарии]]></string>
@@ -209,10 +223,16 @@
     <string name="_bx_persons_menu_item_title_subscribe"><![CDATA[Получать уведомления]]></string>
     <string name="_bx_persons_menu_item_title_system_unsubscribe"><![CDATA[Отключить уведомления]]></string>
     <string name="_bx_persons_menu_item_title_unsubscribe"><![CDATA[Отключить уведомления]]></string>
+    <string name="_bx_persons_menu_item_title_system_relation_add"><![CDATA[Добавить связь]]></string>
+    <string name="_bx_persons_menu_item_title_relation_add"><![CDATA[Добавить связь]]></string>
+    <string name="_bx_persons_menu_item_title_system_relation_delete"><![CDATA[Удалить связь]]></string>
+    <string name="_bx_persons_menu_item_title_relation_delete"><![CDATA[Удалить связь]]></string>
     <string name="_bx_persons_menu_item_title_system_more_actions"><![CDATA[Дополнительные действия]]></string>
     <string name="_bx_persons_menu_item_title_more_actions"><![CDATA[]]></string>
     <string name="_bx_persons_menu_item_title_system_friends"><![CDATA[Друзья]]></string>
     <string name="_bx_persons_menu_item_title_friends"><![CDATA[Друзья]]></string>
+    <string name="_bx_persons_menu_item_title_system_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_persons_menu_item_title_relations"><![CDATA[Связи]]></string>
     <string name="_bx_persons_menu_item_title_system_friend_requests"><![CDATA[Число запросов дружбы]]></string>
     <string name="_bx_persons_menu_item_title_friend_requests"><![CDATA[Запросов дружбы]]></string>
     <string name="_bx_persons_menu_item_title_system_manage_my_profiles"><![CDATA[Мои профили]]></string>
@@ -223,6 +243,10 @@
     <string name="_bx_persons_menu_item_title_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_persons_menu_item_title_system_subscribed_me"><![CDATA[Подписчики]]></string>
     <string name="_bx_persons_menu_item_title_subscribed_me"><![CDATA[Подписчики]]></string>    
+    <string name="_bx_persons_menu_item_title_system_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_persons_menu_item_title_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_persons_menu_item_title_system_related_me"><![CDATA[Связи со мной]]></string>
+    <string name="_bx_persons_menu_item_title_related_me"><![CDATA[Связи со мной]]></string>
     <string name="_bx_persons_menu_item_title_system_entries_public"><![CDATA[Публичные]]></string>
     <string name="_bx_persons_menu_item_title_entries_recent"><![CDATA[Новые]]></string>
     <string name="_bx_persons_menu_item_title_system_entries_recent"><![CDATA[Новые]]></string>

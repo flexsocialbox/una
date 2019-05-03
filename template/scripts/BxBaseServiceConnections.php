@@ -141,7 +141,7 @@ class BxBaseServiceConnections extends BxDol
         return $i;
     }
 
-	/**
+    /**
      * get grid with subscriptions connections
      */
     public function serviceSubscriptionsTable ($iProfileId = 0)
@@ -172,7 +172,7 @@ class BxBaseServiceConnections extends BxDol
         ));
     }
 
-	/**
+    /**
      * get grid with subscribed me connections
      */
     public function serviceSubscribedMeTable ($iProfileId = 0)
@@ -203,6 +203,60 @@ class BxBaseServiceConnections extends BxDol
         ));
     }
 
+    /**
+     * get grid with 'relations' connections
+     */
+    public function serviceRelationsTable ($iProfileId = 0)
+    {
+        if(!$iProfileId && bx_get('profile_id') !== false)
+            $iProfileId = bx_process_input(bx_get('profile_id'), BX_DATA_INT);
+
+        $aProfile = BxDolProfile::getInstance($iProfileId)->getInfo();
+        if(empty($aProfile) || !is_array($aProfile))
+            return false;
+
+        $oGrid = BxDolGrid::getObjectInstance('sys_grid_relations');
+        if (!$oGrid)
+            return false;
+
+        $oGrid->setProfileId($iProfileId);
+        $sContent = $oGrid->getCode();
+        if(empty($sContent))
+            return false;
+
+        return BxDolTemplate::getInstance()->parseHtmlByName('connections_list.html', array(
+            'name' => 'relations',
+            'content' => $sContent
+        ));
+    }
+
+    /**
+     * get grid with 'related me' connections
+     */
+    public function serviceRelatedMeTable ($iProfileId = 0)
+    {
+        if(!$iProfileId && bx_get('profile_id') !== false)
+            $iProfileId = bx_process_input(bx_get('profile_id'), BX_DATA_INT);
+
+        $aProfile = BxDolProfile::getInstance($iProfileId)->getInfo();
+        if(empty($aProfile) || !is_array($aProfile))
+            return false;
+
+        $oGrid = BxDolGrid::getObjectInstance('sys_grid_related_me');
+        if(!$oGrid)
+            return false;
+
+        $oGrid->setProfileId($iProfileId);
+        $sContent = $oGrid->getCode();
+        if(empty($sContent))
+            return false;
+
+        return BxDolTemplate::getInstance()->parseHtmlByName('connections_list.html', array(
+            'name' => 'related-me',
+            'content' => $sContent
+        ));
+    }
+
     /*
      * Get notification data for Notifications module - action Subscribe. 
      */
@@ -225,22 +279,26 @@ class BxBaseServiceConnections extends BxDol
     /*
      * Get notification data for Notifications module - action Friend. 
      */
-	public function serviceGetNotificationsPostFriendship($aEvent)
+    public function serviceGetNotificationsPostFriendship($aEvent)
     {
     	$iProfile = (int)$aEvent['object_id'];
     	$oProfile = BxDolProfile::getInstance($iProfile);
         if(!$oProfile)
-			return array();
+            return array();
 
-		return array(
-			'entry_sample' => '_sys_profile_sample_single',
-			'entry_url' => $oProfile->getUrl(),
-			'entry_caption' => $oProfile->getDisplayName(),
-			'entry_author' => $oProfile->id(),
-			'lang_key' => '_sys_profile_friendship_added',
-		);
+        $sLangKey = '_sys_profile_friendship_added';
+        if(isset($aEvent['content']['request']) && (int)$aEvent['content']['request'] == 1)
+            $sLangKey = '_sys_profile_friend_request_added';
+
+        return array(
+            'entry_sample' => '_sys_profile_sample_single',
+            'entry_url' => $oProfile->getUrl(),
+            'entry_caption' => $oProfile->getDisplayName(),
+            'entry_author' => $oProfile->id(),
+            'lang_key' => $sLangKey,
+        );
     }
-    
+
     public function serviceAlertResponseConnections($oAlert)
     {
         $sMethod = 'process' . bx_gen_method_name($oAlert->sUnit . '_' . $oAlert->sAction);
@@ -256,8 +314,8 @@ class BxBaseServiceConnections extends BxDol
             return;
 
         $oConnection = BxDolConnection::getObjectInstance('sys_profiles_subscriptions');
-        $oConnection->addConnection((int)$oAlert->aExtras['initiator'], (int)$oAlert->aExtras['content']);
-        $oConnection->addConnection((int)$oAlert->aExtras['content'], (int)$oAlert->aExtras['initiator']);
+        $oConnection->addConnection((int)$oAlert->aExtras['initiator'], (int)$oAlert->aExtras['content'], array('alert_extras' => array('silent_mode' => 1)));
+        $oConnection->addConnection((int)$oAlert->aExtras['content'], (int)$oAlert->aExtras['initiator'], array('alert_extras' => array('silent_mode' => 1)));
     }
 
     protected function processSysProfilesFriendsConnectionRemoved(&$oAlert)

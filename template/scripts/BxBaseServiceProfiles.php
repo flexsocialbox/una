@@ -97,6 +97,8 @@ class BxBaseServiceProfiles extends BxDol
             $iProfileId = bx_get_logged_profile_id();
 
         $oMenu = BxDolMenu::getObjectInstance('sys_account_notifications');
+        if(!$oMenu)
+            return 0;
 
         $iNum = 0;
         $aMenuItems = $oMenu->getMenuItems ();
@@ -108,6 +110,12 @@ class BxBaseServiceProfiles extends BxDol
         return $iNum;
     }
 
+    public function serviceGetCountOnlineProfiles ()
+    {
+        $oProfilesQuery = BxDolProfileQuery::getInstance();
+        return $oProfilesQuery->getOnlineCount();
+    }
+    
     public function serviceGetProfilesModules ()
     {
         if (getParam('sys_db_cache_enable')) { // get list of profiles  modules from db cache, cache is invalidated when new module is installed

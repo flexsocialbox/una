@@ -36,9 +36,7 @@
     margin:0;
 }
 
-.bx-grid-header-controls-filter {
-    float:left;
-}
+
 .bx-grid-header-controls-independent {
     float:right;
     margin-top:0;
@@ -69,6 +67,10 @@
 .bx-grid-table th:first-child,
 .bx-grid-table td:first-child {
     padding-left:10px;
+}
+.bx-grid-table th:last-child,
+.bx-grid-table td:last-child {
+    padding-right:10px;
 }
 
 .bx-grid-actions-divider {

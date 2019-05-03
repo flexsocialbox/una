@@ -215,6 +215,7 @@
 	<string name="_bx_payment_msg_successfully_performed"><![CDATA[The action was successfully performed.]]></string>
 	<string name="_bx_payment_msg_successfully_processed_free"><![CDATA[Free item was successfully processed]]></string>
 	<string name="_bx_payment_msg_cancelation_request_sent"><![CDATA[Cancellation request was sent. Please wait.]]></string>
+        <string name="_bx_payment_msg_confirm_cancelation"><![CDATA[Are you sure you want to cancel your subscription?]]></string>
 	<string name="_bx_payment_err_access_db"><![CDATA[Database access error.]]></string>
 	<string name="_bx_payment_err_cannot_validate"><![CDATA[Can't connect to remote host for validation.]]></string>
 	<string name="_bx_payment_err_empty_items"><![CDATA[There are no items selected.]]></string>
@@ -223,7 +224,7 @@
 	<string name="_bx_payment_err_incorrect_provider"><![CDATA[Incorrect or unavailable payment provider.]]></string>
 	<string name="_bx_payment_err_not_accept_payments"><![CDATA[The vendor does not accept payments.]]></string>
 	<string name="_bx_payment_err_nothing_selected"><![CDATA[You need to select at least one item.]]></string>
-	<string name="_bx_payment_err_self_purchase"><![CDATA[You cannot purchase your own item. It's just a bad luck thing, you know.]]></string>
+	<string name="_bx_payment_err_self_purchase"><![CDATA[Buying from your own store is not permitted.]]></string>
 	<string name="_bx_payment_err_required_login"><![CDATA[You need to login.]]></string>
 	<string name="_bx_payment_err_unknown_vendor"><![CDATA[Unknown vendor.]]></string>
 	<string name="_bx_payment_err_wrong_data"><![CDATA[Incorrect input data.]]></string>
@@ -253,6 +254,8 @@
 	<string name="_bx_payment_txt_name_manual"><![CDATA[Manually]]></string>
 	<string name="_bx_payment_txt_yes"><![CDATA[Yes]]></string>
 	<string name="_bx_payment_txt_no"><![CDATA[No]]></string>
+        <string name="_bx_payment_txt_unsubscribe_yes"><![CDATA[Cancel automatically]]></string>
+        <string name="_bx_payment_txt_unsubscribe_no"><![CDATA[Do not cancel]]></string>
 
 	<!-- PayPal payment provider -->
 	<string name="_bx_payment_pp_cpt"><![CDATA[PayPal]]></string>

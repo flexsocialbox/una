@@ -19,27 +19,6 @@ DELETE FROM `sys_menu_items` WHERE `module` = 'bx_organizations' OR `set_name` I
 DELETE `sys_acl_actions`, `sys_acl_matrix` FROM `sys_acl_actions`, `sys_acl_matrix` WHERE `sys_acl_matrix`.`IDAction` = `sys_acl_actions`.`ID` AND `sys_acl_actions`.`Module` = 'bx_organizations';
 DELETE FROM `sys_acl_actions` WHERE `Module` = 'bx_organizations';
 
--- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_organizations';
-
--- VIEWS
-DELETE FROM `sys_objects_view` WHERE `name` = 'bx_organizations';
-
--- VOTES
-DELETE FROM `sys_objects_vote` WHERE `Name` = 'bx_organizations';
-
--- SCORES
-DELETE FROM `sys_objects_score` WHERE `name` = 'bx_organizations';
-
--- REPORTS
-DELETE FROM `sys_objects_report` WHERE `name` = 'bx_organizations';
-
--- FAFORITES
-DELETE FROM `sys_objects_favorite` WHERE `name` = 'bx_organizations';
-
--- FEATURED
-DELETE FROM `sys_objects_feature` WHERE `name` = 'bx_organizations';
-
 -- METATAGS
 DELETE FROM `sys_objects_metatags` WHERE `object` = 'bx_organizations';
 
@@ -72,10 +51,10 @@ DELETE FROM `sys_alerts` WHERE `handler_id` = @iHandler;
 DELETE FROM `sys_alerts_handlers` WHERE `id` = @iHandler;
 
 -- PRIVACY 
-DELETE FROM `sys_objects_privacy` WHERE `object` IN('bx_organizations_allow_view_to', 'bx_organizations_allow_view_notification_to');
+DELETE FROM `sys_objects_privacy` WHERE `object` IN ('bx_organizations_allow_view_to', 'bx_organizations_allow_view_notification_to', 'bx_organizations_allow_post_to');
 
 -- EMAIL TEMPLATES
 DELETE FROM `sys_email_templates` WHERE `Module` = 'bx_organizations';
 
 -- UPLOADERS
-DELETE FROM `sys_objects_uploader` WHERE `object` IN('bx_organizations_cover_crop', 'bx_organizations_picture_crop');
+DELETE FROM `sys_objects_uploader` WHERE `object` IN ('bx_organizations_cover_crop', 'bx_organizations_picture_crop');

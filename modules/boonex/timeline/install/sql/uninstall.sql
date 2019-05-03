@@ -1,19 +1,12 @@
 SET @sName = 'bx_timeline';
 
-DROP TABLE IF EXISTS `bx_timeline_events`;
+DROP TABLE IF EXISTS `bx_timeline_events`, `bx_timeline_handlers`, `bx_timeline_cache`;
 
-DROP TABLE IF EXISTS `bx_timeline_handlers`;
+DROP TABLE IF EXISTS `bx_timeline_photos`, `bx_timeline_photos_processed`, `bx_timeline_photos2events`;
 
-DROP TABLE IF EXISTS `bx_timeline_photos`;
-DROP TABLE IF EXISTS `bx_timeline_photos_processed`;
-DROP TABLE IF EXISTS `bx_timeline_photos2events`;
+DROP TABLE IF EXISTS `bx_timeline_videos`, `bx_timeline_videos_processed`, `bx_timeline_videos2events`;
 
-DROP TABLE IF EXISTS `bx_timeline_videos`;
-DROP TABLE IF EXISTS `bx_timeline_videos_processed`;
-DROP TABLE IF EXISTS `bx_timeline_videos2events`;
-
-DROP TABLE IF EXISTS `bx_timeline_links`;
-DROP TABLE IF EXISTS `bx_timeline_links2events`;
+DROP TABLE IF EXISTS `bx_timeline_links`, `bx_timeline_links2events`;
 
 DROP TABLE IF EXISTS `bx_timeline_reposts_track`;
 
@@ -21,20 +14,15 @@ DROP TABLE IF EXISTS `bx_timeline_comments`;
 
 DROP TABLE IF EXISTS `bx_timeline_views_track`;
 
-DROP TABLE IF EXISTS `bx_timeline_votes`;
-DROP TABLE IF EXISTS `bx_timeline_votes_track`;
+DROP TABLE IF EXISTS `bx_timeline_votes`, `bx_timeline_votes_track`;
 
-DROP TABLE IF EXISTS `bx_timeline_meta_keywords`;
-DROP TABLE IF EXISTS `bx_timeline_meta_locations`;
-DROP TABLE IF EXISTS `bx_timeline_meta_mentions`;
+DROP TABLE IF EXISTS `bx_timeline_meta_keywords`, `bx_timeline_meta_locations`, `bx_timeline_meta_mentions`;
 
-DROP TABLE IF EXISTS `bx_timeline_reports`;
-DROP TABLE IF EXISTS `bx_timeline_reports_track`;
+DROP TABLE IF EXISTS `bx_timeline_reports`, `bx_timeline_reports_track`;
 
 DROP TABLE IF EXISTS `bx_timeline_hot_track`;
 
-DROP TABLE IF EXISTS `bx_timeline_scores`;
-DROP TABLE IF EXISTS `bx_timeline_scores_track`;
+DROP TABLE IF EXISTS `bx_timeline_scores`, `bx_timeline_scores_track`;
 
 
 -- STORAGES, TRANSCODERS, UPLOADERS
@@ -51,6 +39,30 @@ DELETE FROM `sys_form_display_inputs` WHERE `display_name` IN  (SELECT `display_
 DELETE FROM `sys_form_inputs` WHERE `module` = @sName;
 DELETE FROM `sys_form_displays` WHERE `module` = @sName;
 DELETE FROM `sys_objects_form` WHERE `module` = @sName;
+
+
+-- COMMENTS
+DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_timeline' LIMIT 1;
+
+
+-- VIEWS
+DELETE FROM `sys_objects_view` WHERE `name` = 'bx_timeline' LIMIT 1;
+
+
+-- VOTES
+DELETE FROM `sys_objects_vote` WHERE `Name` = 'bx_timeline' LIMIT 1;
+
+
+-- SCORES
+DELETE FROM `sys_objects_score` WHERE `name` = 'bx_timeline';
+
+
+-- REPORTS
+DELETE FROM `sys_objects_report` WHERE `Name` = 'bx_timeline' LIMIT 1;
+
+
+-- CONTENT INFO
+DELETE FROM `sys_objects_content_info` WHERE `name` IN ('bx_timeline', 'bx_timeline_cmts');
 
 
 -- STUDIO PAGE & WIDGET

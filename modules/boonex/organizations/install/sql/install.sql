@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `bx_organizations_data` (
   `featured` int(11) NOT NULL default '0',
   `join_confirmation` tinyint(4) NOT NULL DEFAULT '1',
   `allow_view_to` varchar(16) NOT NULL DEFAULT '3',
+  `allow_post_to` varchar(16) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `search_fields` (`org_name`,`org_desc`)
 );
@@ -224,7 +225,7 @@ INSERT INTO `sys_transcoder_filters` (`transcoder_object`, `filter`, `filter_par
 ('bx_organizations_thumb', 'Resize', 'a:3:{s:1:"w";s:2:"48";s:1:"h";s:2:"48";s:13:"square_resize";s:1:"1";}', '0'),
 ('bx_organizations_avatar', 'Resize', 'a:3:{s:1:"w";s:2:"96";s:1:"h";s:2:"96";s:13:"square_resize";s:1:"1";}', '0'),
 ('bx_organizations_picture', 'Resize', 'a:3:{s:1:"w";s:4:"1024";s:1:"h";s:4:"1024";s:13:"square_resize";s:1:"0";}', '0'),
-('bx_organizations_cover', 'Resize', 'a:1:{s:1:"w";s:4:"2000";}', '0'),
+('bx_organizations_cover', 'Resize', 'a:2:{s:1:"w";s:3:"960";s:1:"h";s:3:"480";}', '0'),
 ('bx_organizations_cover_thumb', 'Resize', 'a:3:{s:1:"w";s:2:"48";s:1:"h";s:2:"48";s:13:"square_resize";s:1:"1";}', '0'),
 ('bx_organizations_gallery', 'Resize', 'a:1:{s:1:"w";s:3:"500";}', '0');
 
@@ -244,6 +245,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_organization', 'bx_organizations', 'allow_view_to', 3, '', 0, 'custom', '_bx_orgs_form_profile_input_sys_allow_view_to', '_bx_orgs_form_profile_input_allow_view_to', '_bx_orgs_form_profile_input_allow_view_to_info', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_organization', 'bx_organizations', 'allow_post_to', 3, '', 0, 'custom', '_bx_orgs_form_profile_input_sys_allow_post_to', '_bx_orgs_form_profile_input_allow_post_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_orgs_form_profile_input_sys_delete_confirm', '_bx_orgs_form_profile_input_delete_confirm', '_bx_orgs_form_profile_input_delete_confirm_info', 1, 0, 0, '', '', '', 'avail', '', '_bx_orgs_form_profile_input_delete_confirm_error', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'do_submit', '_sys_form_account_input_submit', '', 0, 'submit', '_bx_orgs_form_profile_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'org_desc', '', '', 0, 'textarea', '_bx_orgs_form_profile_input_sys_org_desc', '_bx_orgs_form_profile_input_org_desc', '', 0, 0, 1, '', '', '', '', '', '', 'XssHtml', '', 1, 1),
@@ -254,12 +256,14 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_organization', 'bx_organizations', 'cover', 'a:1:{i:0;s:27:"bx_organizations_cover_crop";}', 'a:1:{s:27:"bx_organizations_cover_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_orgs_form_profile_input_sys_cover', '_bx_orgs_form_profile_input_cover', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'picture', 'a:1:{i:0;s:29:"bx_organizations_picture_crop";}', 'a:1:{s:29:"bx_organizations_picture_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_orgs_form_profile_input_sys_picture', '_bx_orgs_form_profile_input_picture', '', 0, 0, 0, '', '', '', '', '', '_bx_orgs_form_profile_input_picture_err', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_organization', 'bx_organizations', 'profile_email', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_profile_email', '_bx_orgs_form_profile_input_profile_email', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
-('bx_organization', 'bx_organizations', 'profile_status', '', '', 0, 'custom', '_bx_orgs_form_profile_input_sys_profile_status', '_bx_orgs_form_profile_input_profile_status', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
-('bx_organization', 'bx_organizations', 'profile_ip', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_profile_ip', '_bx_orgs_form_profile_input_profile_ip', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
+('bx_organization', 'bx_organizations', 'profile_email', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_profile_email', '_bx_orgs_form_profile_input_profile_email', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
+('bx_organization', 'bx_organizations', 'profile_status', '', '', 0, 'custom', '_bx_orgs_form_profile_input_sys_profile_status', '_bx_orgs_form_profile_input_profile_status', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
+('bx_organization', 'bx_organizations', 'profile_ip', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_profile_ip', '_bx_orgs_form_profile_input_profile_ip', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_organization', 'bx_organizations', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'added', '', '', 0, 'datetime', '_bx_orgs_form_profile_input_sys_date_added', '_bx_orgs_form_profile_input_date_added', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_organization', 'bx_organizations', 'changed', '', '', 0, 'datetime', '_bx_orgs_form_profile_input_sys_date_changed', '_bx_orgs_form_profile_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
+('bx_organization', 'bx_organizations', 'changed', '', '', 0, 'datetime', '_bx_orgs_form_profile_input_sys_date_changed', '_bx_orgs_form_profile_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_organization', 'bx_organizations', 'friends_count', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_friends_count', '_bx_orgs_form_profile_input_friends_count', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_organization', 'bx_organizations', 'followers_count', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_followers_count', '_bx_orgs_form_profile_input_followers_count', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES
 ('bx_organization_add', 'initial_members', 2147483647, 1, 1),
@@ -270,7 +274,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_organization_add', 'location', 2147483647, 1, 6),
 ('bx_organization_add', 'join_confirmation', 2147483647, 1, 7),
 ('bx_organization_add', 'allow_view_to', 2147483647, 1, 8),
-('bx_organization_add', 'do_submit', 2147483647, 1, 9),
+('bx_organization_add', 'allow_post_to', 2147483647, 1, 9),
+('bx_organization_add', 'do_submit', 2147483647, 1, 10),
 
 ('bx_organization_invite', 'initial_members', 2147483647, 1, 1),
 ('bx_organization_invite', 'do_submit', 2147483647, 1, 2),
@@ -285,7 +290,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_organization_edit', 'location', 2147483647, 1, 5),
 ('bx_organization_edit', 'join_confirmation', 2147483647, 1, 6),
 ('bx_organization_edit', 'allow_view_to', 2147483647, 1, 7),
-('bx_organization_edit', 'do_submit', 2147483647, 1, 8),
+('bx_organization_edit', 'allow_post_to', 2147483647, 1, 8),
+('bx_organization_edit', 'do_submit', 2147483647, 1, 9),
 
 ('bx_organization_edit_cover', 'cover', 2147483647, 1, 1),
 ('bx_organization_edit_cover', 'do_submit', 2147483647, 1, 2),
@@ -297,10 +303,12 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_organization_view', 'profile_ip', 192, 1, 5),
 ('bx_organization_view', 'added', 192, 1, 6),
 ('bx_organization_view', 'changed', 192, 1, 7),
+('bx_organization_view', 'friends_count', 2147483647, 1, 8),
+('bx_organization_view', 'followers_count', 2147483647, 1, 9),
 
 ('bx_organization_view_full', 'org_name', 2147483647, 1, 1),
 ('bx_organization_view_full', 'org_cat', 2147483647, 1, 2),
-('bx_organization_view_full', 'org_desc', 2147483647, 1, 3),
+('bx_organization_view_full', 'org_desc', 2147483647, 0, 3),
 ('bx_organization_view_full', 'profile_email', 192, 1, 4),
 ('bx_organization_view_full', 'profile_status', 192, 1, 5);
 
@@ -346,6 +354,40 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('bx_organizations_cats', '33', 33, '_bx_orgs_cat_Travel', ''),
 ('bx_organizations_cats', '34', 34, '_bx_orgs_cat_University', ''),
 ('bx_organizations_cats', '35', 35, '_bx_orgs_cat_Other', '');
+
+-- COMMENTS
+INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
+('bx_organizations', 'bx_organizations', 'bx_organizations_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-organization-profile&id={object_id}', '', 'bx_organizations_data', 'id', 'author', 'org_name', 'comments', '', '');
+
+
+-- VIEWS
+INSERT INTO `sys_objects_view` (`name`, `module`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_organizations', 'bx_organizations', 'bx_organizations_views_track', '86400', '1', 'bx_organizations_data', 'id', 'author', 'views', '', '');
+
+
+-- VOTES
+INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
+('bx_organizations', 'bx_organizations_votes', 'bx_organizations_votes_track', '604800', '1', '1', '0', '1', 'bx_organizations_data', 'id', '', 'rate', 'votes', 'BxOrgsVote', 'modules/boonex/organizations/classes/BxOrgsVote.php');
+
+
+-- SCORES
+INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
+('bx_organizations', 'bx_organizations', 'bx_organizations_scores', 'bx_organizations_scores_track', '604800', '0', 'bx_organizations_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
+
+
+-- FAFORITES
+INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_organizations', 'bx_organizations_favorites_track', '1', '1', '0', 'page.php?i=view-organization-profile&id={object_id}', 'bx_organizations_data', 'id', 'author', 'favorites', 'BxOrgsFavorite', 'modules/boonex/organizations/classes/BxOrgsFavorite.php');
+
+
+-- FEATURED
+INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
+('bx_organizations', '1', '1', 'page.php?i=view-organization-profile&id={object_id}', 'bx_organizations_data', 'id', 'author', 'featured', '', '');
+
+
+-- REPORTS
+INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_organizations', 'bx_organizations_reports', 'bx_organizations_reports_track', '1', 'page.php?i=view-organization-profile&id={object_id}', 'bx_organizations_data', 'id', 'author', 'reports', 'BxOrgsReport', 'modules/boonex/organizations/classes/BxOrgsReport.php');
 
 
 -- CONTENT INFO

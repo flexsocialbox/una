@@ -75,8 +75,10 @@ class BxBaseServiceLogin extends BxDol
 
     public function serviceLoginForm ($sParams = '', $sForceRelocate = '')
     {
-        if(isLogged())
-            return false;
+        if(isLogged()){
+            header('Location: ' . BX_DOL_URL_ROOT);
+            exit;
+        }
 
         $oForm = BxDolForm::getObjectInstance('sys_login', 'sys_login');
 
@@ -101,14 +103,35 @@ class BxBaseServiceLogin extends BxDol
         if (strpos($sParams, 'no_auth_buttons') === false)
             $sAuth = $this->serviceMemberAuthCode();
 
-        return $sCustomHtmlBefore . $sAuth . $sFormCode . $sCustomHtmlAfter . $sJoinText;
+        $sAjaxForm = '';
+        if (strpos($sParams, 'ajax_form') !== false)
+            $sAjaxForm = "<script>
+                (bx_login_init_ajax_form = function () {
+                    $('#sys-form-login').ajaxForm({
+                        dataType: 'json',
+                        success: function (oData) {
+                            if ('undefined' !== typeof(oData['res']) && 'OK' == oData['res']) {
+                                location.reload();
+                            }
+                            else if ('undefined' !== typeof(oData['form'])) {
+                                $('#sys-form-login').replaceWith(oData['form']);
+                                bx_login_init_ajax_form();
+                            }
+                        }
+                    });
+                })();
+            </script>";
+        
+        return $sCustomHtmlBefore . $sAuth . $sFormCode . $sCustomHtmlAfter . $sJoinText . $sAjaxForm;
 
     }
     
     public function serviceLoginFormStep2 ()
     {
-        if(isLogged())
-            return false;
+        if(isLogged()){
+            header('Location: ' . BX_DOL_URL_ROOT);
+            exit;
+        }
 
         $oSession = BxDolSession::getInstance();
         $iAccountId = $oSession->getValue(BX_ACCOUNT_SESSION_KEY_FOR_2FA_LOGIN_ACCOUNT_ID);
@@ -147,8 +170,11 @@ class BxBaseServiceLogin extends BxDol
     
     public function serviceLoginFormStep3 ()
     {
-        if(isLogged())
-            return false;
+        if(isLogged()){
+            header('Location: ' . BX_DOL_URL_ROOT);
+            exit;
+        }
+        
         $oForm = BxDolForm::getObjectInstance('sys_login', 'sys_login_step3');
         $oForm->aFormAttrs['action'] = '';
         $oForm->initChecker();

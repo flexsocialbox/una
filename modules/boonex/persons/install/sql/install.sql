@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `bx_persons_data` (
   `reports` int(11) NOT NULL default '0',
   `featured` int(11) NOT NULL default '0',
   `allow_view_to` int(11) NOT NULL DEFAULT '3',
+  `allow_post_to` int(11) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `search_fields` (`fullname`,`description`)
 );
@@ -203,7 +204,7 @@ INSERT INTO `sys_transcoder_filters` (`transcoder_object`, `filter`, `filter_par
 ('bx_persons_thumb', 'Resize', 'a:3:{s:1:"w";s:2:"48";s:1:"h";s:2:"48";s:13:"square_resize";s:1:"1";}', '0'),
 ('bx_persons_avatar', 'Resize', 'a:3:{s:1:"w";s:2:"96";s:1:"h";s:2:"96";s:13:"square_resize";s:1:"1";}', '0'),
 ('bx_persons_picture', 'Resize', 'a:3:{s:1:"w";s:4:"1024";s:1:"h";s:4:"1024";s:13:"square_resize";s:1:"0";}', '0'),
-('bx_persons_cover', 'Resize', 'a:1:{s:1:"w";s:4:"2000";}', '0'),
+('bx_persons_cover', 'Resize', 'a:2:{s:1:"w";s:3:"960";s:1:"h";s:3:"480";}', '0'),
 ('bx_persons_cover_thumb', 'Resize', 'a:3:{s:1:"w";s:2:"48";s:1:"h";s:2:"48";s:13:"square_resize";s:1:"1";}', '0'),
 ('bx_persons_gallery', 'Resize', 'a:1:{s:1:"w";s:3:"500";}', '0');
 
@@ -221,6 +222,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_person', 'bx_persons', 'allow_view_to', 3, '', 0, 'custom', '_bx_persons_form_profile_input_sys_allow_view_to', '_bx_persons_form_profile_input_allow_view_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_person', 'bx_persons', 'allow_post_to', 3, '', 0, 'custom', '_bx_persons_form_profile_input_sys_allow_post_to', '_bx_persons_form_profile_input_allow_post_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_person', 'bx_persons', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_persons_form_profile_input_sys_delete_confirm', '_bx_persons_form_profile_input_delete_confirm', '_bx_persons_form_profile_input_delete_confirm_info', 1, 0, 0, '', '', '', 'Avail', '', '_bx_persons_form_profile_input_delete_confirm_error', '', '', 1, 0),
 ('bx_person', 'bx_persons', 'do_submit', '_bx_persons_form_profile_input_submit', '', 0, 'submit', '_bx_persons_form_profile_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_person', 'bx_persons', 'description', '', '', 0, 'textarea', '_bx_persons_form_profile_input_sys_desc', '_bx_persons_form_profile_input_desc', '', 0, 0, 1, '', '', '', '', '', '', 'XssHtml', '', 1, 1),
@@ -230,12 +232,15 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_person', 'bx_persons', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_person', 'bx_persons', 'birthday', '0', '', 0, 'datepicker', '_bx_persons_form_profile_input_sys_birthday', '_bx_persons_form_profile_input_birthday', '', 1, 0, 0, '', '', '', 'date_range', 'a:3:{s:3:"min";i:18;s:3:"max";i:99;s:8:"required";b:0;}', '_bx_persons_form_profile_input_birthday_err', 'Date', '', 1, 0),
 ('bx_person', 'bx_persons', 'gender', '', '#!Sex', 0, 'select', '_bx_persons_form_profile_input_sys_gender', '_bx_persons_form_profile_input_gender', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
-('bx_person', 'bx_persons', 'profile_email', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_profile_email', '_bx_persons_form_profile_input_profile_email', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
-('bx_person', 'bx_persons', 'profile_status', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_profile_status', '_bx_persons_form_profile_input_profile_status', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
-('bx_person', 'bx_persons', 'profile_ip', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_profile_ip', '_bx_persons_form_profile_input_profile_ip', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
+('bx_person', 'bx_persons', 'profile_email', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_profile_email', '_bx_persons_form_profile_input_profile_email', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
+('bx_person', 'bx_persons', 'profile_status', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_profile_status', '_bx_persons_form_profile_input_profile_status', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
+('bx_person', 'bx_persons', 'profile_ip', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_profile_ip', '_bx_persons_form_profile_input_profile_ip', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_person', 'bx_persons', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_person', 'bx_persons', 'added', '', '', 0, 'datetime', '_bx_persons_form_profile_input_sys_date_added', '_bx_persons_form_profile_input_date_added', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_person', 'bx_persons', 'changed', '', '', 0, 'datetime', '_bx_persons_form_profile_input_sys_date_changed', '_bx_persons_form_profile_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
+('bx_person', 'bx_persons', 'changed', '', '', 0, 'datetime', '_bx_persons_form_profile_input_sys_date_changed', '_bx_persons_form_profile_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_person', 'bx_persons', 'friends_count', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_friends_count', '_bx_persons_form_profile_input_friends_count', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_person', 'bx_persons', 'followers_count', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_followers_count', '_bx_persons_form_profile_input_followers_count', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
+
 
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
 ('bx_person_add', 'picture', 2147483647, 1, 1),
@@ -245,7 +250,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_person_add', 'description', 2147483647, 1, 5),
 ('bx_person_add', 'location', 2147483647, 1, 6),
 ('bx_person_add', 'allow_view_to', 2147483647, 1, 7),
-('bx_person_add', 'do_submit', 2147483647, 1, 8),
+('bx_person_add', 'allow_post_to', 2147483647, 1, 8),
+('bx_person_add', 'do_submit', 2147483647, 1, 9),
 
 ('bx_person_delete', 'cover', 2147483647, 0, 0),
 ('bx_person_delete', 'picture', 2147483647, 0, 0),
@@ -260,7 +266,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_person_edit', 'description', 2147483647, 1, 5),
 ('bx_person_edit', 'location', 2147483647, 1, 6),
 ('bx_person_edit', 'allow_view_to', 2147483647, 1, 7),
-('bx_person_edit', 'do_submit', 2147483647, 1, 8),
+('bx_person_edit', 'allow_post_to', 2147483647, 1, 8),
+('bx_person_edit', 'do_submit', 2147483647, 1, 9),
 
 ('bx_person_edit_cover', 'delete_confirm', 2147483647, 0, 1),
 ('bx_person_edit_cover', 'fullname', 2147483647, 0, 2),
@@ -276,13 +283,43 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_person_view', 'profile_ip', 192, 1, 6),
 ('bx_person_view', 'added', 192, 1, 7),
 ('bx_person_view', 'changed', 192, 1, 8),
+('bx_person_view', 'friends_count', 2147483647, 1, 9),
+('bx_person_view', 'followers_count', 2147483647, 1, 10),
 
 ('bx_person_view_full', 'gender', 2147483647, 1, 1),
 ('bx_person_view_full', 'birthday', 2147483647, 1, 2),
 ('bx_person_view_full', 'fullname', 2147483647, 1, 3),
-('bx_person_view_full', 'description', 2147483647, 1, 4),
+('bx_person_view_full', 'description', 2147483647, 0, 4),
 ('bx_person_view_full', 'profile_email', 192, 1, 5),
 ('bx_person_view_full', 'profile_status', 192, 1, 6);
+
+-- COMMENTS
+INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
+('bx_persons', 'bx_persons', 'bx_persons_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-persons-profile&id={object_id}', '', 'bx_persons_data', 'id', 'author', 'fullname', 'comments', '', '');
+
+-- VIEWS
+INSERT INTO `sys_objects_view` (`name`, `module`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_persons', 'bx_persons', 'bx_persons_views_track', '86400', '1', 'bx_persons_data', 'id', 'author', 'views', '', '');
+
+-- VOTES
+INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
+('bx_persons', 'bx_persons_votes', 'bx_persons_votes_track', '604800', '1', '1', '0', '1', 'bx_persons_data', 'id', '', 'rate', 'votes', 'BxPersonsVote', 'modules/boonex/persons/classes/BxPersonsVote.php');
+
+-- SCORES
+INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
+('bx_persons', 'bx_persons', 'bx_persons_scores', 'bx_persons_scores_track', '604800', '0', 'bx_persons_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
+
+-- FAFORITES
+INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_persons', 'bx_persons_favorites_track', '1', '1', '0', 'page.php?i=view-persons-profile&id={object_id}', 'bx_persons_data', 'id', 'author', 'favorites', 'BxPersonsFavorite', 'modules/boonex/persons/classes/BxPersonsFavorite.php');
+
+-- FEATURED
+INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
+('bx_persons', '1', '1', 'page.php?i=view-persons-profile&id={object_id}', 'bx_persons_data', 'id', 'author', 'featured', '', '');
+
+-- REPORTS
+INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_persons', 'bx_persons_reports', 'bx_persons_reports_track', '1', 'page.php?i=view-persons-profile&id={object_id}', 'bx_persons_data', 'id', 'author', 'reports', 'BxPersonsReport', 'modules/boonex/persons/classes/BxPersonsReport.php');
 
 -- CONTENT INFO
 INSERT INTO `sys_objects_content_info` (`name`, `title`, `alert_unit`, `alert_action_add`, `alert_action_update`, `alert_action_delete`, `class_name`, `class_file`) VALUES

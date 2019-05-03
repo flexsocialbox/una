@@ -77,6 +77,20 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
         return $this->_oModule->isMenuItemVisible($this->_sObject, $a, $this->_aContentInfo);
     }
 
+    protected function _isContentPublic($iContentId)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(empty($CNF['FIELD_ALLOW_VIEW_TO'])) 
+            return true;
+
+        $aContentInfo = $iContentId == $this->_iContentId ? $this->_aContentInfo : $this->_oModule->_oDb->getContentInfoById($iContentId);
+        if(!isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
+            return true;
+
+        return in_array($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']], array(BX_DOL_PG_ALL, BX_DOL_PG_MEMBERS));
+    }
+
     protected function _getMenuItemDefault($aItem)
     {
         $aItem['class_wrp'] = 'bx-base-general-entity-action' . (!empty($aItem['class_wrp']) ? ' ' . $aItem['class_wrp'] : '');
@@ -171,6 +185,33 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
     	return array($sResult, $this->_sClassMiSa);
     }
 
+    protected function _getMenuItemReaction($aItem, $aParams = array())
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $sObject = !empty($aParams['object']) ? $aParams['object'] : '';
+        if(empty($sObject) && !empty($CNF['OBJECT_REACTIONS']))
+            $sObject = $CNF['OBJECT_REACTIONS'];
+
+        $iId = !empty($aParams['id']) ? (int)$aParams['id'] : '';
+        if(empty($iId))
+            $iId = $this->_iContentId;
+
+        $oObject = !empty($sObject) ? BxDolVote::getObjectInstance($sObject, $iId) : false;
+        if(!$oObject || !$oObject->isEnabled())
+            return '';
+
+        $sResult = $oObject->getElementBlock(array(
+            'dynamic_mode' => $this->_bDynamicMode,
+            'show_do_vote_as_button' => $this->_bShowAsButton,
+            'show_do_vote_label' => $this->_bShowTitle
+        ));
+        if(empty($sResult))
+            return '';
+
+    	return array($sResult, $this->_sClassMiSa);
+    }
+
     protected function _getMenuItemScore($aItem, $aParams = array())
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
@@ -236,6 +277,9 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
         $iId = !empty($aParams['id']) ? (int)$aParams['id'] : '';
         if(empty($iId))
             $iId = $this->_iContentId;
+
+        if(!$this->_isContentPublic($iId))
+            return '';
 
         $oObject = !empty($sObject) ? BxDolFeature::getObjectInstance($sObject, $iId) : false;
         if(!$oObject || !$oObject->isEnabled())
@@ -315,11 +359,6 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
         return $this->_getMenuItemByNameSocialSharing($aItem);
     }
 
-    protected function _getMenuItemSocialSharingGoogleplus($aItem)
-    {
-        return $this->_getMenuItemByNameSocialSharing($aItem);
-    }
-
     protected function _getMenuItemSocialSharingTwitter($aItem)
     {
         return $this->_getMenuItemByNameSocialSharing($aItem);
@@ -362,6 +401,9 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
     {
         if(empty($this->_oMenuSocialSharing)) {
             $this->_oMenuSocialSharing = BxDolMenu::getObjectInstance('sys_social_sharing');
+            if(!$this->_oMenuSocialSharing)
+                return false;
+
             $this->_oMenuSocialSharing->addMarkers($this->_aMarkers);
         }
 

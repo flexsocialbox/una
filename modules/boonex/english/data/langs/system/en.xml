@@ -484,7 +484,7 @@
 	<string name="_adm_bp_err_block_edit"><![CDATA[Cannot update block]]></string>
 	<string name="_adm_bp_err_block_not_deletable"><![CDATA[The requested block cannot be deleted.]]></string>
 	<string name="_adm_bp_err_block_not_found"><![CDATA[The requested block cannot be found.]]></string>
-	<string name="_adm_bp_err_block_title"><![CDATA[Enter title, more then 3 characters]]></string>
+	<string name="_adm_bp_err_block_title"><![CDATA[Enter title, more than 3 characters]]></string>
 	<string name="_adm_bp_err_cannot_process_action"><![CDATA[Cannot process action. It does not have an associated handler.]]></string>
 	<string name="_adm_bp_err_nothing_changed"><![CDATA[Nothing was changed or an error occurred.]]></string>
 	<string name="_adm_bp_err_page_create"><![CDATA[Cannot create the page.]]></string>
@@ -525,6 +525,7 @@
 	<string name="_adm_bp_txt_block_hidden_on_phone"><![CDATA[phone]]></string>
 	<string name="_adm_bp_txt_block_hidden_on_tablet"><![CDATA[tablet]]></string>
 	<string name="_adm_bp_txt_block_hidden_on_desktop"><![CDATA[desktop]]></string>
+        <string name="_adm_bp_txt_block_hidden_on_mobile"><![CDATA[mobile app]]></string>
 	<string name="_adm_bp_txt_block_selected"><![CDATA[blocks selected]]></string>
 	<string name="_adm_bp_txt_block_title"><![CDATA[Title]]></string>
 	<string name="_adm_bp_txt_block_visible_for"><![CDATA[Visible For]]></string>
@@ -591,6 +592,7 @@
 	<string name="_adm_dbd_txt_c_clear_css"><![CDATA[Clear CSS cache]]></string>
 	<string name="_adm_dbd_txt_c_js"><![CDATA[JavaScript]]></string>
 	<string name="_adm_dbd_txt_c_clear_js"><![CDATA[Clear JavaScript cache]]></string>
+        <string name="_adm_dbd_txt_c_clear_custom"><![CDATA[Clear Custom cache]]></string>
 	<string name="_adm_dbd_err_c_clean_failed"><![CDATA[Failed to clean cache]]></string>
 	<string name="_adm_dbd_msg_c_clean_success"><![CDATA[Cache was successfully cleaned]]></string>
 	<string name="_adm_dbd_msg_c_all_disabled"><![CDATA[All caches are disabled]]></string>
@@ -719,7 +721,7 @@
     <string name="_adm_form_dsc_search_forms_title"><![CDATA[Name of the search form. Displayed in Studio only.]]></string>
 	<string name="_adm_form_err_cannot_process_action"><![CDATA[Cannot process action. It does not have an associated handler.]]></string>
 	<string name="_adm_form_err_displays_edit"><![CDATA[Cannot update display]]></string>
-	<string name="_adm_form_err_displays_title"><![CDATA[Enter title, more then 3 characters]]></string>
+	<string name="_adm_form_err_displays_title"><![CDATA[Enter title, more than 3 characters]]></string>
 	<string name="_adm_form_err_field_add"><![CDATA[Cannot add new field]]></string>
 	<string name="_adm_form_err_field_add_not_allowed"><![CDATA[Fields cannot be added in this form]]></string>
 	<string name="_adm_form_err_field_caption_system"><![CDATA[A name with at least 3 characters is required.]]></string>
@@ -734,11 +736,11 @@
 	<string name="_adm_form_err_field_value_number"><![CDATA[Use numeric characters only]]></string>
 	<string name="_adm_form_err_field_values"><![CDATA[You need to select a data set from the list.]]></string>
 	<string name="_adm_form_err_forms_edit"><![CDATA[Cannot update form]]></string>
-	<string name="_adm_form_err_forms_title"><![CDATA[Enter name, more then 3 characters]]></string>
+	<string name="_adm_form_err_forms_title"><![CDATA[Enter name, more than 3 characters]]></string>
 	<string name="_adm_form_err_missing_params"><![CDATA[The required parameters are missing.]]></string>
 	<string name="_adm_form_err_pre_lists_create"><![CDATA[Cannot add list]]></string>
 	<string name="_adm_form_err_pre_lists_edit"><![CDATA[Cannot update list]]></string>
-	<string name="_adm_form_err_pre_lists_title"><![CDATA[Enter title, more then 3 characters]]></string>
+	<string name="_adm_form_err_pre_lists_title"><![CDATA[Enter title, more than 3 characters]]></string>
 	<string name="_adm_form_err_pre_values_create"><![CDATA[Cannot add item]]></string>
 	<string name="_adm_form_err_pre_values_create_forbidden"><![CDATA[This list is already used. It's impossible to add non-numeric, or less than 1, or more than {0} values in it.]]></string>
 	<string name="_adm_form_err_pre_values_delete"><![CDATA[Cannot delete item]]></string>
@@ -748,7 +750,7 @@
     <string name="_adm_form_err_search_forms_fields_edit"><![CDATA[Cannot update the search form field.]]></string>
     <string name="_adm_from_err_search_forms_fields_reset"><![CDATA[Cannot reset the search form.]]></string>
     <string name="_adm_form_err_search_forms_edit"><![CDATA[Cannot update the selected search form.]]></string>
-    <string name="_adm_form_err_search_forms_title"><![CDATA[Enter name, more then 3 characters]]></string>
+    <string name="_adm_form_err_search_forms_title"><![CDATA[Enter name, more than 3 characters]]></string>
 	<string name="_adm_form_txt_all_modules"><![CDATA[All Modules]]></string>
 	<string name="_adm_form_txt_confirm_delete"><![CDATA[Are you sure you want to delete this field? It will be deleted from all Displays! You may just turn it off instead.]]></string>
 	<string name="_adm_form_txt_displays_edit_popup"><![CDATA[Edit "{0}" Display]]></string>
@@ -796,6 +798,7 @@
 	<string name="_adm_form_txt_field_object"><![CDATA[Form]]></string>
 	<string name="_adm_form_txt_field_required"><![CDATA[Mandatory]]></string>
 	<string name="_adm_form_txt_field_show_to_popup"><![CDATA[Show "{0}" form field to: ]]></string>
+        <string name="_adm_form_txt_field_type_block_end"><![CDATA[block end]]></string>
 	<string name="_adm_form_txt_field_type_block_header"><![CDATA[block header]]></string>
 	<string name="_adm_form_txt_field_type_button"><![CDATA[button]]></string>
 	<string name="_adm_form_txt_field_type_captcha"><![CDATA[captcha]]></string>
@@ -845,11 +848,12 @@
 	<string name="_adm_form_txt_field_visible_for_selected"><![CDATA[Selected levels]]></string>
 	<string name="_adm_form_txt_field_db_pass"><![CDATA[Process data as]]></string>
 	<string name="_adm_form_txt_field_db_pass_date"><![CDATA[Date]]></string>
-    <string name="_adm_form_txt_field_db_pass_date_ts"><![CDATA[Date as Unix Timestamp]]></string>
-    <string name="_adm_form_txt_field_db_pass_date_utc"><![CDATA[UTC Date as Unix Timestamp]]></string>
+        <string name="_adm_form_txt_field_db_pass_date_ts"><![CDATA[Date as Unix Timestamp]]></string>
+        <string name="_adm_form_txt_field_db_pass_date_utc"><![CDATA[UTC Date as Unix Timestamp]]></string>
 	<string name="_adm_form_txt_field_db_pass_date_time"><![CDATA[Date/time]]></string>
 	<string name="_adm_form_txt_field_db_pass_date_time_ts"><![CDATA[Date/time as Unix Timestamp]]></string>
 	<string name="_adm_form_txt_field_db_pass_date_time_utc"><![CDATA[UTC Date/time as Unix Timestamp]]></string>
+        <string name="_adm_form_txt_field_db_pass_select_value"><![CDATA[Select value...]]></string>
 	<string name="_adm_form_txt_fields_caption_system"><![CDATA[System Name]]></string>
 	<string name="_adm_form_txt_fields_manage_visibility"><![CDATA[Manage visibility settings]]></string>
 	<string name="_adm_form_txt_fields_module"><![CDATA[Module]]></string>
@@ -956,6 +960,7 @@
 	<string name="_adm_msg_modules_success_install"><![CDATA[The package was installed successfully]]></string>
 	<string name="_adm_msg_modules_success_uninstall"><![CDATA[The package was uninstalled successfully]]></string>
 	<string name="_adm_msg_oauth_need_authorize"><![CDATA[You need to to login into your <b>UNA</b> account to get data. Click <a href="{0}">here</a> to login.]]></string>
+        <string name="_adm_msg_oauth_non_owner_logged"><![CDATA[WARNING: You are logged in to an <a href="{0}">UNA.IO</a> account which is different from the account that generated UNA Key & Secret for your domain.]]></string>
 	<string name="_adm_nav_btn_current_icon_image_delete"><![CDATA[Delete]]></string>
 	<string name="_adm_nav_btn_items_add"><![CDATA[Add]]></string>
 	<string name="_adm_nav_btn_items_cancel"><![CDATA[Cancel]]></string>
@@ -1072,10 +1077,11 @@
 	<string name="_adm_nav_txt_sets_gl_module"><![CDATA[Module]]></string>
 	<string name="_adm_nav_txt_sets_gl_title"><![CDATA[System Name]]></string>
 	<string name="_adm_nav_txt_sets_title"><![CDATA[System Name]]></string>
-  <string name="_adm_nav_txt_block_hidden_on"><![CDATA[Hidden on]]></string>
-  <string name="_adm_nav_txt_block_hidden_on_phone"><![CDATA[phone]]></string>
-  <string name="_adm_nav_txt_block_hidden_on_tablet"><![CDATA[tablet]]></string>
-  <string name="_adm_nav_txt_block_hidden_on_desktop"><![CDATA[desktop]]></string>
+        <string name="_adm_nav_txt_block_hidden_on"><![CDATA[Hidden on]]></string>
+        <string name="_adm_nav_txt_block_hidden_on_phone"><![CDATA[phone]]></string>
+        <string name="_adm_nav_txt_block_hidden_on_tablet"><![CDATA[tablet]]></string>
+        <string name="_adm_nav_txt_block_hidden_on_desktop"><![CDATA[desktop]]></string>
+        <string name="_adm_nav_txt_block_hidden_on_mobile"><![CDATA[mobile app]]></string>
 	<string name="_adm_page_cpt_builder_forms"><![CDATA[Forms]]></string>
 	<string name="_adm_page_cpt_builder_menus"><![CDATA[Navigation]]></string>
 	<string name="_adm_page_cpt_builder_mobile"><![CDATA[Mobile Builder]]></string>
@@ -1110,7 +1116,7 @@
 	<string name="_adm_pgt_err_deactivate_default"><![CDATA[You cannot deactivate language which was selected as Default]]></string>
 	<string name="_adm_pgt_err_etemplates_body"><![CDATA[Enter body]]></string>
 	<string name="_adm_pgt_err_etemplates_edit"><![CDATA[Cannot update template]]></string>
-	<string name="_adm_pgt_err_etemplates_name_system"><![CDATA[Enter name, more then 3 characters]]></string>
+	<string name="_adm_pgt_err_etemplates_name_system"><![CDATA[Enter name, more than 3 characters]]></string>
 	<string name="_adm_pgt_err_etemplates_subject"><![CDATA[Enter subject]]></string>
 	<string name="_adm_pgt_err_last_active"><![CDATA[You need to have at least one active language.]]></string>
 	<string name="_adm_pgt_err_save"><![CDATA[Cannot save changes]]></string>
@@ -1329,6 +1335,7 @@
 	<string name="_adm_stg_cpt_option_sys_recaptcha_key_public"><![CDATA[reCAPTCHA public key]]></string>
 	<string name="_adm_stg_cpt_option_sys_redirect_after_account_added"><![CDATA[Redirect after account creation to]]></string>
 	<string name="_adm_stg_cpt_option_sys_redirect_after_email_confirmation"><![CDATA[Redirect after email confirmation to]]></string>
+        <string name="_adm_stg_cpt_option_sys_relations"><![CDATA[Enable relationships between]]></string>
 	<string name="_adm_stg_cpt_option_sys_revision"><![CDATA[Revision number]]></string>
 	<string name="_adm_stg_cpt_option_sys_security_form_token_enable"><![CDATA[Enable CSRF token in forms]]></string>
 	<string name="_adm_stg_cpt_option_sys_security_form_token_lifetime"><![CDATA[CSRF token lifetime in seconds(0 - do not track time)]]></string>
@@ -1350,7 +1357,7 @@
 	<string name="_adm_stg_cpt_option_sys_template_cache_js_enable"><![CDATA[Enable cache for JS files]]></string>
 	<string name="_adm_stg_cpt_option_sys_template_cache_minify_css_enable"><![CDATA[Enable lessening for CSS files (cache should be enabled)]]></string>
 	<string name="_adm_stg_cpt_option_sys_template_cache_minify_js_enable"><![CDATA[Enable lessening for JS files (cache should be enabled)]]></string>
-	<string name="_adm_stg_cpt_option_sys_transcoder_queue_storage"><![CDATA[Remote video transcoding]]></string>
+	<string name="_adm_stg_cpt_option_sys_transcoder_queue_storage"><![CDATA[Remote video transcoding (requires special setup)]]></string>
 	<string name="_adm_stg_cpt_option_template"><![CDATA[Default Template]]></string>
 	<string name="_adm_stg_err_option_template"><![CDATA[Template cannot be empty and must have a valid name.]]></string>
     <string name="_adm_stg_cpt_option_use_like_operator"><![CDATA[Use operator LIKE for search (recommended for small content)]]></string>
@@ -1362,6 +1369,7 @@
     <string name="_adm_stg_cpt_option_sys_tinymce_toolbar_full"><![CDATA[TinyMCE buttons for full editor]]></string>
     <string name="_adm_stg_cpt_option_sys_metatags_hashtags_max"><![CDATA[Max number of hashtags per post]]></string>
     <string name="_adm_stg_cpt_option_sys_metatags_mentions_max"><![CDATA[Max number of mentions per post]]></string>
+    <string name="_adm_stg_cpt_option_sys_search_keyword_min_len"><![CDATA[Keyword min length in site search]]></string>
 	<string name="_adm_stg_cpt_type_system"><![CDATA[System]]></string>
 	<string name="_adm_stg_scs_save"><![CDATA[Settings were successfully saved]]></string>
 	<string name="_adm_stg_err_save_error_message"><![CDATA[Error in '{0}': {1}]]></string>
@@ -1451,7 +1459,7 @@
 	<string name="_adm_tmi_cpt_logout"><![CDATA[Sign out]]></string>
 	<string name="_adm_tmi_cpt_site"><![CDATA[Go To Site]]></string>
 	<string name="_adm_tmi_cpt_tour"><![CDATA[Tour]]></string>
-	<string name="_adm_txt_back_to_launcher"><![CDATA[Back to Launcher]]></string>
+	<string name="_adm_tmi_cpt_launcher"><![CDATA[Back to Launcher]]></string>
 	<string name="_adm_txt_confirm_cancel"><![CDATA[Cancel]]></string>
 	<string name="_adm_txt_confirm_ok"><![CDATA[OK]]></string>
 	<string name="_adm_txt_forgot_password"><![CDATA[Forgot password?]]></string>
@@ -1549,6 +1557,7 @@
 	<string name="_cmt_load_more_replies_head"><![CDATA[See newer replies...]]></string>
 	<string name="_cmt_load_more_replies_tail"><![CDATA[See older replies...]]></string>
 	<string name="_cmt_load_more_replies_popular"><![CDATA[See more replies...]]></string>
+        <string name="_cmt_txt_new_content"><![CDATA[New content]]></string>
 	<string name="_cmt_txt_link_show"><![CDATA[Show]]></string>
 	<string name="_cmt_txt_link_reply"><![CDATA[Reply]]></string>
         <string name="_cmt_txt_added_sample"><![CDATA[added a new comment]]></string>
@@ -1632,6 +1641,7 @@
 	<string name="_sys_acl_expire"><![CDATA[Expire: ]]></string>
 	<string name="_sys_acl_expire_never"><![CDATA[never]]></string>
 	<string name="_sys_add_friend"><![CDATA[Add friend]]></string>
+        <string name="_sys_add_relation"><![CDATA[Add relationship]]></string>
 	<string name="_sys_adm_installed"><![CDATA[Installed]]></string>
 	<string name="_sys_admin_apply"><![CDATA[Apply]]></string>
 	<string name="_sys_admin_filter"><![CDATA[Filter:]]></string>
@@ -1708,6 +1718,8 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_chart_accounts_growth"><![CDATA[Accounts: Growth]]></string>
 	<string name="_sys_chart_accounts_growth_speed"><![CDATA[Accounts: Growth Speed]]></string>
 	<string name="_sys_close"><![CDATA[Close]]></string>
+        <string name="_sys_confirm"><![CDATA[Confirm]]></string>
+        <string name="_sys_confirmed"><![CDATA[Confirmed]]></string>
 	<string name="_sys_conn_err_connection_already_exists"><![CDATA[Connection already exists]]></string>
 	<string name="_sys_conn_err_connection_does_not_exists"><![CDATA[Connection doesn't exist]]></string>
 	<string name="_sys_conn_err_connection_is_awaiting_confirmation"><![CDATA[Connection request is awaiting confirmation]]></string>
@@ -1726,6 +1738,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_connect_option_privacy"><![CDATA[Default privacy for created profiles]]></string>
 
 	<string name="_sys_currency"><![CDATA[{0}{1}]]></string>
+        <string name="_sys_decline"><![CDATA[Decline]]></string>
 	<string name="_sys_designbox_0"><![CDATA[Content]]></string>
 	<string name="_sys_designbox_1"><![CDATA[Content + Title + Background]]></string>
 	<string name="_sys_designbox_10"><![CDATA[Content + Padding]]></string>
@@ -1951,6 +1964,7 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_form_confirm_phone"><![CDATA[Phone Confirmation]]></string>
 	<string name="_sys_form_confirm_phone_input_caption_system_phone"><![CDATA[Phone]]></string>
 	<string name="_sys_form_confirm_phone_input_phone"><![CDATA[Phone]]></string>
+        <string name="_sys_form_confirm_phone_input_phone_info"><![CDATA[Enter your phone with country code]]></string>
 	<string name="_sys_form_confirm_phone_input_phone_error_format"><![CDATA[Wrong phone number, allowed digits only and start from '+']]></string>
 	<string name="_sys_form_confirm_phone_input_phone_error_not_unique"><![CDATA[This phone is already used by someone.]]></string>
 	<string name="_sys_form_confirm_phone_input_caption_system_code"><![CDATA[Code]]></string>
@@ -2027,6 +2041,7 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_form_login_input_email"><![CDATA[Email]]></string>
 	<string name="_sys_form_login_input_password"><![CDATA[Password]]></string>
 	<string name="_sys_form_login_input_phone"><![CDATA[Phone]]></string>
+        <string name="_sys_form_login_input_phone_info"><![CDATA[Enter your phone with country code]]></string>
 	<string name="_sys_form_login_input_remember_me"><![CDATA[Remember me]]></string>
 	<string name="_sys_form_login_input_sendsms"><![CDATA[Send SMS]]></string>
 	<string name="_sys_form_login_input_submit"><![CDATA[Log in]]></string>
@@ -2198,7 +2213,6 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_menu_item_title_studio"><![CDATA[Studio]]></string>
 	<string name="_sys_menu_item_title_subscriptions"><![CDATA[Subscriptions]]></string>
 	<string name="_sys_menu_item_title_social_sharing_facebook"><![CDATA[Share in Facebook]]></string>
-    <string name="_sys_menu_item_title_social_sharing_googleplus"><![CDATA[Share in Google Plus]]></string>
     <string name="_sys_menu_item_title_social_sharing_twitter"><![CDATA[Share in Twitter]]></string>
     <string name="_sys_menu_item_title_social_sharing_pinterest"><![CDATA[Share in Pinterest]]></string>
     <string name="_sys_menu_item_title_sm_author"><![CDATA[Author]]></string>
@@ -2206,6 +2220,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_menu_item_title_sm_category"><![CDATA[Category]]></string>
     <string name="_sys_menu_item_title_sm_tags"><![CDATA[Tags]]></string>
     <string name="_sys_menu_item_title_sm_views"><![CDATA[Views]]></string>
+    <string name="_sys_menu_item_title_sm_votes"><![CDATA[Votes]]></string>
     <string name="_sys_menu_item_title_sm_rating"><![CDATA[Rating]]></string>
     <string name="_sys_menu_item_title_sm_comments"><![CDATA[Comments]]></string>
     <string name="_sys_menu_item_title_sm_actions"><![CDATA[Actions]]></string>
@@ -2272,12 +2287,12 @@ If it is not enabled then please consider implement this optimization, since it 
         <string name="_sys_menu_item_title_system_va_score"><![CDATA[Vote (for/against)]]></string>
         <string name="_sys_menu_item_title_system_va_favorite"><![CDATA[Favorite]]></string>
         <string name="_sys_menu_item_title_system_va_feature"><![CDATA[Feature]]></string>
+        <string name="_sys_menu_item_title_system_va_reaction"><![CDATA[Reaction]]></string>
         <string name="_sys_menu_item_title_system_va_repost"><![CDATA[Repost]]></string>
         <string name="_sys_menu_item_title_system_va_report"><![CDATA[Report]]></string>
         <string name="_sys_menu_item_title_system_va_more_auto"><![CDATA[More]]></string>
         <string name="_sys_menu_item_title_va_more_auto"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_system_social_sharing_facebook"><![CDATA[Share in Facebook]]></string>
-    <string name="_sys_menu_item_title_system_social_sharing_googleplus"><![CDATA[Share in Google Plus]]></string>
     <string name="_sys_menu_item_title_system_social_sharing_twitter"><![CDATA[Share in Twitter]]></string>
     <string name="_sys_menu_item_title_system_social_sharing_pinterest"><![CDATA[Share in Pinterest]]></string>
     <string name="_sys_menu_item_title_system_sm_author"><![CDATA[Author]]></string>
@@ -2285,6 +2300,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_menu_item_title_system_sm_category"><![CDATA[Category]]></string>
     <string name="_sys_menu_item_title_system_sm_tags"><![CDATA[Tags]]></string>
     <string name="_sys_menu_item_title_system_sm_views"><![CDATA[Views]]></string>
+    <string name="_sys_menu_item_title_system_sm_votes"><![CDATA[Votes]]></string>
     <string name="_sys_menu_item_title_system_sm_rating"><![CDATA[Rating]]></string>
     <string name="_sys_menu_item_title_system_sm_comments"><![CDATA[Comments]]></string>
     <string name="_sys_menu_item_title_system_sm_actions"><![CDATA[Actions]]></string>
@@ -2321,7 +2337,8 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_menu_set_title_toolbar_member"><![CDATA[Toolbar Member]]></string>
 	<string name="_sys_menu_set_title_toolbar_site"><![CDATA[Toolbar Site]]></string>
 	<string name="_sys_menu_set_title_snippet_meta"><![CDATA[Snippet Meta Info]]></string>
-	<string name="_sys_menu_template_title_buttons_hor"><![CDATA[Horizontal Buttons]]></string>	
+	<string name="_sys_menu_template_title_buttons_hor"><![CDATA[Horizontal Buttons]]></string>
+        <string name="_sys_menu_template_title_buttons_icon_hor"><![CDATA[Horizontal Buttons (icons only)]]></string>
 	<string name="_sys_menu_template_title_buttons_ver"><![CDATA[Vertical Buttons]]></string>
 	<string name="_sys_menu_template_title_floating_blocks"><![CDATA[Floating Blocks]]></string>
 	<string name="_sys_menu_template_title_floating_blocks_wide"><![CDATA[Wide Floating Blocks with Notifications]]></string>
@@ -2364,6 +2381,7 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_menu_title_set_acl_level"><![CDATA[ACL Levels]]></string>
 	<string name="_sys_menu_title_social_sharing"><![CDATA[Social Sharing]]></string>
         <string name="_sys_menu_title_create_post"><![CDATA[Create Post Menu]]></string>
+        <string name="_sys_menu_title_add_relation"><![CDATA[Add Relationship Menu]]></string>
 	<string name="_sys_menu_title_submenu"><![CDATA[Site Submenu]]></string>
 	<string name="_sys_menu_title_toolbar_member"><![CDATA[Member Toolbar]]></string>
 	<string name="_sys_menu_title_toolbar_site"><![CDATA[Site Toolbar]]></string>
@@ -2480,14 +2498,31 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_paginate_info"><![CDATA[{0}-{1}]]></string>
 	<string name="_sys_paginate_view_all"><![CDATA[View All]]></string>
 	<string name="_sys_please_select"><![CDATA[Please select...]]></string>
+        <string name="_sys_pre_lists_relations"><![CDATA[Relationships]]></string>
+        <string name="_sys_pre_lists_relations_husband"><![CDATA[husband]]></string>
+        <string name="_sys_pre_lists_relations_wife"><![CDATA[wife]]></string>
+        <string name="_sys_pre_lists_relations_father"><![CDATA[father]]></string>
+        <string name="_sys_pre_lists_relations_mother"><![CDATA[mother]]></string>
+        <string name="_sys_pre_lists_relations_son"><![CDATA[son]]></string>
+        <string name="_sys_pre_lists_relations_daughter"><![CDATA[daughter]]></string>
+        <string name="_sys_pre_lists_relations_brother"><![CDATA[brother]]></string>
+        <string name="_sys_pre_lists_relations_sister"><![CDATA[sister]]></string>
 	<string name="_sys_pre_lists_report_types"><![CDATA[Report Types]]></string>
 	<string name="_sys_pre_lists_report_types_spam"><![CDATA[spam]]></string>
 	<string name="_sys_pre_lists_report_types_scam"><![CDATA[scam]]></string>
 	<string name="_sys_pre_lists_report_types_fraud"><![CDATA[fraud]]></string>
 	<string name="_sys_pre_lists_report_types_nude"><![CDATA[nude]]></string>
 	<string name="_sys_pre_lists_report_types_other"><![CDATA[other]]></string>
+        <string name="_sys_pre_lists_vote_reactions"><![CDATA[Reactions]]></string>
+        <string name="_sys_pre_lists_vote_reactions_like"><![CDATA[Like]]></string>
+        <string name="_sys_pre_lists_vote_reactions_love"><![CDATA[Love]]></string>
+        <string name="_sys_pre_lists_vote_reactions_joy"><![CDATA[Haha]]></string>
+        <string name="_sys_pre_lists_vote_reactions_surprise"><![CDATA[Wow]]></string>
+        <string name="_sys_pre_lists_vote_reactions_sadness"><![CDATA[Sad]]></string>
+        <string name="_sys_pre_lists_vote_reactions_anger"><![CDATA[Angry]]></string>
 	<string name="_sys_profile_sample_single"><![CDATA[profile]]></string>
-	<string name="_sys_profile_friendship_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> befriended <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
+        <string name="_sys_profile_friend_request_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> befriended <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
+	<string name="_sys_profile_friendship_added"><![CDATA[Now <b class="bx-ntfs-content-profile">{owner_name}</b> and <b class="bx-ntfs-content-entry">{entry_caption}</b> are friends]]></string>
 	<string name="_sys_profile_subscription_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> followed <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
 	<string name="_sys_profile_status_active"><![CDATA[Active]]></string>
 	<string name="_sys_profile_status_pending"><![CDATA[Pending]]></string>
@@ -2506,18 +2541,21 @@ If it is not enabled then please consider implement this optimization, since it 
             <li><b>{0}</b> total</li>
             <li><b>{1}</b> deleted</li>
         </ul>]]></string>
+        <string name="_sys_ps_group_title_followers"><![CDATA[Followers]]></string>
 	<string name="_sys_ps_group_title_friends"><![CDATA[Friends]]></string>
 	<string name="_sys_ps_group_title_me_only"><![CDATA[Me only]]></string>
 	<string name="_sys_ps_group_title_members"><![CDATA[Members]]></string>
 	<string name="_sys_ps_group_title_public"><![CDATA[Public]]></string>
+        <string name="_sys_ps_group_title_participants"><![CDATA[Participants]]></string>
 	<string name="_sys_ps_group_title_closed"><![CDATA[Closed]]></string>
 	<string name="_sys_ps_group_title_secret"><![CDATA[Secret]]></string>
     <string name="_sys_ps_ferr_incorrect_select"><![CDATA[You need to select some value]]></string>
     <string name="_sys_ps_space_title_friend"><![CDATA[friend]]></string>
-	<string name="_sys_push_notification_request"><![CDATA[Would you like to get notifications from {0}?]]></string>  
+    <string name="_sys_push_notification_request"><![CDATA[Would you like to get notifications from {0}?]]></string>  
     <string name="_sys_push_notification_request_yes"><![CDATA[Yes]]></string>  
     <string name="_sys_push_notification_request_no"><![CDATA[No, thanks]]></string>
     <string name="_sys_read_more"><![CDATA[Continue reading "{0}"]]></string>
+    <string name="_sys_relation"><![CDATA[Relationship]]></string>
 	<string name="_sys_request_module_not_found_cpt"><![CDATA[Module was not found]]></string>
 	<string name="_sys_request_module_not_found_cnt"><![CDATA[Module({0}) was not found]]></string>
 	<string name="_sys_request_page_not_found_cpt"><![CDATA[Page was not found]]></string>
@@ -2545,6 +2583,7 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_splash_inp_placeholder"><![CDATA[site address]]></string>
 	<string name="_sys_splash_inp_postfix"><![CDATA[.online.me]]></string>
 	<string name="_sys_splash_slogan"><![CDATA[The easiest way to create your own social website.]]></string>
+        <string name="_sys_status"><![CDATA[Status]]></string>
 	<string name="_sys_storage_err_db"><![CDATA[database error]]></string>
 	<string name="_sys_storage_err_engine_add"><![CDATA[error occurred]]></string>
 	<string name="_sys_storage_err_engine_get"><![CDATA[error occurred]]></string>
@@ -2695,9 +2734,10 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_txt_unsubscribe_email_settings_update_success"><![CDATA[Your email preferences has been successfully updated.]]></string>
 	<string name="_sys_txt_unsubscribe_error_occured"><![CDATA[Error occurred, please login to your account and update email references there or contact site administrator to unsubscribe you manually.]]></string>
 	<string name="_sys_txt_unsubscribe_info"><![CDATA[Update email preferences for <b>{0}</b>]]></string>
-    <string name="_sys_txt_unsubscribe_wrong_link"><![CDATA[Unsubscribe link is wrong.]]></string>
-    <string name="_sys_txt_user_n"><![CDATA[User #{0}]]></string>
-  <string name="_sys_txt_reports_title"><![CDATA[Reports]]></string>
+        <string name="_sys_txt_unsubscribe_wrong_link"><![CDATA[Unsubscribe link is wrong.]]></string>
+        <string name="_sys_txt_user_n"><![CDATA[User #{0}]]></string>
+        <string name="_sys_txt_reports_title"><![CDATA[Reports]]></string>
+        <string name="_sys_unconfirmed"><![CDATA[Unconfirmed]]></string>
 	<string name="_sys_upgrade_conclusion"><![CDATA[<h3>Important info:</h3><p>{0}</p>]]></string>
 	<string name="_sys_upgrade_db_and_files_versions_different"><![CDATA[Database and files versions are different, probably previous patch wasn't applied correctly.]]></string>
 	<string name="_sys_upgrade_files_checksum_failed"><![CDATA[Can't apply upgrade because the following files were modified: {0}]]></string>
@@ -2750,8 +2790,10 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_vote_do_like"><![CDATA[Thank you!]]></string>
 	<string name="_vote_do_unlike"><![CDATA[No thank you]]></string>
 	<string name="_vote_do_by"><![CDATA[Thanked by]]></string>
+        <string name="_vote_do_by_reactions"><![CDATA["{0}" by]]></string>
 	<string name="_vote_err_not_enabled"><![CDATA[The feature is not available right now. Please, try again later.]]></string>
 	<string name="_vote_err_duplicate_vote"><![CDATA[Duplicate vote]]></string>
+        <string name="_vote_n_votes"><![CDATA[{0} votes]]></string>
 	<string name="_week_fri"><![CDATA[Friday]]></string>
 	<string name="_week_mon"><![CDATA[Monday]]></string>
 	<string name="_week_sat"><![CDATA[Saturday]]></string>

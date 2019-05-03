@@ -34,6 +34,8 @@
     <string name="_bx_orgs_form_profile_input_allow_view_to"><![CDATA[Доступен для]]></string>
     <string name="_bx_orgs_form_profile_input_allow_view_to_info"><![CDATA[Закрытая - все могут найти группу и видеть кто в ней состоит, только участники могут видеть сообщения. Секретная - только участники могут найти группу и видеть сообщения.]]></string>
     <string name="_bx_orgs_form_profile_input_allow_view_notification_to"><![CDATA[Оповещения доступены для]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_allow_post_to"><![CDATA[Оставлять сообщения в профиле могут]]></string>
+    <string name="_bx_orgs_form_profile_input_allow_post_to"><![CDATA[Оставлять сообщения в профиле могут]]></string>
     <string name="_bx_orgs_form_profile_input_sys_initial_members"><![CDATA[Пригласить участников]]></string>
     <string name="_bx_orgs_form_profile_input_initial_members"><![CDATA[Пригласить участников]]></string>
     <string name="_bx_orgs_form_profile_input_sys_org_name"><![CDATA[Название организации]]></string>
@@ -55,8 +57,8 @@
 	<string name="_bx_orgs_form_profile_input_delete_confirm"><![CDATA[Я уверен, что хочу удалить этот профиль]]></string>
 	<string name="_bx_orgs_form_profile_input_delete_confirm_info"><![CDATA[Это действие не может быть отменено.]]></string>
 	<string name="_bx_orgs_form_profile_input_delete_confirm_error"><![CDATA[Пожалуйста, отметьте этот флажок, если действительно хотите удалить свой профиль.]]></string>
-	<string name="_bx_orgs_form_profile_input_sys_profile_email"><![CDATA[Имейл]]></string>
-    <string name="_bx_orgs_form_profile_input_profile_email"><![CDATA[Имейл]]></string>
+	<string name="_bx_orgs_form_profile_input_sys_profile_email"><![CDATA[Email]]></string>
+    <string name="_bx_orgs_form_profile_input_profile_email"><![CDATA[Email]]></string>
     <string name="_bx_orgs_form_profile_input_sys_profile_status"><![CDATA[Статус]]></string>
     <string name="_bx_orgs_form_profile_input_profile_status"><![CDATA[Статус]]></string>
     <string name="_bx_orgs_form_profile_input_sys_profile_ip"><![CDATA[IP]]></string>
@@ -65,6 +67,10 @@
     <string name="_bx_orgs_form_profile_input_date_added"><![CDATA[Дата создания]]></string>
     <string name="_bx_orgs_form_profile_input_sys_date_changed"><![CDATA[Дата обновления]]></string>
     <string name="_bx_orgs_form_profile_input_date_changed"><![CDATA[Дата обновления]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_friends_count"><![CDATA[Количество друзей]]></string>
+    <string name="_bx_orgs_form_profile_input_friends_count"><![CDATA[Количество друзей]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_followers_count"><![CDATA[Количество подписчиков]]></string>
+    <string name="_bx_orgs_form_profile_input_followers_count"><![CDATA[Количество подписчиков]]></string>
 
 	<string name="_bx_orgs_acl_action_create_profile"><![CDATA[Создать профиль организации]]></string>
 	<string name="_bx_orgs_acl_action_delete_profile"><![CDATA[Удалить профиль организации]]></string>
@@ -101,6 +107,8 @@
     <string name="_bx_orgs_page_title_friend_requests"><![CDATA[Приглашения в друзья]]></string>
 	<string name="_bx_orgs_page_title_sys_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_orgs_page_title_profile_subscriptions"><![CDATA[Подписки и подписчики]]></string>
+    <string name="_bx_orgs_page_title_sys_profile_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_orgs_page_title_profile_relations"><![CDATA[Связи]]></string>
     <string name="_bx_orgs_page_title_sys_group_fans"><![CDATA[Участники]]></string>
     <string name="_bx_orgs_page_title_group_fans"><![CDATA[Участники]]></string>
     <string name="_bx_orgs_page_title_sys_profile_comments"><![CDATA[Комментарии]]></string>
@@ -152,6 +160,10 @@
     <string name="_bx_orgs_page_block_title_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_orgs_page_block_title_system_profile_subscribed_me"><![CDATA[Подписчики]]></string>
     <string name="_bx_orgs_page_block_title_profile_subscribed_me"><![CDATA[Подписчики]]></string>
+    <string name="_bx_orgs_page_block_title_system_profile_relations"><![CDATA[Мои связи]]></string>
+    <string name="_bx_orgs_page_block_title_profile_relations"><![CDATA[Мои связи]]></string>
+    <string name="_bx_orgs_page_block_title_system_profile_related_me"><![CDATA[Связи со мной]]></string>
+    <string name="_bx_orgs_page_block_title_profile_related_me"><![CDATA[Связи со мной]]></string>
     <string name="_bx_orgs_page_block_title_profile_comments"><![CDATA[Комментарии]]></string>
     <string name="_bx_orgs_page_block_title_profile_comments_link"><![CDATA[Комментарии к <a href="{entry_link}">{title}</a>]]></string>
 	<string name="_bx_orgs_page_block_title_profile_actions"><![CDATA[Действия]]></string>
@@ -218,6 +230,8 @@
     <string name="_bx_orgs_menu_item_title_view_profile_fans"><![CDATA[Участники]]></string>
     <string name="_bx_orgs_menu_item_title_system_view_profile_friends"><![CDATA[Друзья]]></string>
     <string name="_bx_orgs_menu_item_title_view_profile_friends"><![CDATA[Друзья]]></string>
+    <string name="_bx_orgs_menu_item_title_system_view_profile_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_orgs_menu_item_title_view_profile_relations"><![CDATA[Связи]]></string>
     <string name="_bx_orgs_menu_item_title_system_view_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_orgs_menu_item_title_view_profile_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_orgs_menu_item_title_system_view_profile_comments"><![CDATA[Комментарии]]></string>
@@ -250,12 +264,18 @@
     <string name="_bx_orgs_menu_item_title_subscribe"><![CDATA[Получать уведомления]]></string>
     <string name="_bx_orgs_menu_item_title_system_unsubscribe"><![CDATA[Отключить уведомления]]></string>
     <string name="_bx_orgs_menu_item_title_unsubscribe"><![CDATA[Отключить уведомления]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relation_add"><![CDATA[Добавить связь]]></string>
+    <string name="_bx_orgs_menu_item_title_relation_add"><![CDATA[Добавить связь]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relation_delete"><![CDATA[Удалить связь]]></string>
+    <string name="_bx_orgs_menu_item_title_relation_delete"><![CDATA[Удалить связь]]></string>
     <string name="_bx_orgs_menu_item_title_system_more_actions"><![CDATA[Дополнительные действия]]></string>
     <string name="_bx_orgs_menu_item_title_more_actions"><![CDATA[]]></string>
     <string name="_bx_orgs_menu_item_title_system_friends"><![CDATA[Друзья]]></string>
     <string name="_bx_orgs_menu_item_title_friends"><![CDATA[Друзья]]></string>
     <string name="_bx_orgs_menu_item_title_system_friend_requests"><![CDATA[Число запросов дружбы]]></string>
     <string name="_bx_orgs_menu_item_title_friend_requests"><![CDATA[Запросов дружбы]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_orgs_menu_item_title_relations"><![CDATA[Связи]]></string>
     <string name="_bx_orgs_menu_item_title_system_manage_my_organizations"><![CDATA[Мои организации]]></string>
     <string name="_bx_orgs_menu_item_title_manage_my_organizations"><![CDATA[Организации]]></string>
     <string name="_bx_orgs_menu_item_title_system_favorites"><![CDATA[Избранные организации]]></string>
@@ -264,6 +284,10 @@
     <string name="_bx_orgs_menu_item_title_subscriptions"><![CDATA[Подписки]]></string>
     <string name="_bx_orgs_menu_item_title_system_subscribed_me"><![CDATA[Подписчики]]></string>
     <string name="_bx_orgs_menu_item_title_subscribed_me"><![CDATA[Подписчики]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_orgs_menu_item_title_relations"><![CDATA[Связи]]></string>
+    <string name="_bx_orgs_menu_item_title_system_related_me"><![CDATA[Связи со мной]]></string>
+    <string name="_bx_orgs_menu_item_title_related_me"><![CDATA[Связи со мной]]></string>
     <string name="_bx_orgs_menu_item_title_system_entries_recent"><![CDATA[Новые]]></string>
     <string name="_bx_orgs_menu_item_title_entries_recent"><![CDATA[Новые]]></string>
     <string name="_bx_orgs_menu_item_title_system_entries_search"><![CDATA[Поиск]]></string>
@@ -367,6 +391,7 @@
     <string name="_bx_orgs_txt_to_admins"><![CDATA[В админы]]></string>
     <string name="_bx_orgs_txt_from_admins"><![CDATA[Из админов]]></string>
     <string name="_bx_orgs_txt_private_organization"><![CDATA[Приватная организация]]></string>
+    <string name="_bx_orgs_ps_group_title_participants"><![CDATA[Сотрудники]]></string>
 
     <string name="_bx_orgs_email_friend_request"><![CDATA[Запрос на добавление в друзья]]></string>
     <string name="_bx_orgs_email_friend_request_subject"><![CDATA[Подружиться]]></string>

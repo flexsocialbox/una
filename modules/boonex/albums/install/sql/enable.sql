@@ -15,9 +15,10 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 ('bx_albums_per_page_browse', '12', @iCategId, '_bx_albums_option_per_page_browse', 'digit', '', '', '', 10),
 ('bx_albums_per_page_profile', '6', @iCategId, '_bx_albums_option_per_page_profile', 'digit', '', '', '', 12),
 ('bx_albums_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
+('bx_albums_album_browsing_unit', '10', @iCategId, '_bx_albums_option_album_browsing_unit', 'digit', '', '', '', 20),
 ('bx_albums_rss_num', '10', @iCategId, '_bx_albums_option_rss_num', 'digit', '', '', '', 20),
-('bx_albums_searchable_fields', 'title,text', @iCategId, '_bx_albums_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:9:"bx_albums";s:6:"method";s:21:"get_searchable_fields";}', 30);
-
+('bx_albums_searchable_fields', 'title,text', @iCategId, '_bx_albums_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:9:"bx_albums";s:6:"method";s:21:"get_searchable_fields";}', 30),
+('bx_albums_labels', '', @iCategId, '_sys_option_labels', 'text', '', '', '', 40);
 
 -- PAGE: create entry
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
@@ -225,7 +226,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_albums_view_actions', 'bx_albums', 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_albums_view_actions', 'bx_albums', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 270),
 ('bx_albums_view_actions', 'bx_albums', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_albums_view_actions', 'bx_albums', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_albums_view_actions', 'bx_albums', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_albums_view_actions', 'bx_albums', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_albums_view_actions', 'bx_albums', 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, 1, 0, 9999);
@@ -240,7 +240,8 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('bx_albums_view_media', 'bx_albums', 'add-images-to-album', '_bx_albums_menu_item_title_system_add_images', '_bx_albums_menu_item_title_add_images', 'page.php?i=add-images&id={content_id}', '', '', 'plus', '', 2147483647, 1, 0, 10),
-('bx_albums_view_media', 'bx_albums', 'edit-album', '_bx_albums_menu_item_title_system_edit_album', '_bx_albums_menu_item_title_edit_album', 'page.php?i=edit-album&id={content_id}', '', '', 'pencil-alt', '', 2147483647, 1, 0, 20);
+('bx_albums_view_media', 'bx_albums', 'edit-album', '_bx_albums_menu_item_title_system_edit_album', '_bx_albums_menu_item_title_edit_album', 'page.php?i=edit-album&id={content_id}', '', '', 'pencil-alt', '', 2147483647, 1, 0, 20),
+('bx_albums_view_media', 'bx_albums', 'edit-image', '_bx_albums_menu_item_title_system_edit_image', '_bx_albums_menu_item_title_edit_image', 'page.php?i=edit-album&id={content_id}#album-media-{media_id}', '', '', 'pencil-alt', '', 2147483647, 1, 0, 30);
 
 -- MENU: all actions menu for view media page 
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -250,8 +251,9 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 ('bx_albums_view_actions_media', 'bx_albums', '_bx_albums_menu_set_title_view_actions_media', 0);
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('bx_albums_view_actions_media', 'bx_albums', 'add-images-to-album', '_bx_albums_menu_item_title_system_add_images', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 10),
-('bx_albums_view_actions_media', 'bx_albums', 'edit-album', '_bx_albums_menu_item_title_system_edit_entry', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 20),
+('bx_albums_view_actions_media', 'bx_albums', 'add-images-to-album', '_bx_albums_menu_item_title_system_add_images', '', '', '', '', '', '', '', 0, 2147483647, 0, 0, 10),
+('bx_albums_view_actions_media', 'bx_albums', 'edit-album', '_bx_albums_menu_item_title_system_edit_album', '', '', '', '', '', '', '', 0, 2147483647, 0, 0, 20),
+('bx_albums_view_actions_media', 'bx_albums', 'edit-image', '_bx_albums_menu_item_title_system_edit_image', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 30),
 ('bx_albums_view_actions_media', 'bx_albums', 'comment', '_sys_menu_item_title_system_va_comment', '', '', '', '', '', '', '', 0, 2147483647, 0, 0, 200),
 ('bx_albums_view_actions_media', 'bx_albums', 'view', '_sys_menu_item_title_system_va_view', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 210),
 ('bx_albums_view_actions_media', 'bx_albums', 'vote', '_sys_menu_item_title_system_va_vote', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 220),
@@ -259,7 +261,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_albums_view_actions_media', 'bx_albums', 'favorite', '_sys_menu_item_title_system_va_favorite', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 240),
 ('bx_albums_view_actions_media', 'bx_albums', 'feature', '_sys_menu_item_title_system_va_feature', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 250),
 ('bx_albums_view_actions_media', 'bx_albums', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_albums_view_actions_media', 'bx_albums', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_albums_view_actions_media', 'bx_albums', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_albums_view_actions_media', 'bx_albums', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_albums_view_actions_media', 'bx_albums', 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, 1, 0, 9999);
@@ -327,7 +328,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_albums_snippet_meta', 'bx_albums', 'author', '_sys_menu_item_title_system_sm_author', '_sys_menu_item_title_sm_author', '', '', '', '', '', 2147483647, 1, 0, 1, 2),
 ('bx_albums_snippet_meta', 'bx_albums', 'tags', '_sys_menu_item_title_system_sm_tags', '_sys_menu_item_title_sm_tags', '', '', '', '', '', 2147483647, 0, 0, 1, 3),
 ('bx_albums_snippet_meta', 'bx_albums', 'views', '_sys_menu_item_title_system_sm_views', '_sys_menu_item_title_sm_views', '', '', '', '', '', 2147483647, 0, 0, 1, 4),
-('bx_albums_snippet_meta', 'bx_albums', 'comments', '_sys_menu_item_title_system_sm_comments', '_sys_menu_item_title_sm_comments', '', '', '', '', '', 2147483647, 0, 0, 1, 5);
+('bx_albums_snippet_meta', 'bx_albums', 'comments', '_sys_menu_item_title_system_sm_comments', '_sys_menu_item_title_sm_comments', '', '', '', '', '', 2147483647, 0, 0, 1, 5),
+('bx_albums_snippet_meta', 'bx_albums', 'items', '_bx_albums_menu_item_title_system_sm_items', '_bx_albums_menu_item_title_sm_items', '', '', '', '', '', 2147483647, 0, 0, 1, 6);
 
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);

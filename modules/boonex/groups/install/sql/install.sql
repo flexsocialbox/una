@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS `bx_groups_data` (
   `reports` int(11) NOT NULL default '0',
   `featured` int(11) NOT NULL default '0',
   `join_confirmation` tinyint(4) NOT NULL DEFAULT '1',
-  `allow_view_to` varchar(255) DEFAULT NULL,
+  `allow_view_to` varchar(16) NOT NULL DEFAULT '3',
+  `allow_post_to` varchar(16) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `search_fields` (`group_name`, `group_desc`)
 );
@@ -242,6 +243,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_group', 'bx_groups', 'allow_view_to', 3, '', 0, 'custom', '_bx_groups_form_profile_input_sys_allow_view_to', '_bx_groups_form_profile_input_allow_view_to', '_bx_groups_form_profile_input_allow_view_to_desc', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_group', 'bx_groups', 'allow_post_to', 3, '', 0, 'custom', '_bx_groups_form_profile_input_sys_allow_post_to', '_bx_groups_form_profile_input_allow_post_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_group', 'bx_groups', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_groups_form_profile_input_sys_delete_confirm', '_bx_groups_form_profile_input_delete_confirm', '_bx_groups_form_profile_input_delete_confirm_info', 1, 0, 0, '', '', '', 'avail', '', '_bx_groups_form_profile_input_delete_confirm_error', '', '', 1, 0),
 ('bx_group', 'bx_groups', 'do_submit', '_sys_form_account_input_submit', '', 0, 'submit', '_bx_groups_form_profile_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_group', 'bx_groups', 'group_desc', '', '', 0, 'textarea', '_bx_groups_form_profile_input_sys_group_desc', '_bx_groups_form_profile_input_group_desc', '', 0, 0, 2, '', '', '', '', '', '', 'XssHtml', '', 1, 1),
@@ -251,7 +253,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_group', 'bx_groups', 'join_confirmation', 1, '', 1, 'switcher', '_bx_groups_form_profile_input_sys_join_confirm', '_bx_groups_form_profile_input_join_confirm', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
 ('bx_group', 'bx_groups', 'cover', 'a:1:{i:0;s:20:"bx_groups_cover_crop";}', 'a:1:{s:20:"bx_groups_cover_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_groups_form_profile_input_sys_cover', '_bx_groups_form_profile_input_cover', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_group', 'bx_groups', 'picture', 'a:1:{i:0;s:22:"bx_groups_picture_crop";}', 'a:1:{s:22:"bx_groups_picture_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_groups_form_profile_input_sys_picture', '_bx_groups_form_profile_input_picture', '', 0, 0, 0, '', '', '', '', '', '_bx_groups_form_profile_input_picture_err', '', '', 1, 0),
-('bx_group', 'bx_groups', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
+('bx_group', 'bx_groups', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_group', 'bx_groups', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
 ('bx_group_add', 'delete_confirm', 2147483647, 0, 3),
@@ -264,7 +267,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_group_add', 'location', 2147483647, 1, 10),
 ('bx_group_add', 'join_confirmation', 2147483647, 1, 11),
 ('bx_group_add', 'allow_view_to', 2147483647, 1, 12),
-('bx_group_add', 'do_submit', 2147483647, 1, 13),
+('bx_group_add', 'allow_post_to', 2147483647, 1, 13),
+('bx_group_add', 'do_submit', 2147483647, 1, 14),
 
 ('bx_group_invite', 'initial_members', 2147483647, 1, 1),
 ('bx_group_invite', 'do_submit', 2147483647, 1, 2),
@@ -285,7 +289,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_group_edit', 'location', 2147483647, 1, 9),
 ('bx_group_edit', 'join_confirmation', 2147483647, 1, 10),
 ('bx_group_edit', 'allow_view_to', 2147483647, 1, 11),
-('bx_group_edit', 'do_submit', 2147483647, 1, 12),
+('bx_group_edit', 'allow_post_to', 2147483647, 1, 12),
+('bx_group_edit', 'do_submit', 2147483647, 1, 13),
 
 ('bx_group_edit_cover', 'join_confirmation', 2147483647, 0, 0),
 ('bx_group_edit_cover', 'group_desc', 2147483647, 0, 0),
@@ -320,6 +325,34 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('bx_groups_cats', '4', 4, '_bx_groups_cat_Causes', ''),
 ('bx_groups_cats', '5', 5, '_bx_groups_cat_Fun', ''),
 ('bx_groups_cats', '6', 6, '_bx_groups_cat_Uncategorised', '');
+
+-- COMMENTS
+INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
+('bx_groups', 'bx_groups', 'bx_groups_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-group-profile&id={object_id}', '', 'bx_groups_data', 'id', 'author', 'group_name', 'comments', '', '');
+
+-- VIEWS
+INSERT INTO `sys_objects_view` (`name`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_groups', 'bx_groups_views_track', '86400', '1', 'bx_groups_data', 'id', 'author', 'views', '', '');
+
+-- VOTES
+INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
+('bx_groups', 'bx_groups_votes', 'bx_groups_votes_track', '604800', '1', '1', '0', '1', 'bx_groups_data', 'id', 'author', 'rate', 'votes', '', '');
+
+-- SCORES
+INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
+('bx_groups', 'bx_groups', 'bx_groups_scores', 'bx_groups_scores_track', '604800', '0', 'bx_groups_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
+
+-- REPORTS
+INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_groups', 'bx_groups_reports', 'bx_groups_reports_track', '1', 'page.php?i=view-group-profile&id={object_id}', 'bx_groups_data', 'id', 'author', 'reports', '', '');
+
+-- FAFORITES
+INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_groups', 'bx_groups_favorites_track', '1', '1', '1', 'page.php?i=view-group-profile&id={object_id}', 'bx_groups_data', 'id', 'author', 'favorites', '', '');
+
+-- FEATURED
+INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
+('bx_groups', '1', '1', 'page.php?i=view-group-profile&id={object_id}', 'bx_groups_data', 'id', 'author', 'featured', '', '');
 
 -- CONTENT INFO
 INSERT INTO `sys_objects_content_info` (`name`, `title`, `alert_unit`, `alert_action_add`, `alert_action_update`, `alert_action_delete`, `class_name`, `class_file`) VALUES

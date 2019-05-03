@@ -4,11 +4,7 @@
     text-align: center;
 }
 
-
-/* default.css */ 
-
-.bx-media-phone #bx-content-container .bx-db-container.bx-def-border-block {
-    border-radius:0;
-    -moz-border-radius:0;
-    -webkit-border-radius:0;
+/*--- Profile Cover ---*/
+.bx-media-phone .bx-base-pofile-cover-info-container {
+    min-height: 50vh;
 }

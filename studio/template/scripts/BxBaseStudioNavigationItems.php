@@ -415,14 +415,18 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
             $this->oDb->getMenus(array('type' => 'by_object', 'value' => $aRow['submenu_object']), $aMenu, false);
 
             $sPrefix = _t('_adm_nav_txt_items_gl_link_menu');
-            $aField['chars_limit'] -= strlen($sPrefix);
+            if(!empty($aMenu) && is_array($aMenu)) {
+                $aField['chars_limit'] -= strlen($sPrefix);
 
-            $aValue = $this->_limitMaxLength(_t($aMenu['title']), $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow, false);
+                $aValue = $this->_limitMaxLength(_t($aMenu['title']), $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow, false);
 
-            $sLink = sprintf($this->sUrlViewItems, $aMenu['module'], $aMenu['set_name']);
-            $mixedValue = $sPrefix . ' ' . $this->_oTemplate->parseLink($sLink, $aValue[0], array(
-                'title' => _t('_adm_nav_txt_manage_items') 
-            )) . (isset($aValue[1]) ? $aValue[1] : '');
+                $sLink = sprintf($this->sUrlViewItems, $aMenu['module'], $aMenu['set_name']);
+                $mixedValue = $sPrefix . ' ' . $this->_oTemplate->parseLink($sLink, $aValue[0], array(
+                    'title' => _t('_adm_nav_txt_manage_items') 
+                )) . (isset($aValue[1]) ? $aValue[1] : '');
+            }
+            else 
+                $mixedValue = $sPrefix . ' ' . _t('_undefined');
         } else if($aRow['submenu_object'] == "" && $aRow['onclick'] != "")
             $mixedValue = $this->_limitMaxLength(_t('_adm_nav_txt_items_gl_link_custom'), $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow);
         else
@@ -666,16 +670,17 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
                     'name' => 'hidden_on',
                     'caption' => _t('_adm_nav_txt_block_hidden_on'),
                     'info' => '',
-                	'value' => isset($aItem['hidden_on']) ? (int)$aItem['hidden_on'] : '',
+                    'value' => isset($aItem['hidden_on']) ? (int)$aItem['hidden_on'] : '',
                     'values' => array(
-                		BX_DB_HIDDEN_PHONE => _t('_adm_nav_txt_block_hidden_on_phone'),
-                		BX_DB_HIDDEN_TABLET => _t('_adm_nav_txt_block_hidden_on_tablet'),
-                		BX_DB_HIDDEN_DESKTOP => _t('_adm_nav_txt_block_hidden_on_desktop')
-                	),
-                	'db' => array (
+                        BX_DB_HIDDEN_PHONE => _t('_adm_nav_txt_block_hidden_on_phone'),
+                        BX_DB_HIDDEN_TABLET => _t('_adm_nav_txt_block_hidden_on_tablet'),
+                        BX_DB_HIDDEN_DESKTOP => _t('_adm_nav_txt_block_hidden_on_desktop'),
+                        BX_DB_HIDDEN_MOBILE => _t('_adm_nav_txt_block_hidden_on_mobile')
+                    ),
+                    'db' => array (
                         'pass' => 'Set',
                     )
-				),
+                ),
                 'icon' => array(
                     'type' => 'text',
                     'name' => 'icon',

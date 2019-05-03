@@ -18,7 +18,7 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 ('bx_forum_per_page_index', '6', @iCategId, '_bx_forum_option_per_page_index', 'digit', '', '', '', 11),
 ('bx_forum_per_page_profile', '6', @iCategId, '_bx_forum_option_per_page_profile', 'digit', '', '', '', 12),
 ('bx_forum_rss_num', '10', @iCategId, '_bx_forum_option_rss_num', 'digit', '', '', '', 20),
-('bx_forum_searchable_fields', 'title,text', @iCategId, '_bx_forum_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:8:"bx_forum";s:6:"method";s:21:"get_searchable_fields";}', 30),
+('bx_forum_searchable_fields', 'title,text,text_comments', @iCategId, '_bx_forum_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:8:"bx_forum";s:6:"method";s:21:"get_searchable_fields";}', 30),
 -- ('bx_forum_autosubscribe_created', '', @iCategId, '_bx_forum_option_autosubscribe_created', 'checkbox', '', '', '', 40),
 -- ('bx_forum_autosubscribe_replied', '', @iCategId, '_bx_forum_option_autosubscribe_replied', 'checkbox', '', '', '', 41),
 ('bx_forum_labels', '', @iCategId, '_sys_option_labels', 'text', '', '', '', 50);
@@ -256,7 +256,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_forum_view_actions', @sName, 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_forum_view_actions', @sName, 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 270),
 ('bx_forum_view_actions', @sName, 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_forum_view_actions', @sName, 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_forum_view_actions', @sName, 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_forum_view_actions', @sName, 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_forum_view_actions', @sName, 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, 1, 0, 9999);
@@ -285,6 +284,43 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_forum_submenu', @sName, 'discussions-categories', '_bx_forum_menu_item_title_system_entries_categories', '_bx_forum_menu_item_title_entries_categories', 'page.php?i=discussions-categories', '', '', '', '', 2147483647, 1, 1, 4),
 ('bx_forum_submenu', @sName, 'discussions-search', '_bx_forum_menu_item_title_system_entries_search', '_bx_forum_menu_item_title_entries_search', 'page.php?i=discussions-search', '', '', '', '', 2147483647, 1, 1, 5),
 ('bx_forum_submenu', @sName, 'discussions-manage', '_bx_forum_menu_item_title_system_entries_manage', '_bx_forum_menu_item_title_entries_manage', 'page.php?i=discussions-manage', '', '', '', '', 2147483646, 1, 1, 6);
+
+-- MENU: custom menu for 'main' snippet meta info
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_forum_snippet_meta_main', '_bx_forum_menu_title_snippet_meta_main', 'bx_forum_snippet_meta_main', 'bx_forum', 15, 0, 1, 'BxForumMenuSnippetMeta', 'modules/boonex/forum/classes/BxForumMenuSnippetMeta.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_forum_snippet_meta_main', 'bx_forum', '_bx_forum_menu_set_title_snippet_meta_main', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES 
+('bx_forum_snippet_meta_main', 'bx_forum', 'author', '_sys_menu_item_title_system_sm_author', '_sys_menu_item_title_sm_author', '', '', '', '', '', 2147483647, 1, 0, 1, 1),
+('bx_forum_snippet_meta_main', 'bx_forum', 'date', '_sys_menu_item_title_system_sm_date', '_sys_menu_item_title_sm_date', '', '', '', '', '', 2147483647, 1, 0, 1, 2),
+('bx_forum_snippet_meta_main', 'bx_forum', 'category', '_sys_menu_item_title_system_sm_category', '_sys_menu_item_title_sm_category', '', '', '', '', '', 2147483647, 1, 0, 1, 3);
+
+-- MENU: custom menu for 'counters' snippet meta info
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_forum_snippet_meta_counters', '_bx_forum_menu_title_snippet_meta_counters', 'bx_forum_snippet_meta_counters', 'bx_forum', 15, 0, 1, 'BxForumMenuSnippetMeta', 'modules/boonex/forum/classes/BxForumMenuSnippetMeta.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_forum_snippet_meta_counters', 'bx_forum', '_bx_forum_menu_set_title_snippet_meta_counters', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES 
+('bx_forum_snippet_meta_counters', 'bx_forum', 'views', '_sys_menu_item_title_system_sm_views', '_sys_menu_item_title_sm_views', '', '', '', '', '', 2147483647, 1, 0, 1, 1),
+('bx_forum_snippet_meta_counters', 'bx_forum', 'votes', '_sys_menu_item_title_system_sm_votes', '_sys_menu_item_title_sm_votes', '', '', '', '', '', 2147483647, 1, 0, 1, 2),
+('bx_forum_snippet_meta_counters', 'bx_forum', 'comments', '_sys_menu_item_title_system_sm_comments', '_sys_menu_item_title_sm_comments', '', '', '', '', '', 2147483647, 1, 0, 1, 3);
+
+-- MENU: custom menu for 'reply' snippet meta info
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_forum_snippet_meta_reply', '_bx_forum_menu_title_snippet_meta_reply', 'bx_forum_snippet_meta_reply', 'bx_forum', 15, 0, 1, 'BxForumMenuSnippetMeta', 'modules/boonex/forum/classes/BxForumMenuSnippetMeta.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_forum_snippet_meta_reply', 'bx_forum', '_bx_forum_menu_set_title_snippet_meta_reply', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES 
+('bx_forum_snippet_meta_reply', 'bx_forum', 'reply-author', '_sys_menu_item_title_system_sm_author', '_sys_menu_item_title_sm_author', '', '', '', '', '', 2147483647, 1, 0, 1, 1),
+('bx_forum_snippet_meta_reply', 'bx_forum', 'reply-date', '_sys_menu_item_title_system_sm_date', '_sys_menu_item_title_sm_date', '', '', '', '', '', 2147483647, 1, 0, 1, 2),
+('bx_forum_snippet_meta_reply', 'bx_forum', 'reply-text', '_bx_forum_menu_item_title_system_sm_reply_text', '_bx_forum_menu_item_title_sm_reply_text', '', '', '', '', '', 2147483647, 1, 0, 1, 3);
+
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -318,16 +354,13 @@ INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `fie
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `params`, `order`) VALUES
 (@sName, 'author', '', '10%', '', 1),
-(@sName, 'lr_timestamp', '', '85%', '', 2),
-(@sName, 'comments', '', '5%', '', 3),
+(@sName, 'text', '', '90%', '', 2),
 
 ('bx_forum_favorite', 'author', '', '10%', '', 1),
-('bx_forum_favorite', 'lr_timestamp', '', '85%', '', 2),
-('bx_forum_favorite', 'comments', '', '5%', '', 3),
+('bx_forum_favorite', 'text', '', '90%', '', 2),
 
 ('bx_forum_feature', 'author', '', '10%', '', 1),
-('bx_forum_feature', 'lr_timestamp', '', '85%', '', 2),
-('bx_forum_feature', 'comments', '', '5%', '', 3);
+('bx_forum_feature', 'text', '', '90%', '', 2);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `confirm`, `order`) VALUES
 (@sName, 'independent', 'add', '_bx_forum_grid_action_title_add', '', 0, 1);
@@ -490,36 +523,6 @@ INSERT INTO `sys_objects_metatags` (`object`, `table_keywords`, `table_locations
 -- CATEGORY
 INSERT INTO `sys_objects_category` (`object`, `search_object`, `form_object`, `list_name`, `table`, `field`, `join`, `where`, `override_class_name`, `override_class_file`) VALUES
 ('bx_forum_cats', @sName, @sName, 'bx_forum_cats', 'bx_forum_discussions', 'cat', 'INNER JOIN `sys_profiles` ON (`sys_profiles`.`id` = `bx_forum_discussions`.`author` OR `sys_profiles`.`id` = -`bx_forum_discussions`.`author`)', 'AND `sys_profiles`.`status` = ''active''', 'BxForumCategory', 'modules/boonex/forum/classes/BxForumCategory.php');
-
-
--- COMMENTS
-INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
-(@sName, @sName, 'bx_forum_cmts', 1, 5000, 1000, 2, 5, 3, 'tail', 1, 'bottom', 0, 0, 1, -3, 1, 'cmt', 'page.php?i=view-discussion&id={object_id}', '', 'bx_forum_discussions', 'id', 'author', 'title', 'comments', 'BxForumCmts', 'modules/boonex/forum/classes/BxForumCmts.php');
-
-
--- VIEWS
-INSERT INTO `sys_objects_view` (`name`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-(@sName, 'bx_forum_views_track', '86400', '1', 'bx_forum_discussions', 'id', 'author', 'views', '', '');
-
-
--- VOTES
-INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
-(@sName, 'bx_forum_votes', 'bx_forum_votes_track', '604800', '1', '1', '0', '1', 'bx_forum_discussions', 'id', 'author', 'rate', 'votes', '', '');
-
-
--- SCORES
-INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
-(@sName, @sName, 'bx_forum_scores', 'bx_forum_scores_track', '604800', '0', 'bx_forum_discussions', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
-
-
--- FAFORITES
-INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-(@sName, 'bx_forum_favorites_track', '1', '1', '1', 'page.php?i=view-discussion&id={object_id}', 'bx_forum_discussions', 'id', 'author', 'favorites', '', '');
-
-
--- FEATURED
-INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
-(@sName, '1', '1', 'page.php?i=view-discussion&id={object_id}', 'bx_forum_discussions', 'id', 'author', 'featured', '', '');
 
 
 -- STATS

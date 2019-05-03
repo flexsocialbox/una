@@ -49,6 +49,15 @@ INSERT INTO `bx_timeline_handlers`(`group`, `type`, `alert_unit`, `alert_action`
 ('common_repost', 'insert', 'timeline_common_repost', '', ''),
 ('profile', 'delete', 'profile', 'delete', '');
 
+CREATE TABLE IF NOT EXISTS `bx_timeline_cache` (
+  `type` varchar(32) NOT NULL default '',
+  `context_id` int(11) NOT NULL default '0',
+  `profile_id` int(11) NOT NULL default '0',
+  `event_id` int(11) NOT NULL default '0',
+  `date` int(11) NOT NULL default '0',
+  PRIMARY KEY `item` (`type`, `context_id`, `profile_id`, `event_id`)
+);
+
 -- TABLES: STORAGES, TRANSCODERS, UPLOADERS
 CREATE TABLE IF NOT EXISTS `bx_timeline_photos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -286,15 +295,17 @@ CREATE TABLE IF NOT EXISTS `bx_timeline_scores_track` (
 SET @sStorageEngine = (SELECT `value` FROM `sys_options` WHERE `name` = 'sys_storage_default');
 
 INSERT INTO `sys_objects_uploader` (`object`, `active`, `override_class_name`, `override_class_file`) VALUES
-('bx_timeline_simple_photo', 1, 'BxTimelineUploaderSimplePhoto', 'modules/boonex/timeline/classes/BxTimelineUploaderSimplePhoto.php'),
-('bx_timeline_simple_video', 1, 'BxTimelineUploaderSimpleVideo', 'modules/boonex/timeline/classes/BxTimelineUploaderSimpleVideo.php');
+('bx_timeline_simple_photo', 1, 'BxTimelineUploaderSimpleAttach', 'modules/boonex/timeline/classes/BxTimelineUploaderSimpleAttach.php'),
+('bx_timeline_simple_video', 1, 'BxTimelineUploaderSimpleAttach', 'modules/boonex/timeline/classes/BxTimelineUploaderSimpleAttach.php'),
+('bx_timeline_html5_photo', 1, 'BxTimelineUploaderHTML5Attach', 'modules/boonex/timeline/classes/BxTimelineUploaderHTML5Attach.php'),
+('bx_timeline_html5_video', 1, 'BxTimelineUploaderHTML5Attach', 'modules/boonex/timeline/classes/BxTimelineUploaderHTML5Attach.php');
 
 INSERT INTO `sys_objects_storage` (`object`, `engine`, `params`, `token_life`, `cache_control`, `levels`, `table_files`, `ext_mode`, `ext_allow`, `ext_deny`, `quota_size`, `current_size`, `quota_number`, `current_number`, `max_file_size`, `ts`) VALUES
 ('bx_timeline_photos', @sStorageEngine, '', 360, 2592000, 3, 'bx_timeline_photos', 'allow-deny', 'jpg,jpeg,jpe,gif,png', '', 0, 0, 0, 0, 0, 0),
 ('bx_timeline_photos_processed', @sStorageEngine, '', 360, 2592000, 3, 'bx_timeline_photos_processed', 'allow-deny', 'jpg,jpeg,jpe,gif,png', '', 0, 0, 0, 0, 0, 0),
 
-('bx_timeline_videos', @sStorageEngine, '', 360, 2592000, 3, 'bx_timeline_videos', 'allow-deny', 'avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,divx,xvid,3gp,webm,jpg', '', 0, 0, 0, 0, 0, 0),
-('bx_timeline_videos_processed', @sStorageEngine, '', 360, 2592000, 3, 'bx_timeline_videos_processed', 'allow-deny', 'avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,divx,xvid,3gp,webm,jpg', '', 0, 0, 0, 0, 0, 0);
+('bx_timeline_videos', @sStorageEngine, '', 360, 2592000, 3, 'bx_timeline_videos', 'allow-deny', 'avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,qt,divx,xvid,3gp,3g2,webm,mkv,ogv,ogg,rm,rmvb,asf,drc', '', 0, 0, 0, 0, 0, 0),
+('bx_timeline_videos_processed', @sStorageEngine, '', 360, 2592000, 3, 'bx_timeline_videos_processed', 'allow-deny', 'jpg,jpeg,jpe,gif,png,avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,qt,divx,xvid,3gp,3g2,webm,mkv,ogv,ogg,rm,rmvb,asf,drc', '', 0, 0, 0, 0, 0, 0);
 
 INSERT INTO `sys_objects_transcoder` (`object`, `storage_object`, `source_type`, `source_params`, `private`, `atime_tracking`, `atime_pruning`, `ts`, `override_class_name`, `override_class_file`) VALUES
 ('bx_timeline_photos_preview', 'bx_timeline_photos_processed', 'Storage', 'a:1:{s:6:"object";s:18:"bx_timeline_photos";}', 'no', '1', '2592000', '0', '', ''),
@@ -308,8 +319,8 @@ INSERT INTO `sys_objects_transcoder` (`object`, `storage_object`, `source_type`,
 
 INSERT INTO `sys_transcoder_filters` (`transcoder_object`, `filter`, `filter_params`, `order`) VALUES
 ('bx_timeline_photos_preview', 'Resize', 'a:3:{s:1:"w";s:3:"100";s:1:"h";s:3:"100";s:13:"square_resize";s:1:"1";}', '0'),
-('bx_timeline_photos_view', 'Resize', 'a:3:{s:1:"w";s:3:"300";s:1:"h";s:3:"300";s:13:"square_resize";s:1:"1";}', '0'),
-('bx_timeline_photos_medium', 'Resize', 'a:3:{s:1:"w";s:3:"600";s:1:"h";s:3:"600";s:13:"square_resize";s:1:"1";}', '0'),
+('bx_timeline_photos_view', 'Resize', 'a:1:{s:1:"w";s:3:"300";}', '0'),
+('bx_timeline_photos_medium', 'Resize', 'a:1:{s:1:"w";s:3:"600";}', '0'),
 ('bx_timeline_photos_big', 'Resize', 'a:2:{s:1:"w";s:4:"1200";s:1:"h";s:4:"1200";}', '0'),
 
 ('bx_timeline_videos_poster', 'Poster', 'a:2:{s:1:"h";s:3:"318";s:10:"force_type";s:3:"jpg";}', 0),
@@ -335,11 +346,11 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('bx_timeline_post', @sName, 'text', '', '', 0, 'textarea', '_bx_timeline_form_post_input_sys_text', '_bx_timeline_form_post_input_text', '', 0, 0, 3, 'a:1:{s:12:"autocomplete";s:3:"off";}', '', '', '', '', '', 'XssHtml', '', 1, 0),
 ('bx_timeline_post', @sName, 'anonymous', '', '', 0, 'switcher', '_sys_form_input_sys_anonymous', '_sys_form_input_anonymous', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_timeline_post', @sName, 'date', '', '', 0, 'datetime', '_bx_timeline_form_post_input_sys_date', '_bx_timeline_form_post_input_date', '_bx_timeline_form_post_input_date_info', 0, 0, 0, '', '', '', '', '', '', 'DateTimeUtc', '', 1, 0),
-('bx_timeline_post', @sName, 'object_privacy_view', '', '', 0, 'custom', '_bx_timeline_form_post_input_sys_object_privacy_view', '_bx_timeline_form_post_input_object_privacy_view', '', 1, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_timeline_post', @sName, 'object_privacy_view', '', '', 0, 'custom', '_bx_timeline_form_post_input_sys_object_privacy_view', '_bx_timeline_form_post_input_object_privacy_view', '', 1, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 ('bx_timeline_post', @sName, 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_timeline_post', @sName, 'link', '', '', 0, 'custom', '_bx_timeline_form_post_input_sys_link', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_timeline_post', @sName, 'photo', 'a:1:{i:0;s:24:"bx_timeline_simple_photo";}', 'a:1:{s:24:"bx_timeline_simple_photo";s:26:"_sys_uploader_simple_title";}', 0, 'files', '_bx_timeline_form_post_input_sys_photo', '_bx_timeline_form_post_input_photo', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_timeline_post', @sName, 'video', 'a:1:{i:0;s:24:"bx_timeline_simple_video";}', 'a:1:{s:24:"bx_timeline_simple_video";s:26:"_sys_uploader_simple_title";}', 0, 'files', '_bx_timeline_form_post_input_sys_video', '_bx_timeline_form_post_input_video', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_timeline_post', @sName, 'photo', 'a:1:{i:0;s:23:"bx_timeline_html5_photo";}', 'a:2:{s:24:"bx_timeline_simple_photo";s:26:"_sys_uploader_simple_title";s:23:"bx_timeline_html5_photo";s:25:"_sys_uploader_html5_title";}', 0, 'files', '_bx_timeline_form_post_input_sys_photo', '_bx_timeline_form_post_input_photo', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_timeline_post', @sName, 'video', 'a:1:{i:0;s:23:"bx_timeline_html5_video";}', 'a:2:{s:24:"bx_timeline_simple_video";s:26:"_sys_uploader_simple_title";s:23:"bx_timeline_html5_video";s:25:"_sys_uploader_html5_title";}', 0, 'files', '_bx_timeline_form_post_input_sys_video', '_bx_timeline_form_post_input_video', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_timeline_post', @sName, 'attachments', '', '', 0, 'custom', '_bx_timeline_form_post_input_sys_attachments', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_timeline_post', @sName, 'controls', '', 'tlb_do_submit,tlb_do_cancel', 0, 'input_set', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 ('bx_timeline_post', @sName, 'tlb_do_submit', '_bx_timeline_form_post_input_do_submit', '', 0, 'submit', '_bx_timeline_form_post_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
@@ -413,6 +424,37 @@ INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_fo
 ('bx_timeline_attach_link_add', 'controls', 2147483647, 1, 2),
 ('bx_timeline_attach_link_add', 'do_submit', 2147483647, 1, 3),
 ('bx_timeline_attach_link_add', 'do_cancel', 2147483647, 1, 4);
+
+
+-- COMMENTS
+INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
+('bx_timeline', 'bx_timeline', 'bx_timeline_comments', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=item&id={object_id}', '', 'bx_timeline_events', 'id', 'object_id', 'title', 'comments', '', '');
+
+
+-- VIEWS
+INSERT INTO `sys_objects_view` (`name`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_timeline', 'bx_timeline_views_track', '86400', '1', 'bx_timeline_events', 'id', 'object_id', 'views', '', '');
+
+
+-- VOTES
+INSERT INTO `sys_objects_vote`(`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
+('bx_timeline', 'bx_timeline_votes', 'bx_timeline_votes_track', '604800', '1', '1', '0', '1', 'bx_timeline_events', 'id', 'object_id', 'rate', 'votes', 'BxTimelineVoteLikes', 'modules/boonex/timeline/classes/BxTimelineVoteLikes.php');
+
+
+-- SCORES
+INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
+('bx_timeline', 'bx_timeline', 'bx_timeline_scores', 'bx_timeline_scores_track', '604800', '0', 'bx_timeline_events', 'id', 'object_id', 'score', 'sc_up', 'sc_down', '', '');
+
+
+-- REPORTS
+INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_timeline', 'bx_timeline_reports', 'bx_timeline_reports_track', '1', 'page.php?i=item&id={object_id}', 'bx_timeline_events', 'id', 'owner_id', 'reports',  'BxTimelineReport', 'modules/boonex/timeline/classes/BxTimelineReport.php');
+
+
+-- CONTENT INFO
+INSERT INTO `sys_objects_content_info` (`name`, `title`, `alert_unit`, `alert_action_add`, `alert_action_update`, `alert_action_delete`, `class_name`, `class_file`) VALUES
+('bx_timeline', '_bx_timeline', 'bx_timeline', 'post_common', '', 'delete', '', ''),
+('bx_timeline_cmts', '_bx_timeline_cmts', 'bx_timeline', 'commentPost', 'commentUpdated', 'commentRemoved', 'BxDolContentInfoCmts', '');
 
 
 -- STUDIO PAGE & WIDGET

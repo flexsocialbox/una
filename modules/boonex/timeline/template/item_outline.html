@@ -2,28 +2,27 @@
     <a name="timeline-event-__id__"></a>
 	<div class="__style_prefix__-item-ind bx-def-padding-sec">
 	    <div class="__style_prefix__-item-cnt bx-def-box bx-def-padding-topbottom bx-def-round-corners __class_content__">
-            <div class="__style_prefix__-blink-plate"></div>
-            <bx_if:show_note>
-	            <div class="__style_prefix__-item-note bx-def-margin-leftright">
-	                <div class="__style_prefix__-in-text bx-def-font-grayed<bx_if:show_note_color> col-__item_note_color__</bx_if:show_note_color>">__item_note__</div>
-	                <div class="__style_prefix__-in-divider bx-def-hr bx-def-margin-sec-topbottom"></div>
-	            </div>
-	        </bx_if:show_note>
+                <div class="__style_prefix__-blink-plate"></div>
+                <bx_if:show_note>
+                    <div class="__style_prefix__-item-note bx-def-margin-leftright">
+                        <div class="__style_prefix__-in-text bx-def-font-grayed<bx_if:show_note_color> col-__item_note_color__</bx_if:show_note_color>">__item_note__</div>
+                        <div class="__style_prefix__-in-divider bx-def-hr bx-def-margin-sec-topbottom"></div>
+                    </div>
+                </bx_if:show_note>
 	    	<div class="__style_prefix__-item-owner bx-def-margin-leftright __class_owner__"> 
                     <div class="__style_prefix__-owner-avatar bx-def-thumb-size">__item_owner_unit__</div>
                         <div class="__style_prefix__-owner-info bx-def-thumb-size-min-height bx-def-thumb-size-left-indent">
                             <!-- NOTE: Spaces after and between elements in 'owner-name' DIV are needed for better line folding -->
-                            <div class="__style_prefix__-owner-name bx-def-font-middle bx-def-font-light bx-def-font-grayed">
-                                <a href="__item_owner_url__" class="__style_prefix__-owner-name" title="__item_owner_title__">__item_owner_name__</a> 
+                            <div class="__style_prefix__-owner-name bx-def-font-middle bx-def-font-grayed">
+                                <a href="__item_owner_url__" class="__style_prefix__-owner-name" title="__item_owner_title__">__item_owner_name__</a> <span> __item_owner_action__ </span> 
                                 <bx_if:show_timeline_owner>
-                                    <i class="sys-icon caret-right"></i>
+                                    <span> <bx_text:_bx_timeline_txt_to /> </span> 
                                     <span class="__style_prefix__-timeline-owner-name">
                                         <bx_repeat:owners><span class="__style_prefix__-ton-div">, </span><a href="__owner_url__" class="__style_prefix__-ton-item">__owner_username__</a></bx_repeat:owners>
                                     </span>
                                 </bx_if:show_timeline_owner>
-                                <span class="bx-def-font-small"> __item_owner_action__ </span> 
                                 <bx_if:show_menu_item_meta>
-                                    <span class="__style_prefix__-item-meta bx-def-font-small">__meta__</span>
+                                    <br /><span class="__style_prefix__-item-meta bx-def-font-grayed">__meta__</span>
                                 </bx_if:show_menu_item_meta>
                                 <bx_if:show_pinned>
                                     <span class="__style_prefix__-pinned bx-def-margin-thd-left">

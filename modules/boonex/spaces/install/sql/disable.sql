@@ -19,27 +19,6 @@ DELETE FROM `sys_menu_items` WHERE `module` = 'bx_spaces' OR `set_name` IN('bx_s
 DELETE `sys_acl_actions`, `sys_acl_matrix` FROM `sys_acl_actions`, `sys_acl_matrix` WHERE `sys_acl_matrix`.`IDAction` = `sys_acl_actions`.`ID` AND `sys_acl_actions`.`Module` = 'bx_spaces';
 DELETE FROM `sys_acl_actions` WHERE `Module` = 'bx_spaces';
 
--- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = 'bx_spaces';
-
--- VIEWS
-DELETE FROM `sys_objects_view` WHERE `name` = 'bx_spaces';
-
--- VOTES
-DELETE FROM `sys_objects_vote` WHERE `Name` = 'bx_spaces';
-
--- SCORES
-DELETE FROM `sys_objects_score` WHERE `name` = 'bx_spaces';
-
--- REPORTS
-DELETE FROM `sys_objects_report` WHERE `name` = 'bx_spaces';
-
--- FAFORITES
-DELETE FROM `sys_objects_favorite` WHERE `name` = 'bx_spaces';
-
--- FEATURED
-DELETE FROM `sys_objects_feature` WHERE `name` = 'bx_spaces';
-
 -- METATAGS
 DELETE FROM `sys_objects_metatags` WHERE `object` = 'bx_spaces';
 
@@ -69,10 +48,10 @@ DELETE FROM `sys_alerts` WHERE `handler_id` = @iHandler;
 DELETE FROM `sys_alerts_handlers` WHERE `id` = @iHandler;
 
 -- PRIVACY 
-DELETE FROM `sys_objects_privacy` WHERE `object` IN('bx_spaces_allow_view_to', 'bx_spaces_allow_view_notification_to');
+DELETE FROM `sys_objects_privacy` WHERE `object` IN ('bx_spaces_allow_view_to', 'bx_spaces_allow_view_notification_to', 'bx_spaces_allow_post_to');
 
 -- EMAIL TEMPLATES
 DELETE FROM `sys_email_templates` WHERE `Module` = 'bx_spaces';
 
 -- UPLOADERS
-DELETE FROM `sys_objects_uploader` WHERE `object` IN('bx_spaces_cover_crop', 'bx_spaces_picture_crop');
+DELETE FROM `sys_objects_uploader` WHERE `object` IN ('bx_spaces_cover_crop', 'bx_spaces_picture_crop');

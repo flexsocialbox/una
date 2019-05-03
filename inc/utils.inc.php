@@ -390,7 +390,8 @@ function sendMail($sRecipientEmail, $sMailSubject, $sMailBody, $iRecipientID = 0
 
     $sMailParameters = isset($aCustomHeaders['Sender']) ? "-f{$aCustomHeaders['Sender']}" : "-f{$sEmailNotify}";
 
-    $sMailSubject = !isset($aCustomHeaders['Subject']) ? '=?UTF-8?B?' . base64_encode( $sMailSubject ) . '?=' : $aCustomHeaders['Subject'];
+    if (isset($aCustomHeaders['Subject']))
+        $sMailSubject = $aCustomHeaders['Subject'];
 
     // build data for alert handler
     $bResult = null;
@@ -421,6 +422,10 @@ function sendMail($sRecipientEmail, $sMailSubject, $sMailBody, $iRecipientID = 0
         $sMailHeader = "Content-type: text/plain; charset=UTF-8\r\n" . $sMailHeader;
         $sMailBody = html2txt($sMailBody);
     }
+
+    // encode subject
+    if (0 !== strncasecmp($sMailSubject, '=?UTF-8?B?', 10))
+        $sMailSubject = '=?UTF-8?B?' . base64_encode($sMailSubject) . '?=';
 
     // send mail or put it into queue
     $bResult = mail($sRecipientEmail, $sMailSubject, $sMailBody, $sMailHeader, $sMailParameters);
@@ -1590,7 +1595,7 @@ function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
     if ($bHtmlSpecialChars)
         $text = htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8');
 
-    $re = "@\b((https?://)|(www\.))(([0-9a-zA-Z_!~*'().&=+$%-]+:)?[0-9a-zA-Z_!~*'().&=+$%-]+\@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+\.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z]\.[a-zA-Z]{2,6})(:[0-9]{1,4})?((/[0-9a-zA-Z_!~*'().;?:\@&=+$,%#-]+)*/?)@";
+    $re = "@\b((https?://)|(www\.))(([0-9a-zA-Z_!~*'().&=+$%-]+:)?[0-9a-zA-Z_!~*'().&=+$%-]+\@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+\.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z]\.[a-zA-Z]{2,7})(:[0-9]{1,4})?((/[0-9a-zA-Z_!~*'().;?:\@&=+$,%#-]+)*/?)@";
     preg_match_all($re, $text, $matches, PREG_OFFSET_CAPTURE);
 
     $matches = $matches[0];

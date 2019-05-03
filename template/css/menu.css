@@ -524,16 +524,21 @@ li.bx-menu-inter-hidden {
 /* --------------- horizontal buttons menu */
 
 ul.bx-menu-btns-ver,
-ul.bx-menu-btns-hor {
-	padding:0;
+ul.bx-menu-btns-hor,
+ul.bx-menu-btns-icon-hor {
+    padding:0;
     margin:0;
-	list-style:none;
+    list-style:none;
+}
+ul.bx-menu-btns-ver,
+ul.bx-menu-btns-hor {
     text-align:center;
 }
-ul.bx-menu-btns-hor li {
+ul.bx-menu-btns-hor li,
+ul.bx-menu-btns-icon-hor li {
     display:inline;
     display:inline-block;
-	vertical-align: bottom;
+    vertical-align: bottom;
 }
 ul.bx-menu-btns-ver li {
     text-align:center;
@@ -542,8 +547,8 @@ ul.bx-menu-btns-ver li .bx-btn {
     float:none;
     display:inline-block;
 }
-
-ul.bx-menu-btns-hor li:last-child .bx-btn {
+ul.bx-menu-btns-hor li:last-child .bx-btn,
+ul.bx-menu-btns-icon-hor li:last-child .bx-btn {
     margin-right:0;
 }
 
@@ -644,12 +649,6 @@ ul.bx-menu-btns-hor li:last-child .bx-btn {
     box-shadow: none;
     text-shadow: none;
 }
-.bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-submenu-more-auto .bx-menu-item a,
-.bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-submenu-more-auto .bx-menu-item .bx-btn,
-.bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-submenu-more-auto .bx-menu-item .bx-btn .sys-icon {
-    color: inherit;
-}
-
 .bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-item.bx-base-general-ea-sa .bx-view-element-holder a span,
 .bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-item.bx-base-general-ea-sa .bx-vote-element-holder a span,
 .bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-item.bx-base-general-ea-sa .bx-favorite-element-holder a span,
@@ -704,8 +703,8 @@ ul.bx-menu-btns-hor li:last-child .bx-btn {
 
 /* --------------- profile stats menu */
 .bx-menu-ver.bx-menu-object-sys_profile_stats li {
-	position: relative;
-	display: -webkit-flex;
+    position: relative;
+    display: -webkit-flex;
     display: flex;
     -webkit-flex-flow: row nowrap;
     flex-flow: row nowrap;
@@ -714,16 +713,15 @@ ul.bx-menu-btns-hor li:last-child .bx-btn {
     -webkit-justify-content: space-between;
     justify-content: space-between;
 
-	margin: 0.625rem 0;
-
-	border-radius: 0;
+    border-width: 0;
+    border-radius: 0;
 }
 .bx-menu-ver.bx-menu-object-sys_profile_stats li a {
-	-webkit-flex-grow: 3;
-	flex-grow: 3;
+    -webkit-flex-grow: 3;
+    flex-grow: 3;
 
-	position: relative;
-	display: -webkit-flex;
+    position: relative;
+    display: -webkit-flex;
     display: flex;
     -webkit-flex-flow: row nowrap;
     flex-flow: row nowrap;
@@ -731,20 +729,28 @@ ul.bx-menu-btns-hor li:last-child .bx-btn {
     align-items: center;
     -webkit-justify-content: flex-start;
     justify-content: flex-start;
-}
-.bx-menu-ver.bx-menu-object-sys_profile_stats li .bx-menu-addon-cnt {
-	height: 1.5rem;
 
-	border-radius: 1.0rem;
-
-	line-height: 1.4rem;
+    line-height: 1.5rem;
 }
 .bx-menu-ver.bx-menu-object-sys_profile_stats li img, 
 .bx-menu-ver.bx-menu-object-sys_profile_stats li .sys-icon {
-	display: inline-block;
+    display: inline-block;
     vertical-align: top;
-	width: 1.5rem;
-	height: 1.5rem;
-	line-height: 1.5rem;
-	font-size: 1.5rem;
+    width: 1.0rem;
+    height: 1.0rem;
+    line-height: 1.0rem;
+    font-size: 1.0rem;
+}
+
+/* --------------- add relation menu */
+.bx-popup .bx-menu-ver.bx-menu-object-sys_add_relation li a {
+    line-height: normal;
+}
+.bx-popup .bx-menu-ver.bx-menu-object-sys_add_relation li a span {
+    margin-left: 0;
+    text-transform: capitalize;
+}
+
+.bx-menu-add-relation-hidden {
+    display: none;
 }

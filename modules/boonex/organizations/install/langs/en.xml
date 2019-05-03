@@ -34,6 +34,8 @@
     <string name="_bx_orgs_form_profile_input_allow_view_to"><![CDATA[Visible to]]></string>
     <string name="_bx_orgs_form_profile_input_allow_view_to_info"><![CDATA[Closed - anyone can find the organization and see who's in it, only members can see posts. Secret - only members can find the organization and see posts.]]></string>
     <string name="_bx_orgs_form_profile_input_allow_view_notification_to"><![CDATA[Show notifications to]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_allow_post_to"><![CDATA[Who can post]]></string>
+    <string name="_bx_orgs_form_profile_input_allow_post_to"><![CDATA[Who can post]]></string>
     <string name="_bx_orgs_form_profile_input_sys_initial_members"><![CDATA[Invite Members]]></string>
     <string name="_bx_orgs_form_profile_input_initial_members"><![CDATA[Invite Members]]></string>
     <string name="_bx_orgs_form_profile_input_sys_org_name"><![CDATA[Organization Name]]></string>
@@ -65,6 +67,10 @@
     <string name="_bx_orgs_form_profile_input_date_added"><![CDATA[Added]]></string>
     <string name="_bx_orgs_form_profile_input_sys_date_changed"><![CDATA[Updated]]></string>
     <string name="_bx_orgs_form_profile_input_date_changed"><![CDATA[Updated]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_friends_count"><![CDATA[Friends count]]></string>
+    <string name="_bx_orgs_form_profile_input_friends_count"><![CDATA[Friends count]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_followers_count"><![CDATA[Followers count]]></string>
+    <string name="_bx_orgs_form_profile_input_followers_count"><![CDATA[Followers count]]></string>
 
 	<string name="_bx_orgs_acl_action_create_profile"><![CDATA[Create Organization's Profile]]></string>
 	<string name="_bx_orgs_acl_action_delete_profile"><![CDATA[Delete Organization's Profile]]></string>
@@ -101,6 +107,8 @@
     <string name="_bx_orgs_page_title_friend_requests"><![CDATA[Friend Requests]]></string>
 	<string name="_bx_orgs_page_title_sys_profile_subscriptions"><![CDATA[Following]]></string>
     <string name="_bx_orgs_page_title_profile_subscriptions"><![CDATA[Following & Followers]]></string>
+    <string name="_bx_orgs_page_title_sys_profile_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_page_title_profile_relations"><![CDATA[Relationships]]></string>
     <string name="_bx_orgs_page_title_sys_fans"><![CDATA[Members]]></string>
     <string name="_bx_orgs_page_title_fans"><![CDATA[Members]]></string>
     <string name="_bx_orgs_page_title_sys_profile_comments"><![CDATA[Comments]]></string>
@@ -152,6 +160,10 @@
     <string name="_bx_orgs_page_block_title_profile_subscriptions"><![CDATA[Following]]></string>
     <string name="_bx_orgs_page_block_title_system_profile_subscribed_me"><![CDATA[Followers]]></string>
     <string name="_bx_orgs_page_block_title_profile_subscribed_me"><![CDATA[Followers]]></string>
+    <string name="_bx_orgs_page_block_title_system_profile_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_page_block_title_profile_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_page_block_title_system_profile_related_me"><![CDATA[Relationships with Me]]></string>
+    <string name="_bx_orgs_page_block_title_profile_related_me"><![CDATA[Relationships with Me]]></string>
     <string name="_bx_orgs_page_block_title_profile_comments"><![CDATA[Comments]]></string>
     <string name="_bx_orgs_page_block_title_profile_comments_link"><![CDATA[Comments to <a href="{entry_link}">{title}</a>]]></string>
 	<string name="_bx_orgs_page_block_title_profile_actions"><![CDATA[Actions]]></string>
@@ -218,6 +230,8 @@
     <string name="_bx_orgs_menu_item_title_view_profile_fans"><![CDATA[Members]]></string>
     <string name="_bx_orgs_menu_item_title_system_view_profile_friends"><![CDATA[Friends]]></string>
     <string name="_bx_orgs_menu_item_title_view_profile_friends"><![CDATA[Friends]]></string>
+    <string name="_bx_orgs_menu_item_title_system_view_profile_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_menu_item_title_view_profile_relations"><![CDATA[Relationships]]></string>
     <string name="_bx_orgs_menu_item_title_system_view_profile_subscriptions"><![CDATA[Following]]></string>
     <string name="_bx_orgs_menu_item_title_view_profile_subscriptions"><![CDATA[Following]]></string>
     <string name="_bx_orgs_menu_item_title_system_view_profile_comments"><![CDATA[Comments]]></string>
@@ -250,12 +264,18 @@
     <string name="_bx_orgs_menu_item_title_subscribe"><![CDATA[Follow]]></string>
     <string name="_bx_orgs_menu_item_title_system_unsubscribe"><![CDATA[Unfollow]]></string>
     <string name="_bx_orgs_menu_item_title_unsubscribe"><![CDATA[Unfollow]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relation_add"><![CDATA[Add Relationship]]></string>
+    <string name="_bx_orgs_menu_item_title_relation_add"><![CDATA[Add Relationship]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relation_delete"><![CDATA[Remove Relationship]]></string>
+    <string name="_bx_orgs_menu_item_title_relation_delete"><![CDATA[Remove Relationship]]></string>
     <string name="_bx_orgs_menu_item_title_system_more_actions"><![CDATA[More Actions]]></string>
     <string name="_bx_orgs_menu_item_title_more_actions"><![CDATA[]]></string>
     <string name="_bx_orgs_menu_item_title_system_friends"><![CDATA[Friends]]></string>
     <string name="_bx_orgs_menu_item_title_friends"><![CDATA[Friends]]></string>
     <string name="_bx_orgs_menu_item_title_system_friend_requests"><![CDATA[Friend requests number]]></string>
     <string name="_bx_orgs_menu_item_title_friend_requests"><![CDATA[Friend requests]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_menu_item_title_relations"><![CDATA[Relationships]]></string>
     <string name="_bx_orgs_menu_item_title_system_manage_my_organizations"><![CDATA[My organizations]]></string>
     <string name="_bx_orgs_menu_item_title_manage_my_organizations"><![CDATA[Organizations]]></string>
     <string name="_bx_orgs_menu_item_title_system_favorites"><![CDATA[Favorite Organizations]]></string>
@@ -264,6 +284,10 @@
     <string name="_bx_orgs_menu_item_title_subscriptions"><![CDATA[Following]]></string>
     <string name="_bx_orgs_menu_item_title_system_subscribed_me"><![CDATA[Followers]]></string>
     <string name="_bx_orgs_menu_item_title_subscribed_me"><![CDATA[Followers]]></string>
+    <string name="_bx_orgs_menu_item_title_system_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_menu_item_title_relations"><![CDATA[Relationships]]></string>
+    <string name="_bx_orgs_menu_item_title_system_related_me"><![CDATA[Relationships with Me]]></string>
+    <string name="_bx_orgs_menu_item_title_related_me"><![CDATA[Relationships with Me]]></string>
     <string name="_bx_orgs_menu_item_title_system_entries_recent"><![CDATA[New]]></string>
     <string name="_bx_orgs_menu_item_title_entries_recent"><![CDATA[New]]></string>
     <string name="_bx_orgs_menu_item_title_system_entries_search"><![CDATA[Search]]></string>
@@ -289,7 +313,7 @@
 	<string name="_bx_orgs_grid_filter_item_title_adm_suspended"><![CDATA[Suspended]]></string>
 	<string name="_bx_orgs_grid_column_title_adm_active"><![CDATA[Active]]></string>
     <string name="_bx_orgs_grid_column_title_adm_fullname"><![CDATA[Name]]></string>
-    <string name="_bx_orgs_grid_column_title_adm_last_online"><![CDATA[Last Online]]></string>
+    <string name="_bx_orgs_grid_column_title_adm_last_online"><![CDATA[Last Logged]]></string>
     <string name="_bx_orgs_grid_column_title_adm_account"><![CDATA[Account]]></string>
     <string name="_bx_orgs_grid_action_title_adm_delete"><![CDATA[Delete]]></string>
     <string name="_bx_orgs_grid_action_title_adm_delete_with_content"><![CDATA[Delete With Content]]></string>
@@ -367,6 +391,7 @@
     <string name="_bx_orgs_txt_to_admins"><![CDATA[To Admins]]></string>
     <string name="_bx_orgs_txt_from_admins"><![CDATA[From Admins]]></string>
     <string name="_bx_orgs_txt_private_organization"><![CDATA[Private organization]]></string>
+    <string name="_bx_orgs_ps_group_title_participants"><![CDATA[Employees]]></string>
 
     <string name="_bx_orgs_email_friend_request"><![CDATA[Friend request]]></string>
     <string name="_bx_orgs_email_friend_request_subject"><![CDATA[Friendship Request]]></string>

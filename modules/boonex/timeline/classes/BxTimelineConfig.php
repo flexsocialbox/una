@@ -18,6 +18,12 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     protected $_bAllowEdit;
     protected $_bAllowDelete;
     protected $_bShowAll;
+    protected $_bCountAllViews;
+
+    protected $_bCacheItem;
+    protected $_sCacheItemEngine;
+    protected $_iCacheItemLifetime;
+    protected $_bCacheList;
 
     protected $_iRssLength;
     protected $_iLiveUpdateLength;
@@ -82,6 +88,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
             'OBJECT_STORAGE' => $this->_sName . '_photos',
             'OBJECT_GRID_ADMINISTRATION' => $this->_sName . '_administration',
             'OBJECT_IMAGES_TRANSCODER_PREVIEW' => $this->_sName . '_photos_preview',
+            'OBJECT_MENU_ENTRY_ATTACHMENTS' => $this->_sName . '_menu_post_attachments',
             'OBJECT_METATAGS' => $this->_sName,
             'OBJECT_COMMENTS' => $this->_sName,
             'OBJECT_VIEWS' => $this->_sName,
@@ -114,7 +121,8 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
             'style' => 'bx-tl',
             'language' => '_bx_timeline',
             'option' => 'bx_timeline_',
-            'common_post' => 'timeline_common_'
+            'common_post' => 'timeline_common_',
+            'cache_item' => 'bx_timeline_item_'
         );
 
         $this->_aObjects = array_merge($this->_aObjects, array(
@@ -140,7 +148,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
             'menu_item_manage' => $this->_sName . '_menu_item_manage',
             'menu_item_actions' => $this->_sName . '_menu_item_actions',
             'menu_item_meta' => $this->_sName . '_menu_item_meta',
-            'menu_post_attachments' => $this->_sName . '_menu_post_attachments',
+            'menu_post_attachments' => $this->CNF['OBJECT_MENU_ENTRY_ATTACHMENTS'],
 
             'form_post' => $this->_sName . '_post',
             'form_attach_link' => $this->_sName . '_attach_link',
@@ -177,33 +185,12 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         );
 
         $sHp = str_replace('_', '-', $this->_sName);
-        $sHpI = BX_TIMELINE_VIEW_ITEM;
         $sHpT = BX_TIMELINE_VIEW_TIMELINE;
         $sHpO = BX_TIMELINE_VIEW_OUTLINE;
-        $sHpS = BX_TIMELINE_VIEW_SEARCH;
         $this->_aHtmlIds = array(
             'view' => array(
                 'edit_form' => $sHp . '-edit-',
 
-                'main_' . $sHpI => $sHp . '-' . $sHpI,
-                'item_' . $sHpI => $sHp . '-item-' . $sHpI . '-',
-                'item_popup_' . $sHpI => $sHp . '-item-popup-' . $sHpI,
-                'photo_popup_' . $sHpI => $sHp . '-photo-popup-' . $sHpI,
-
-                'main_' . $sHpT => $sHp . '-' . $sHpT,
-                'item_' . $sHpT => $sHp . '-item-' . $sHpT . '-',
-                'item_popup_' . $sHpT => $sHp . '-item-popup-' . $sHpT,
-                'photo_popup_' . $sHpT => $sHp . '-photo-popup-' . $sHpT,
-
-                'main_' . $sHpO => $sHp . '-' . $sHpO,
-                'item_' . $sHpO => $sHp . '-item-' . $sHpO . '-',
-                'item_popup_' . $sHpO => $sHp . '-item-popup-' . $sHpO,
-                'photo_popup_' . $sHpO => $sHp . '-photo-popup-' . $sHpO,
-
-                'main_' . $sHpS => $sHp . '-' . $sHpS,
-                'photo_popup_' . $sHpS => $sHp . '-photo-popup-' . $sHpS,
-
-                'main_item' => $sHp . '-item',
                 'menu_popup' => $sHp . '-menu-popup-',
 
                 'video_iframe' => $sHp . '-video-iframe-',
@@ -266,6 +253,12 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     	$this->_bAllowEdit = getParam($sOptionPrefix . 'enable_edit') == 'on';
         $this->_bAllowDelete = getParam($sOptionPrefix . 'enable_delete') == 'on';
         $this->_bShowAll = getParam($sOptionPrefix . 'enable_show_all') == 'on';
+        $this->_bCountAllViews = getParam($sOptionPrefix . 'enable_count_all_views') == 'on';
+
+        $this->_bCacheItem = getParam($sOptionPrefix . 'enable_cache_item') == 'on';
+        $this->_sCacheItemEngine = getParam($sOptionPrefix . 'cache_item_engine');
+        $this->_iCacheItemLifetime = (int)getParam($sOptionPrefix . 'cache_item_lifetime');
+        $this->_bCacheList = getParam($sOptionPrefix . 'enable_cache_list') == 'on';
 
         $this->_aPerPage = array(
             'default' => (int)getParam($sOptionPrefix . 'events_per_page'),
@@ -293,6 +286,43 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         $this->_bUnhideRestored = false;
     }
 
+    protected function getNameView($aParams, $bWithOwner = false, $sGlue = '_')
+    {
+        $aAddons = array();
+        if(!empty($aParams['name']))
+            $aAddons[] = $aParams['name'];
+        else {
+            if(!empty($aParams['view']))
+                $aAddons[] = $aParams['view'];
+
+            if(!empty($aParams['type']))
+                $aAddons[] = $aParams['type'];
+        }
+
+        if($bWithOwner)
+            $aAddons[] = $aParams['owner_id'];
+
+        return !empty($aAddons) ? implode('_', $aAddons) : '';
+    }
+
+    /**
+     * Generates unique JS object name for View events block.
+     * 
+     * @param array $aParams - an array with browsing params received in View block service method
+     * @return string with JS object name
+     */
+    public function getJsObjectView($aParams = array())
+    {
+        return parent::getJsObject('view') . bx_gen_method_name($this->getNameView($aParams));
+    }
+
+    public function getHtmlIdView($sKey, $aParams, $bWhole = true)
+    {
+        $sDiv = '_';
+
+        return str_replace($sDiv, '-', $this->_sName  . $sDiv . $sKey . $sDiv . $this->getNameView($aParams) . (!$bWhole ? $sDiv : ''));
+    }
+
     public function isAllowEdit()
     {
         return $this->_bAllowEdit;
@@ -308,6 +338,11 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         return $this->_bShowAll;
     }
 
+    public function isCountAllViews()
+    {
+        return $this->_bCountAllViews;
+    }
+
     public function isHot()
     {
         return $this->_bHot;
@@ -321,6 +356,31 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     public function isUnhideRestored()
     {
         return $this->_bUnhideRestored;
+    }
+
+    public function isCacheItem()
+    {
+        return $this->_bCacheItem;
+    }
+
+    public function isCacheList()
+    {
+        return $this->_bCacheList;
+    }
+
+    public function getCacheItemEngine()
+    {
+        return $this->_sCacheItemEngine;
+    }
+
+    public function getCacheItemLifetime()
+    {
+        return $this->_iCacheItemLifetime;
+    }
+
+    public function getCacheItemKey($iId, $sPostfix = '')
+    {
+        return $this->getPrefix('cache_item') . $iId . (!empty($sPostfix) ? '_' . $sPostfix : '') . '.php';
     }
 
     public function getPostFormDisplay($sType)
@@ -442,9 +502,9 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         ));
     }
 
-    public function getLiveUpdateKey($sType, $iOwnerId)
+    public function getLiveUpdateKey($aParams)
     {
-        return $this->getName() . '_live_update_' . $sType . '_' . $iOwnerId;
+        return $this->getName() . '_live_update_' . $this->getNameView($aParams, true);
     }
 
     public function isCommon($sType, $sAction)
@@ -487,6 +547,16 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         $sUrl2 = trim($sUrl2, "/");
 
         return strncmp($sUrl1, $sUrl2, strlen($sUrl1)) === 0;
+    }
+
+    public function addBrowseParams($sUrl, $aParams, $sKey = 'bp')
+    {
+        return bx_append_url_params($sUrl, array($sKey => urlencode(base64_encode(serialize($aParams)))));
+    }
+
+    public function getBrowseParams($sValue)
+    {
+        return unserialize(base64_decode(urldecode($sValue)));
     }
 }
 

@@ -100,30 +100,32 @@ class BxBaseStudioStore extends BxDolStudioStore
 
         $mixedResult = $this->authorizeClient();
         if($mixedResult === true) {
-	        $aProducts = $this->loadGoodies();
+            $aProducts = $this->loadGoodies();
 
-	        $sContent = "";
-	        $sContent .= $this->getBlocksLine(array(
+            $sContent = "";
+            $sContent .= $this->displayNonOwnerNotification();
+
+            $sContent .= $this->getBlocksLine(array(
                 array(
-    	            'caption' => '_adm_block_cpt_categories',
-                	'actions' => array(),
+                    'caption' => '_adm_block_cpt_categories',
+                        'actions' => array(),
                     'items' => $this->getCategoriesList(false)
                 ),
                 array(
-    	            'caption' => '_adm_block_cpt_tags',
-                	'actions' => array(),
+                    'caption' => '_adm_block_cpt_tags',
+                        'actions' => array(),
                     'items' => $this->getTagsList(false)
                 )
-            ));        
+            ));
 
-	        foreach($aProducts as $aBlock) {
-	            $aBlock['items'] = $oTemplate->parseHtmlByName('str_products.html', array(
-	                'list' => $this->displayProducts($aBlock['items']),
-	                'paginate' => ''
-	            ));
+            foreach($aProducts as $aBlock) {
+                $aBlock['items'] = $oTemplate->parseHtmlByName('str_products.html', array(
+                    'list' => $this->displayProducts($aBlock['items']),
+                    'paginate' => ''
+                ));
 
-	            $sContent .= $this->getBlockCode($aBlock);
-	        }
+                $sContent .= $this->getBlockCode($aBlock);
+            }
         }
         else
         	$sContent = $this->getBlockCode(array(
@@ -443,16 +445,17 @@ class BxBaseStudioStore extends BxDolStudioStore
         foreach($aVendors as $iVendor => $aInfo) {
             $fTotal = 0;
             $sVendor = $sCurrency = '';
-            foreach($aInfo['products'] as $aProduct) {
-                $iCount = isset($aInfo['counts'][$aProduct['id']]) ? (int)$aInfo['counts'][$aProduct['id']] : 1;
-                $fTotal += $iCount * $aProduct['price_single'];
+            if(!empty($aInfo['products']) && is_array($aInfo['products']))
+                foreach($aInfo['products'] as $aProduct) {
+                    $iCount = isset($aInfo['counts'][$aProduct['id']]) ? (int)$aInfo['counts'][$aProduct['id']] : 1;
+                    $fTotal += $iCount * $aProduct['price_single'];
 
-                if($sVendor == '' && isset($aProduct['author_name']))
-                    $sVendor = $aProduct['author_name'];
+                    if($sVendor == '' && isset($aProduct['author_name']))
+                        $sVendor = $aProduct['author_name'];
 
-				if($sCurrency == '' && isset($aProduct['author_currency_sign']))
-                    $sCurrency = $aProduct['author_currency_sign'];
-            }
+                                    if($sCurrency == '' && isset($aProduct['author_currency_sign']))
+                        $sCurrency = $aProduct['author_currency_sign'];
+                }
 
             $aMenu = array(
                 array('id' => 'checkout-' . $iVendor, 'name' => 'checkout-' . $iVendor, 'link' => 'javascript:void(0)', 'onclick' => $sJsObject . ".checkoutCart(" . $iVendor . ", this);", 'target' => '_self', 'title' => '_adm_action_cpt_checkout', 'active' => 1),
@@ -1030,6 +1033,23 @@ class BxBaseStudioStore extends BxDolStudioStore
         return BxDolStudioTemplate::getInstance()->parseHtmlByName('str_lbl_tags.html', $aTags);
     }
 
+    protected function displayNonOwnerNotification()
+    {
+        if(BxDolStudioOAuth::isAuthorizedOwner())
+            return;
+
+        $oSession = BxDolSession::getInstance();
+        if($oSession->getValue($this->sSessionKeyNonOwnerNotified) === true)
+            return;
+
+        $oSession->setValue($this->sSessionKeyNonOwnerNotified, true);
+        return $this->getJsResultBy(array(
+            'message' => '_adm_msg_oauth_non_owner_logged',
+            'translate' => array(BX_DOL_MARKET_URL_ROOT),
+            'on_page_load' => true
+        ));
+    }
+
     private function getDownloadedModules($bNamesOnly = true)
     {
 		$aModules = BxDolStudioInstallerUtils::getInstance()->getModules(false);
@@ -1037,7 +1057,7 @@ class BxBaseStudioStore extends BxDolStudioStore
         return $bNamesOnly ? array_keys($aModules) : $aModules;
     }
 
-	private function getVoteStars($aItem)
+    private function getVoteStars($aItem)
     {
         $aTmplVarsStars = array();
         for($i = (int)$aItem['rate_min']; $i <= (int)$aItem['rate_max']; $i++)

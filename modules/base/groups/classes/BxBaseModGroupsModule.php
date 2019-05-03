@@ -77,7 +77,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
     }
 
     /**
-     * check if provided profile is member if the group 
+     * check if provided profile is member of the group 
      */ 
     public function serviceIsFan ($iGroupProfileId, $iProfileId = false) 
     {
@@ -85,6 +85,24 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         return $this->isFan($oGroupProfile->getContentId(), $iProfileId);
     }
 
+    /**
+     * check if provided profile is admin of the group 
+     */ 
+    public function serviceIsAdmin ($iGroupProfileId, $iProfileId = false) 
+    {
+        if(!$iProfileId)
+            $iProfileId = bx_get_logged_profile_id();
+
+        $oGroupProfile = BxDolProfile::getInstance($iGroupProfileId);
+
+        $iGroupContentId = $oGroupProfile->getContentId();
+        if(!$this->isFan($iGroupContentId, $iProfileId))
+            return false;
+
+        $aGroupContentInfo = $this->_oDb->getContentInfoById($iGroupContentId);
+        return $this->_oDb->isAdmin($iGroupProfileId, $iProfileId, $aGroupContentInfo);
+    }
+    
     /**
      * Delete profile from fans and admins tables
      * @param $iProfileId profile id 
@@ -245,6 +263,14 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
         // new fan was added
         if ($oConnection->isConnected($oGroupProfile->id(), (int)$iInitiatorId, true)) {
+            // follow group on join
+            if (BxDolService::call($oGroupProfile->getModule(), 'act_as_profile')){
+                 $this->addFollower($oGroupProfile->id(), (int)$iInitiatorId);
+            }
+            else{
+                 $this->addFollower((int)$iInitiatorId, $oGroupProfile->id()); 
+            }
+            
             bx_alert($this->getName(), 'fan_added', $aContentInfo[$CNF['FIELD_ID']], $iGroupProfileId, array(
             	'object_author_id' => $iGroupProfileId,
             	'performer_id' => $iProfileId,
@@ -281,7 +307,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
         return $oGrid->getCode();
     }
-
+    
     public function serviceFans ($iContentId = 0, $bAsArray = false)
     {
         if (!$iContentId)
@@ -512,17 +538,8 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         return $a;
     }
 
-    /**
-     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
-     */
-    public function checkAllowedPost ($aDataEntry, $isPerformAction = false)
-    {
-        if (isLogged() && ($this->isFan($aDataEntry[$this->_oConfig->CNF['FIELD_ID']]) || ($aDataEntry[$this->_oConfig->CNF['FIELD_ID']] == BxDolProfile::getInstance()->getContentId() && BxDolProfile::getInstance()->getModule() == $this->getName())))
-            return CHECK_ACTION_RESULT_ALLOWED;
 
-        return _t('_sys_txt_access_denied');
-    }
-
+    // ====== PERMISSION METHODS
     /**
      * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
      */
@@ -535,6 +552,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
     {
         if ($this->isFan($aDataEntry[$this->_oConfig->CNF['FIELD_ID']], $iProfileId))
             return CHECK_ACTION_RESULT_ALLOWED;
+
         return parent::serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction, $iProfileId);
     }
 
@@ -631,12 +649,25 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
         $oPrivacy = BxDolPrivacy::getObjectInstance($this->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
 
-        if (CHECK_ACTION_RESULT_ALLOWED !== $sResult && !in_array($aDataEntry[$this->_oConfig->CNF['FIELD_ALLOW_VIEW_TO']], array('c', 's')))
+        // if profile view isn't allowed but visibility is in partially visible groups 
+        // then display buttons to connect (befriend, join) to profile, 
+        // if other conditions (in parent::_checkAllowedConnect) are met as well
+        if (CHECK_ACTION_RESULT_ALLOWED !== $sResult && !in_array($aDataEntry[$this->_oConfig->CNF['FIELD_ALLOW_VIEW_TO']], array_merge($oPrivacy->getPartiallyVisiblePrivacyGroups(), array('s'))))
             return $sResult;
 
         return parent::_checkAllowedConnect ($aDataEntry, $isPerformAction, $sObjConnection, $isMutual, $isInvertResult, $isSwap);
     }
 
+    public function addFollower ($iProfileId1, $iProfileId2)
+    {
+        $oConnectionFollow = BxDolConnection::getObjectInstance('sys_profiles_subscriptions');
+        if($oConnectionFollow && !$oConnectionFollow->isConnected($iProfileId1, $iProfileId2)){
+            $oConnectionFollow->addConnection($iProfileId1, $iProfileId2);
+            return true;
+        }
+        return false;
+    }
+    
     public function isFan ($iContentId, $iProfileId = false) 
     {
         $oGroupProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $this->getName());

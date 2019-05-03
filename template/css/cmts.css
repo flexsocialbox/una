@@ -271,28 +271,52 @@
         width: 100%;
     }
 
-    /*--- Comment Styles in Live Update Notification ---*/
-    .cmt-notif-comment {
+    /*--- Live Update Alert Styles ---*/
+    div.cmt-lu-button {
+        position: relative;
+        text-align: center;
+    }
+    @supports(position:sticky) {
+        div.cmt-lu-button {
+            position: sticky;
+            top: 1rem;
+            z-index: 1;
+        }
+    }
+    @supports(position:-webkit-sticky) {
+        div.cmt-lu-button {
+            position: -webkit-sticky;
+            top: 1rem;
+            z-index: 1;
+        }
+    }
+    div.cmt-lu-button .bx-btn {
+        display: inline-block;
+        float: none;
+    }
+
+    /*--- Live Update Notifications Styles ---*/
+    .cmt-lu-notif {
         position: relative;
         display: block;
     }
-    div.cmt-notif-cnt {
+    div.cmt-lu-notif-cnt {
         position: relative;
     }
-    div.cmt-notif-avatar {
+    div.cmt-lu-notif-avatar {
         position: absolute;
         top: 0px;
         left: 0px;
         text-align: center;
     }
-    div.cmt-notif-info {
+    div.cmt-lu-notif-info {
         position: realtive;
         display: -webkit-flex;
         display: flex;
         -webkit-align-items: center;
         align-items: center;
     }
-    div.cmt-notifi-username {
+    div.cmt-lu-notifi-username {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

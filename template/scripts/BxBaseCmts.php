@@ -110,12 +110,16 @@ class BxBaseCmts extends BxDolCmts
      */
     function getCommentsBlock($aBp = array(), $aDp = array())
     {
+        $mixedResult = $this->isViewAllowed();
+        if($mixedResult !== CHECK_ACTION_RESULT_ALLOWED)
+            return $mixedResult;
+        
         $this->_getParams($aBp, $aDp);
 
         //add live update
         $this->actionResumeLiveUpdate();
 
-        $sServiceCall = BxDolService::getSerializedService('system', 'get_live_updates_comments', array($this->_sSystem, $this->_iId, $this->_getAuthorId(), '{count}'), 'TemplCmtsServices');
+        $sServiceCall = BxDolService::getSerializedService('system', 'get_live_update', array($this->_sSystem, $this->_iId, $this->_getAuthorId(), '{count}'), 'TemplCmtsServices');
         BxDolLiveUpdates::getInstance()->add($this->_sSystem . '_live_updates_cmts_' . $this->_iId, 1, $sServiceCall);
         //add live update
 
@@ -374,7 +378,29 @@ class BxBaseCmts extends BxDolCmts
         return $this->_getFormEdit($iCmtId, $aDp);
     }
 
-    function getNotification($iCountOld = 0, $iCountNew = 0)
+    function getLiveUpdate($iCountOld = 0, $iCountNew = 0)
+    {
+        $iCount = (int)$iCountNew - (int)$iCountOld;
+        if($iCount < 0)
+            return '';
+
+        $aComments = $this->_oQuery->getCommentsBy(array('type' => 'latest', 'object_id' => $this->_iId, 'author' => $this->_getAuthorId(), 'others' => 1, 'start' => '0', 'per_page' => $iCount));
+        if(empty($aComments) || !is_array($aComments))
+            return '';
+
+        $aComment = array_shift($aComments);
+        if(empty($aComment) || !is_array($aComment))
+            return '';
+
+        $sJsObject = $this->getJsObjectName();
+        return $this->_oTemplate->parseHtmlByName('comments_lu_button.html', array(
+            'style_prefix' => $this->_sStylePrefix,
+            'html_id' => $this->getNotificationId(),
+            'onclick_show' => "javascript:" . $sJsObject . ".goToBtn(this, '" . $this->getItemAnchor($aComment['cmt_id']) . "', '" . $aComment['cmt_id'] . "');",
+        ));
+    }
+
+    function getLiveUpdates($iCountOld = 0, $iCountNew = 0)
     {
         $bShowAll = true;
         $bShowActions = false;
@@ -418,7 +444,7 @@ class BxBaseCmts extends BxDolCmts
                     'condition' => !$bShowAll && $iIndex < ($iComments - 1),
                     'content' => array(),
                 ),
-                'item' => $this->_oTemplate->parseHtmlByName('comments_notification.html', array(
+                'item' => $this->_oTemplate->parseHtmlByName('comments_lu_notifications.html', array(
                     'style_prefix' => $this->_sStylePrefix,
                     'onclick_show' => $sShowOnClick,
                     'onclick_reply' => $sReplyOnClick,

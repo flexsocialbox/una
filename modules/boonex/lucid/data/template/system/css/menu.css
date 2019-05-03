@@ -379,25 +379,34 @@ ul.bx-menu-toolbar li a .bx-menu-item-addon {
 
 /*--- Sliding Menu ---*/
 .bx-sliding-menu, .bx-sliding-menu-main {
-	left: auto !important;
-	right: 0 !important;
-	max-width: 31.25rem;
+    left: auto !important;
+    right: 0 !important;
+    max-width: 31.25rem;
 }
 
+/*--- Search Popup ---*/
+#bx-sliding-menu-search.bx-sliding-menu-main .bx-def-page-width {
+    width: 100%;
+}
+
+/*--- Notifications Popup ---*/
+#bx_notifications_preview.bx-sliding-menu .bx-def-page-width {
+    width: 100%;
+}
 
 /*--- Account Popup ---*/
 @media (min-width:720px) {
-	#bx-sliding-menu-account.bx-sliding-menu-main {
-		left: auto !important;
-		right: 0px !important;
-		width: auto !important;
-	}
+    #bx-sliding-menu-account.bx-sliding-menu-main {
+        left: auto !important;
+        right: 0px !important;
+        width: auto !important;
+    }
 }
 #bx-sliding-menu-account.bx-sliding-menu-main.bx-sliding-menu-fullheight {
     height: calc(100% - 3.75rem);
 }
 .bx-menu-account-popup .bx-menu-account-popup-profile {
-	margin-right: 4rem;
+    margin-right: 4rem;
 }
 
 
@@ -575,4 +584,11 @@ ul.bx-menu-toolbar li a .bx-menu-item-addon {
 /* --------------- profile stats menu */
 .bx-menu-ver.bx-menu-object-sys_profile_stats li .bx-menu-addon-cnt.bx-def-color-bg-hl {
 	background-color: transparent;
+}
+
+/*--- Custom Menu with More Auto ---*/
+.bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-submenu-more-auto .bx-menu-item a,
+.bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-submenu-more-auto .bx-menu-item .bx-btn,
+.bx-menu-custom.bx-menu-hor.bx-menu-more-auto .bx-menu-submenu-more-auto .bx-menu-item .bx-btn .sys-icon {
+    color: inherit;
 }

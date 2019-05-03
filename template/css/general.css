@@ -95,8 +95,12 @@
 }
 
 /* --------------- submenu */
+.bx-media-tablet .bx-menu-main-bar-gap.bx-def-page-width,
+.bx-media-phone .bx-menu-main-bar-gap.bx-def-page-width {
+    width: 100%;
+}
 
-.bx-menu-main-bar-wrapper {
+.bx-menu-main-bar {
     text-align:center;
     overflow-x:auto;
     -webkit-overflow-scrolling: touch;
@@ -147,17 +151,27 @@
 }
 
 /* --------------- Account */
-.bx-account-unit p {
-	display: block;
+p.bx-account-unit-thumb {
+    display: block;
     margin: 0px;
 
     line-height: 46px;
     line-height: 2.9rem;
 
-    font-size: 20px;
-    font-size: 1.2rem;
+    font-size: 32px;
+    font-size: 2.0rem;
     font-weight: 700;
     color: #d0d0d0;
+}
+div.bx-account-unit-online {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border: 1px solid #ffffff;
+    border-radius: 0.625rem;
+    background-color: #7ed321;
 }
 
 /* --------------- Mentions */
@@ -174,9 +188,17 @@
 
 
 /* --------------- Profile Stats */
+.bx-profile-stats {
+    overflow: hidden;
+}
 
-.bx-profile-stats .bx-ps-acl span {
-	text-transform: uppercase;
+.bx-profile-stats .bx-def-unit-info-cnt {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    -webkit-flex-direction: column;
+    flex-direction: column;
 }
 
 
@@ -324,4 +346,12 @@
 
 	right: 1.25rem;
 	bottom: 1.25rem;
+}
+
+
+/* --------------- Account Unit */
+.bx-account-unit .bx-def-unit-img, 
+.bx-account-unit-wo-info .bx-def-unit-img {
+    position: relative;
+    overflow: visible;
 }

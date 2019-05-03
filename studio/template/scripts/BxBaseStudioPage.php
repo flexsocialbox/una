@@ -86,6 +86,8 @@ class BxBaseStudioPage extends BxDolStudioPage
         if(empty($this->aPage) || !is_array($this->aPage))
             return '';
 
+        $this->updateHistory();
+
         $oTemplate = BxDolStudioTemplate::getInstance();
         $oFunctions = BxTemplStudioFunctions::getInstance();
 
@@ -99,24 +101,11 @@ class BxBaseStudioPage extends BxDolStudioPage
 
         $oTemplate->addInjection('injection_header', 'text', $sHelp . $sActions);
 
-        //--- Menu Left ---//
-        $aItems = array(
-            'back' => array(
-                'name' => 'back',
-                'icon' => 'th',
-                'link' => BX_DOL_URL_STUDIO . 'launcher.php',
-                'title' => '_adm_txt_back_to_launcher'
-            )
-        );
-
-        $oMenu = new BxTemplStudioMenu(array('template' => 'menu_top_toolbar.html', 'menu_items' => $aItems));
-        $sMenuLeft = $oMenu->getCode();
-
         //--- Menu Right ---//
-        $aItems = array();
+        $aItemsRight = array();
 
         if($bActions)
-            $aItems['actions'] = array(
+            $aItemsRight['actions'] = array(
                 'name' => 'actions',
                 'icon' => 'cog',
                 'onclick' => BX_DOL_STUDIO_PAGE_JS_OBJECT . ".togglePopup('actions', this)",
@@ -124,39 +113,19 @@ class BxBaseStudioPage extends BxDolStudioPage
             );
 
         if($bHelp)
-            $aItems['help'] = array(
+            $aItemsRight['help'] = array(
                 'name' => 'help',
                 'icon' => 'question-circle',
                 'onclick' => BX_DOL_STUDIO_PAGE_JS_OBJECT . ".togglePopup('help', this)",
                 'title' => '_adm_txt_show_help'
             );
 
-        $aItems = array_merge($aItems, array(
-        	'home' => array(
-                'name' => 'home',
-                'icon' => 'home',
-                'link' => BX_DOL_URL_ROOT,
-                'onclick' => '',
-                'title' => '_adm_tmi_cpt_site'
-            ),
-            'logout' => array(
-                'name' => 'logout',
-                'icon' => 'power-off',
-                'link' => BX_DOL_URL_ROOT . 'logout.php',
-                'onclick' => '',
-                'title' => '_adm_tmi_cpt_logout'
-            )
-        ));
+        $oTopMenu = BxTemplStudioMenuTop::getInstance();
+        $oTopMenu->setSelected(BX_DOL_STUDIO_MT_LEFT, $this->aPage['name']);
+        $oTopMenu->setContent(BX_DOL_STUDIO_MT_CENTER, _t($this->aPage['caption']));
+        $oTopMenu->setContent(BX_DOL_STUDIO_MT_RIGHT, array('template' => 'menu_top_toolbar.html', 'menu_items' => $aItemsRight));
 
-        $oMenu = new BxTemplStudioMenu(array('template' => 'menu_top_toolbar.html', 'menu_items' => $aItems));
-        $sMenuRight = $oMenu->getCode();
-
-        $aTmplVars = array(
-            'menu_left' => $sMenuLeft,
-            'caption' => _t($this->aPage['caption']),
-            'menu_right' => $sMenuRight
-        );
-        return $oTemplate->parseHtmlByName('page_caption.html', $aTmplVars);
+        return '';
     }
 
     public function getPageAttributes()
@@ -312,15 +281,39 @@ class BxBaseStudioPage extends BxDolStudioPage
 
     protected function getJsResult($sMessage, $bTranslate = true, $bRedirect = false, $sRedirect = '', $sOnResult = '')
     {
-        $aResult = array();
-        $aResult['message'] = $bTranslate ? _t($sMessage) : $sMessage;
-        if($bRedirect)
-            $aResult['redirect'] = $sRedirect != '' ? $sRedirect : BX_DOL_URL_STUDIO;
+        return $this->getJsResultBy(array(
+            'message' => $sMessage,
+            'translate' => $bTranslate,
+            'redirect' => $bRedirect === true && !empty($sRedirect) ? $sRedirect : $bRedirect,
+            'eval' => $sOnResult
+        ));
+    }
 
-        if(!empty($sOnResult))
-            $aResult['eval'] = $sOnResult;
+    protected function getJsResultBy($aParams)
+    {
+        $aResult = array();
+
+        if(!empty($aParams['message'])) {
+            $aResult['message'] = $aParams['message'];
+
+            if(!isset($aParams['translate']) || !empty($aParams['translate'])) {
+                $aTrtParams = array($aResult['message']);
+                if(!empty($aParams['translate']) && is_array($aParams['translate']))
+                    $aTrtParams = array_merge($aTrtParams, $aParams['translate']);
+
+                $aResult['message'] = call_user_func_array ('_t', $aTrtParams);
+            }
+        }
+
+        if(isset($aParams['redirect']) && $aParams['redirect'] !== false)
+            $aResult['redirect'] = is_string($aParams['redirect']) ? $aParams['redirect'] : BX_DOL_URL_STUDIO;
+
+        if(!empty($aParams['eval']))
+            $aResult['eval'] = $aParams['eval'];
 
         $sResult = "window.parent.processJsonData(" . json_encode($aResult) . ");";
+        if(isset($aParams['on_page_load']) && $aParams['on_page_load'] === true)
+            $sResult = "$(document).ready(function() {" . $sResult . "});";
 
         return BxDolStudioTemplate::getInstance()->_wrapInTagJsCode($sResult);
     }

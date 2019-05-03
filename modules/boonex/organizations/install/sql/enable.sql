@@ -43,6 +43,8 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES
 ('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_profile_subscriptions', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:16:\"bx_organizations\";s:6:\"method\";s:21:\"profile_subscriptions\";}', 0, 1, 0, 0),
 ('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_profile_subscribed_me', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:16:\"bx_organizations\";s:6:\"method\";s:21:\"profile_subscribed_me\";}', 0, 1, 0, 0),
+('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_profile_related_me', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:16:"bx_organizations";s:6:"method";s:18:"profile_related_me";}', 0, 1, 0, 0),
+('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_profile_relations', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:16:"bx_organizations";s:6:"method";s:17:"profile_relations";}', 0, 1, 0, 0),
 ('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_profile_comments', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:16:\"bx_organizations\";s:6:\"method\";s:15:\"entity_comments\";}', 0, 0, 0, 0),
 ('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_profile_description', 13, 2147483647, 'service', 'a:2:{s:6:\"module\";s:16:\"bx_organizations\";s:6:\"method\";s:17:\"entity_text_block\";}', 0, 0, 1, 1),
 ('bx_organizations_view_profile', 2, 'bx_organizations', '', '_bx_orgs_page_block_title_fans', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:16:\"bx_organizations\";s:6:\"method\";s:4:\"fans\";}', 0, 0, 1, 2),
@@ -133,6 +135,14 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
 ('bx_organizations_profile_subscriptions', 1, 'bx_organizations', '_bx_orgs_page_block_title_system_profile_subscriptions', '_bx_orgs_page_block_title_profile_subscriptions', 11, 2147483647, 'service', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:19:\"subscriptions_table\";s:5:\"class\";s:23:\"TemplServiceConnections\";}', 0, 0, 1, 1),
 ('bx_organizations_profile_subscriptions', 1, 'bx_organizations', '_bx_orgs_page_block_title_system_profile_subscribed_me', '_bx_orgs_page_block_title_profile_subscribed_me', 11, 2147483647, 'service', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:19:\"subscribed_me_table\";s:5:\"class\";s:23:\"TemplServiceConnections\";}', 0, 0, 1, 2);
+
+-- PAGE: profile relations
+INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_organizations_profile_relations', 'organization-profile-relations', '_bx_orgs_page_title_sys_profile_relations', '_bx_orgs_page_title_profile_relations', 'bx_organizations', 5, 2147483647, 1, 'page.php?i=organization-profile-relations', '', '', '', 0, 1, 0, 'BxOrgsPageEntry', 'modules/boonex/organizations/classes/BxOrgsPageEntry.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
+('bx_organizations_profile_relations', 1, 'bx_organizations', '_bx_orgs_page_block_title_system_profile_relations', '_bx_orgs_page_block_title_profile_relations', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:15:"relations_table";s:5:"class";s:23:"TemplServiceConnections";}', 0, 0, 1, 1),
+('bx_organizations_profile_relations', 1, 'bx_organizations', '_bx_orgs_page_block_title_system_profile_related_me', '_bx_orgs_page_block_title_profile_related_me', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:16:"related_me_table";s:5:"class";s:23:"TemplServiceConnections";}', 0, 0, 1, 2);
 
 -- PAGE: view entry comments
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
@@ -249,6 +259,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES 
 ('bx_organizations_view_actions', 'bx_organizations', 'profile-fan-add', '_bx_orgs_menu_item_title_system_become_fan', '{title_add_fan}', 'javascript:void(0)', 'bx_conn_action(this, \'bx_organizations_fans\', \'add\', \'{profile_id}\')', '', 'sign-in-alt', '', 0, 2147483647, 1, 0, 0, 5),
 ('bx_organizations_view_actions', 'bx_organizations', 'profile-friend-add', '_bx_orgs_menu_item_title_system_befriend', '{title_add_friend}', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_friends\', \'add\', \'{profile_id}\')', '', 'user-plus', '', 0, 2147483647, 1, 0, 1, 10),
+('bx_organizations_view_actions', 'bx_organizations', 'profile-relation-add', '_bx_orgs_menu_item_title_system_relation_add', '_bx_orgs_menu_item_title_relation_add', 'javascript:void(0)', 'bx_menu_popup(''sys_add_relation'', window, {}, {profile_id: {profile_id}});', '', 'sync', '', 0, 2147483647, 1, 0, 1, 15),
 ('bx_organizations_view_actions', 'bx_organizations', 'profile-subscribe-add', '_bx_orgs_menu_item_title_system_subscribe', '_bx_orgs_menu_item_title_subscribe', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_subscriptions\', \'add\', \'{profile_id}\')', '', 'check', '', 0, 2147483647, 1, 0, 1, 20),
 ('bx_organizations_view_actions', 'bx_organizations', 'profile-set-acl-level', '_sys_menu_item_title_system_set_acl_level', '_sys_menu_item_title_set_acl_level', 'javascript:void(0)', 'bx_menu_popup(''sys_set_acl_level'', window, {}, {profile_id: {profile_id}});', '', 'certificate', '', 0, 192, 1, 0, 1, 30),
 ('bx_organizations_view_actions', 'bx_organizations', 'profile-actions-more', '_bx_orgs_menu_item_title_system_more_actions', '_bx_orgs_menu_item_title_more_actions', 'javascript:void(0)', 'bx_menu_popup(''bx_organizations_view_actions_more'', this, {}, {profile_id:{profile_id}});', '', 'cog', 'bx_organizations_view_actions_more', 1, 2147483647, 1, 0, 1, 9999);
@@ -263,6 +274,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
 ('bx_organizations_view_actions_more', 'bx_organizations', 'profile-fan-remove', '_bx_orgs_menu_item_title_system_leave_organization', '{title_remove_fan}', 'javascript:void(0)', 'bx_conn_action(this, \'bx_organizations_fans\', \'remove\', \'{profile_id}\')', '', 'sign-out-alt', '', 2147483647, 1, 0, 10),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'profile-friend-remove', '_bx_orgs_menu_item_title_system_unfriend', '{title_remove_friend}', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_friends\', \'remove\', \'{profile_id}\')', '', 'user-minus', '', 2147483647, 1, 0, 10),
+('bx_organizations_view_actions_more', 'bx_organizations', 'profile-relation-remove', '_bx_orgs_menu_item_title_system_relation_delete', '_bx_orgs_menu_item_title_relation_delete', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_relations\', \'remove\', \'{profile_id}\')', '', 'sync', '', 2147483647, 1, 0, 15),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'profile-subscribe-remove', '_bx_orgs_menu_item_title_system_unsubscribe', '_bx_orgs_menu_item_title_unsubscribe', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_subscriptions\', \'remove\', \'{profile_id}\')', '', 'check', '', 2147483647, 1, 0, 20),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'edit-organization-cover', '_bx_orgs_menu_item_title_system_edit_cover', '_bx_orgs_menu_item_title_edit_cover', 'page.php?i=edit-organization-cover&id={content_id}', '', '', 'edit', '', 2147483647, 1, 0, 25),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'edit-organization-profile', '_bx_orgs_menu_item_title_system_edit_profile', '_bx_orgs_menu_item_title_edit_profile', 'page.php?i=edit-organization-profile&id={content_id}', '', '', 'pencil-alt', '', 2147483647, 1, 0, 30),
@@ -284,6 +296,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_organizations_view_actions_all', 'bx_organizations', 'profile-fan-remove', '_bx_orgs_menu_item_title_system_leave_organization', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 20),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'profile-friend-add', '_bx_orgs_menu_item_title_system_befriend', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 30),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'profile-friend-remove', '_bx_orgs_menu_item_title_system_unfriend', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 40),
+('bx_organizations_view_actions_all', 'bx_organizations', 'profile-relation-add', '_bx_orgs_menu_item_title_system_relation_add', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 43),
+('bx_organizations_view_actions_all', 'bx_organizations', 'profile-relation-remove', '_bx_orgs_menu_item_title_system_relation_delete', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 47),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'profile-subscribe-add', '_bx_orgs_menu_item_title_system_subscribe', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 50),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'profile-subscribe-remove', '_bx_orgs_menu_item_title_system_unsubscribe', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 60),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'profile-set-acl-level', '_sys_menu_item_title_system_set_acl_level', '', '', '', '', '', '', '', 0, 192, 1, 0, 70),
@@ -296,7 +310,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_organizations_view_actions_all', 'bx_organizations', 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 250),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_organizations_view_actions_all', 'bx_organizations', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_organizations_view_actions_all', 'bx_organizations', 'edit-organization-cover', '_bx_organizations_menu_item_title_system_edit_cover', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 400),
@@ -345,8 +358,9 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-info', '_bx_orgs_menu_item_title_system_view_profile_info', '_bx_orgs_menu_item_title_view_profile_info', 'page.php?i=organization-profile-info&id={content_id}', '', '', 'info-circle col-gray', '', 2147483647, 1, 0, 2),
 ('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-fans', '_bx_orgs_menu_item_title_system_view_profile_fans', '_bx_orgs_menu_item_title_view_profile_fans', 'page.php?i=organization-profile-fans&profile_id={profile_id}', '', '', 'users col-blue3', '', 2147483647, 1, 0, 3),
 ('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-friends', '_bx_orgs_menu_item_title_system_view_profile_friends', '_bx_orgs_menu_item_title_view_profile_friends', 'page.php?i=organization-profile-friends&profile_id={profile_id}', '', '', 'users col-blue3', '', 2147483647, 1, 0, 4),
-('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-subscriptions', '_bx_orgs_menu_item_title_system_view_profile_subscriptions', '_bx_orgs_menu_item_title_view_profile_subscriptions', 'page.php?i=organization-profile-subscriptions&profile_id={profile_id}', '', '', 'check col-blue3', '', 2147483647, 1, 0, 5),
-('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-comments', '_bx_orgs_menu_item_title_system_view_profile_comments', '_bx_orgs_menu_item_title_view_profile_comments', 'page.php?i=organization-profile-comments&id={content_id}', '', '', '', '', 2147483647, 0, 0, 6);
+('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-relations', '_bx_orgs_menu_item_title_system_view_profile_relations', '_bx_orgs_menu_item_title_view_profile_relations', 'page.php?i=organization-profile-relations&profile_id={profile_id}', '', '', 'sync col-blue3', '', 2147483647, 1, 0, 5),
+('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-subscriptions', '_bx_orgs_menu_item_title_system_view_profile_subscriptions', '_bx_orgs_menu_item_title_view_profile_subscriptions', 'page.php?i=organization-profile-subscriptions&profile_id={profile_id}', '', '', 'check col-blue3', '', 2147483647, 1, 0, 6),
+('bx_organizations_view_submenu', 'bx_organizations', 'organization-profile-comments', '_bx_orgs_menu_item_title_system_view_profile_comments', '_bx_orgs_menu_item_title_view_profile_comments', 'page.php?i=organization-profile-comments&id={content_id}', '', '', '', '', 2147483647, 0, 0, 7);
 
 -- MENU: custom menu for snippet meta info
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -372,9 +386,10 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_organizations_snippet_meta', 'bx_organizations', 'membership', '_sys_menu_item_title_system_sm_membership', '_sys_menu_item_title_sm_membership', '', '', '', '', '', 2147483647, 0, 0, 1, 14);
 
 -- MENU: notifications menu in account popup
-SET @iNotifMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_account_notifications' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
+SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_account_notifications' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_account_notifications', 'bx_organizations', 'notifications-friend-requests', '_bx_orgs_menu_item_title_system_friends', '_bx_orgs_menu_item_title_friends', 'page.php?i=organization-profile-friends&profile_id={member_id}', '', '', 'group col-red2', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_unconfirmed_connections_num";s:6:"params";a:1:{i:0;s:20:"sys_profiles_friends";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, IFNULL(@iNotifMenuOrder, 0) + 1);
+('sys_account_notifications', 'bx_organizations', 'notifications-friend-requests', '_bx_orgs_menu_item_title_system_friends', '_bx_orgs_menu_item_title_friends', 'page.php?i=organization-profile-friends&profile_id={member_id}', '', '', 'group col-red2', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_unconfirmed_connections_num";s:6:"params";a:1:{i:0;s:20:"sys_profiles_friends";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1),
+('sys_account_notifications', 'bx_organizations', 'notifications-relation-requests', '_bx_orgs_menu_item_title_system_relations', '_bx_orgs_menu_item_title_relations', 'page.php?i=organization-profile-relations&profile_id={member_id}', '', '', 'sync col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_unconfirmed_connections_num";s:6:"params";a:1:{i:0;s:22:"sys_profiles_relations";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2);
 
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
@@ -383,7 +398,9 @@ INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `tit
 ('sys_profile_stats', 'bx_organizations', 'profile-stats-manage-organizations', '_bx_orgs_menu_item_title_system_manage_my_organizations', '_bx_orgs_menu_item_title_manage_my_organizations', 'page.php?i=organizations-manage', '', '_self', 'briefcase col-red2', 'a:2:{s:6:"module";s:16:"bx_organizations";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2),
 ('sys_profile_stats', 'bx_organizations', 'profile-stats-favorite-organizations', '_bx_orgs_menu_item_title_system_favorites', '_bx_orgs_menu_item_title_favorites', 'page.php?i=organization-profile-favorites&profile_id={member_id}', '', '', 'star col-red2', 'a:2:{s:6:"module";s:16:"bx_organizations";s:6:"method";s:38:"get_menu_addon_favorites_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 3),
 ('sys_profile_stats', 'bx_organizations', 'profile-stats-subscriptions', '_bx_orgs_menu_item_title_system_subscriptions', '_bx_orgs_menu_item_title_subscriptions', 'page.php?i=organization-profile-subscriptions&profile_id={member_id}#subscriptions', '', '_self', 'rss col-red2', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_connected_content_num";s:6:"params";a:1:{i:0;s:26:"sys_profiles_subscriptions";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 4),
-('sys_profile_stats', 'bx_organizations', 'profile-stats-subscribed-me', '_bx_orgs_menu_item_title_system_subscribed_me', '_bx_orgs_menu_item_title_subscribed_me', 'page.php?i=organization-profile-subscribed-me&profile_id={member_id}#subscribers', '', '_self', 'rss col-red2', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:28:"get_connected_initiators_num";s:6:"params";a:1:{i:0;s:26:"sys_profiles_subscriptions";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 5);
+('sys_profile_stats', 'bx_organizations', 'profile-stats-subscribed-me', '_bx_orgs_menu_item_title_system_subscribed_me', '_bx_orgs_menu_item_title_subscribed_me', 'page.php?i=organization-profile-subscribed-me&profile_id={member_id}#subscribers', '', '_self', 'rss col-red2', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:28:"get_connected_initiators_num";s:6:"params";a:1:{i:0;s:26:"sys_profiles_subscriptions";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 5),
+('sys_profile_stats', 'bx_organizations', 'profile-stats-relations', '_bx_orgs_menu_item_title_system_relations', '_bx_orgs_menu_item_title_relations', 'page.php?i=organization-profile-relations&profile_id={member_id}#relations', '', '_self', 'sync col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_connected_content_num";s:6:"params";a:3:{i:0;s:22:"sys_profiles_relations";i:1;i:0;i:2;i:1;}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 6),
+('sys_profile_stats', 'bx_organizations', 'profile-stats-related-me', '_bx_orgs_menu_item_title_system_related_me', '_bx_orgs_menu_item_title_related_me', 'page.php?i=organization-profile-relations&profile_id={member_id}#related-me', '', '_self', 'sync col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:28:"get_connected_initiators_num";s:6:"params";a:3:{i:0;s:22:"sys_profiles_relations";i:1;i:0;i:2;i:1;}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 7);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -468,41 +485,6 @@ INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES
 (@iAdministrator, @iIdActionProfileEditAny);
 
 
--- COMMENTS
-INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
-('bx_organizations', 'bx_organizations', 'bx_organizations_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-organization-profile&id={object_id}', '', 'bx_organizations_data', 'id', 'author', 'org_name', 'comments', '', '');
-
-
--- VIEWS
-INSERT INTO `sys_objects_view` (`name`, `module`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_organizations', 'bx_organizations', 'bx_organizations_views_track', '86400', '1', 'bx_organizations_data', 'id', 'author', 'views', '', '');
-
-
--- VOTES
-INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
-('bx_organizations', 'bx_organizations_votes', 'bx_organizations_votes_track', '604800', '1', '1', '0', '1', 'bx_organizations_data', 'id', '', 'rate', 'votes', 'BxOrgsVote', 'modules/boonex/organizations/classes/BxOrgsVote.php');
-
-
--- SCORES
-INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
-('bx_organizations', 'bx_organizations', 'bx_organizations_scores', 'bx_organizations_scores_track', '604800', '0', 'bx_organizations_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
-
-
--- FAFORITES
-INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_organizations', 'bx_organizations_favorites_track', '1', '1', '0', 'page.php?i=view-organization-profile&id={object_id}', 'bx_organizations_data', 'id', 'author', 'favorites', 'BxOrgsFavorite', 'modules/boonex/organizations/classes/BxOrgsFavorite.php');
-
-
--- FEATURED
-INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
-('bx_organizations', '1', '1', 'page.php?i=view-organization-profile&id={object_id}', 'bx_organizations_data', 'id', 'author', 'featured', '', '');
-
-
--- REPORTS
-INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_organizations', 'bx_organizations_reports', 'bx_organizations_reports_track', '1', 'page.php?i=view-organization-profile&id={object_id}', 'bx_organizations_data', 'id', 'author', 'reports', 'BxOrgsReport', 'modules/boonex/organizations/classes/BxOrgsReport.php');
-
-
 -- METATAGS
 INSERT INTO `sys_objects_metatags` (`object`, `table_keywords`, `table_locations`, `table_mentions`, `override_class_name`, `override_class_file`) VALUES
 ('bx_organizations', 'bx_organizations_meta_keywords', 'bx_organizations_meta_locations', 'bx_organizations_meta_mentions', '', '');
@@ -554,7 +536,7 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `conf
 
 -- GRIDS: administration
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_organizations_administration', 'Sql', 'SELECT `td`.*, `td`.`org_name` AS `fullname`, `ta`.`email` AS `account`, `ta`.`logged` AS `last_online`, `tp`.`status` AS `status` FROM `bx_organizations_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_organizations'' LEFT JOIN `sys_accounts` AS `ta` ON `tp`.`account_id`=`ta`.`id` WHERE 1 ', 'bx_organizations_data', 'id', 'last_online', 'status', '', 20, NULL, 'start', '', 'org_name', '', 'like', 'reports', '', 192, 'BxOrgsGridAdministration', 'modules/boonex/organizations/classes/BxOrgsGridAdministration.php'),
+('bx_organizations_administration', 'Sql', 'SELECT `td`.*, `td`.`org_name` AS `fullname`, `ta`.`email` AS `account`, `ta`.`logged` AS `last_online`, `tp`.`status` AS `status` FROM `bx_organizations_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_organizations'' LEFT JOIN `sys_accounts` AS `ta` ON `tp`.`account_id`=`ta`.`id` WHERE 1 ', 'bx_organizations_data', 'id', 'last_online', 'status', '', 20, NULL, 'start', '', 'org_name,email', '', 'like', 'reports', '', 192, 'BxOrgsGridAdministration', 'modules/boonex/organizations/classes/BxOrgsGridAdministration.php'),
 ('bx_organizations_common', 'Sql', 'SELECT `td`.*, `td`.`org_name` AS `fullname`, `ta`.`email` AS `account`, `ta`.`logged` AS `last_online`, `tp`.`status` AS `status` FROM `bx_organizations_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_organizations'' LEFT JOIN `sys_accounts` AS `ta` ON `tp`.`account_id`=`ta`.`id` WHERE 1 ', 'bx_organizations_data', 'id', 'last_online', 'status', '', 20, NULL, 'start', '', 'org_name', '', 'like', '', '', 2147483647, 'BxOrgsGridCommon', 'modules/boonex/organizations/classes/BxOrgsGridCommon.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
@@ -608,14 +590,18 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_organizations', 'timeline_delete', @iHandler),
 ('bx_organizations', 'timeline_comment', @iHandler),
 ('bx_organizations', 'timeline_vote', @iHandler),
+('bx_organizations', 'timeline_score', @iHandler),
 ('bx_organizations', 'timeline_report', @iHandler),
-('bx_organizations', 'timeline_repost', @iHandler);
+('bx_organizations', 'timeline_repost', @iHandler),
+('bx_organizations', 'timeline_pin', @iHandler),
+('bx_organizations', 'timeline_promote', @iHandler);
 
 
 -- PRIVACY 
 INSERT INTO `sys_objects_privacy` (`object`, `module`, `action`, `title`, `default_group`, `spaces`, `table`, `table_field_id`, `table_field_author`, `override_class_name`, `override_class_file`) VALUES
 ('bx_organizations_allow_view_to', 'bx_organizations', 'view', '_bx_orgs_form_profile_input_allow_view_to', '3', '', 'bx_organizations_data', 'id', 'author', 'BxOrgsPrivacy', 'modules/boonex/organizations/classes/BxOrgsPrivacy.php'),
-('bx_organizations_allow_view_notification_to', 'bx_organizations', 'view_event', '_bx_orgs_form_profile_input_allow_view_notification_to', '3', '', 'bx_notifications_events', 'id', 'object_owner_id', 'BxOrgsPrivacyNotifications', 'modules/boonex/organizations/classes/BxOrgsPrivacyNotifications.php');
+('bx_organizations_allow_view_notification_to', 'bx_organizations', 'view_event', '_bx_orgs_form_profile_input_allow_view_notification_to', '3', '', 'bx_notifications_events', 'id', 'object_owner_id', 'BxOrgsPrivacyNotifications', 'modules/boonex/organizations/classes/BxOrgsPrivacyNotifications.php'),
+('bx_organizations_allow_post_to', 'bx_organizations', 'post', '_bx_orgs_form_profile_input_allow_post_to', '3', '', 'bx_organizations_data', 'id', 'author', 'BxOrgsPrivacyPost', 'modules/boonex/organizations/classes/BxOrgsPrivacyPost.php');
 
 
 -- EMAIL TEMPLATES

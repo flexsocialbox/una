@@ -16,8 +16,8 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `c
 ('bx_files_per_page_profile', '6', @iCategId, '_bx_files_option_per_page_profile', 'digit', '', '', '', 12),
 ('bx_files_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
 ('bx_files_rss_num', '10', @iCategId, '_bx_files_option_rss_num', 'digit', '', '', '', 20),
-('bx_files_searchable_fields', 'title,desc,data', @iCategId, '_bx_files_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:8:"bx_files";s:6:"method";s:21:"get_searchable_fields";}', 30);
-
+('bx_files_searchable_fields', 'title,desc,data', @iCategId, '_bx_files_option_searchable_fields', 'list', '', '', 'a:2:{s:6:"module";s:8:"bx_files";s:6:"method";s:21:"get_searchable_fields";}', 30),
+('bx_files_labels', '', @iCategId, '_sys_option_labels', 'text', '', '', '', 40);
 -- PAGE: create entry
 
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
@@ -231,7 +231,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_files_view_actions', 'bx_files', 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_files_view_actions', 'bx_files', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 270),
 ('bx_files_view_actions', 'bx_files', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_files_view_actions', 'bx_files', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_files_view_actions', 'bx_files', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_files_view_actions', 'bx_files', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_files_view_actions', 'bx_files', 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, 1, 0, 9999);

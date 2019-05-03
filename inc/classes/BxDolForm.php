@@ -14,6 +14,7 @@ define('BX_DOL_FORM_METHOD_SPECIFIC', 'specific');
 define('BX_DATA_LISTS_KEY_PREFIX', '#!');
 define('BX_DATA_VALUES_DEFAULT', 'LKey'); ///< Use default values for data items, @see BxDolForm::getDataItems
 define('BX_DATA_VALUES_ADDITIONAL', 'LKey2'); ///< Use additional values for data items, @see BxDolForm::getDataItems
+define('BX_DATA_VALUES_ALL', 'all'); ///< Return all available info for data items, @see BxDolForm::getDataItems
 
 /**
  * Forms allows to display forms from data stored in DB tables, before it was possible to display forms from PHP arrays only.
@@ -709,7 +710,7 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
     static $TYPES_TEXT = array('text' => 1, 'textarea' => 1);
     static $TYPES_FILE = array('file' => 1);
 
-    static $FUNC_SKIP_DOMAIN_CHECK = array('email' => 1, 'emails' => 1, 'emailexist' => 1, 'emailuniq' => 1, 'hostdomain' => 1, 'hostdomainchat' => 1);
+    static $FUNC_SKIP_DOMAIN_CHECK = array('email' => 1, 'emails' => 1, 'emailexist' => 1, 'emailuniq' => 1, 'emailexistorempty' => 1, 'hostdomain' => 1, 'hostdomainchat' => 1, 'emailorempty' => 1);
 
     protected $_aMarkers = array ();
 
@@ -723,6 +724,8 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
     public $aInputs; ///< form inputs
     public $aParams; ///< additional form parameters
     public $id; ///< Form element id
+
+    protected $_aFieldsCheckForSpam = array(); ///< additional fields names to check for spam(profanity filter), now only fields with 'textarea' and 'text' are checked for spam, 'textarea' fields are checked for spam and filter for profanity, while 'text' fields are filtetered for profanity only
 
     public function __construct ($aInfo, $oTemplate)
     {
@@ -798,6 +801,7 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
         $oChecker = new BxDolFormChecker($this->_sCheckerHelper);
         $oChecker->setFormMethod($this->aFormAttrs['method'], $aSpecificValues);
         $oChecker->setFormParams($this->aParams);
+        $oChecker->setFieldsCheckForSpam($this->_aFieldsCheckForSpam);
 
         // init form with default values
 
@@ -1116,6 +1120,7 @@ class BxDolFormChecker
     protected $_aFormParams;
     protected $_bFormCsrfChecking;
     protected $_aSpecificValues;
+    protected $_aFieldsCheckForSpam;
 
     function __construct ($sHelper = '')
     {
@@ -1135,6 +1140,11 @@ class BxDolFormChecker
     function setFormParams($aParams)
     {
         $this->_aFormParams = $aParams;
+    }
+
+    function setFieldsCheckForSpam($a)
+    {
+        $this->_aFieldsCheckForSpam = $a;
     }
     
     function enableFormCsrfChecking($bFormCsrfChecking)
@@ -1260,17 +1270,23 @@ class BxDolFormChecker
 
             foreach ($aInputs as $k => $a) {
 
-                if ($a['type'] != 'textarea')
+                if (!isset($a['name']))
                     continue;
 
                 $a['name'] = str_replace('[]', '', $a['name']);
+
+                if ($a['type'] != 'textarea' && $a['type'] != 'text' && !in_array($a['name'], $this->_aFieldsCheckForSpam))
+                    continue;
+                
                 $val = BxDolForm::getSubmittedValue($a['name'], $this->_sFormMethod, $this->_aSpecificValues);
                 if (!$val)
                     continue;
 
-                if (!$oChecker->checkIsSpam($val))
+                if (!$oChecker->checkIsSpam($val, $a['type'])){
+					BxDolForm::setSubmittedValue($a['name'], $val, $this->_sFormMethod, $this->_aSpecificValues);
                     continue;
-
+				}
+                
                 ++$iErrors;
 
                 $sErr = _t('_sys_spam_detected');
@@ -1455,6 +1471,12 @@ class BxDolFormCheckerHelper
         }
         return $s ? true : false;
     }
+    static public function checkEmailOrEmpty($s)
+    {
+        if (empty($s))
+            return true;
+        return self::checkEmail($s);
+    }
     static public function checkEmail($s)
     {
         if (false === strpos($s, '@')) // simple check
@@ -1480,10 +1502,10 @@ class BxDolFormCheckerHelper
             return true;
         return $oCaptcha->check ();
     }
-    static public function checkIsSpam($val)
+    static public function checkIsSpam(&$val, $sType = 'textarea')
     {
         $bSpam = false;
-        bx_alert('system', 'check_spam', 0, getLoggedId(), array('is_spam' => &$bSpam, 'content' => $val, 'where' => 'form'));
+        bx_alert('system', 'check_spam', 0, getLoggedId(), array('is_spam' => &$bSpam, 'content' => &$val, 'where' => 'form', 'type' => $sType));
         return $bSpam;
     }
 

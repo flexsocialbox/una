@@ -67,10 +67,23 @@ class BxAlbumsDb extends BxBaseModTextDb
         return $this->getRow($sQuery);
     }
 
-    public function getMediaListByContentId($iContentId)
+    public function getMediaCountByContentId($iContentId)
     {
-        $sQuery = $this->prepare ("SELECT * FROM `" . $this->_oConfig->CNF['TABLE_FILES2ENTRIES'] . "` WHERE `content_id` = ? ORDER BY `order`", $iContentId);
-        return $this->getAll($sQuery);
+        $sQuery = $this->prepare ("SELECT COUNT(*) FROM `" . $this->_oConfig->CNF['TABLE_FILES2ENTRIES'] . "` WHERE `content_id` = ? LIMIT 1", $iContentId);
+        return $this->getOne($sQuery);
+    }
+
+    public function getMediaListByContentId($iContentId, $iLimit = false)
+    {
+        $sLimitQuery = '';
+        $aBindings = array('id' => $iContentId);
+        if ((int)$iLimit) {
+            $sLimitQuery = ' LIMIT :limit';
+            $aBindings = array_merge($aBindings, array('limit' => (int)$iLimit));
+        }
+            
+        $sQuery = "SELECT * FROM `" . $this->_oConfig->CNF['TABLE_FILES2ENTRIES'] . "` WHERE `content_id` = :id ORDER BY `order`" . $sLimitQuery;
+        return $this->getAll($sQuery, $aBindings);
     }
 
     function getMediaBy($aParams = array())
@@ -156,6 +169,17 @@ class BxAlbumsDb extends BxBaseModTextDb
 
         $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `{$CNF['TABLE_FILES2ENTRIES']}` " . $sJoinClause . " WHERE 1 " . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
 		return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
+    }
+    
+    public function updateMedia($aParamsSet, $aParamsWhere)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($aParamsSet) || empty($aParamsWhere))
+            return false;
+
+        $sSql = "UPDATE `" . $CNF['TABLE_FILES'] . "` SET " . $this->arrayToSQL($aParamsSet) . " WHERE " . $this->arrayToSQL($aParamsWhere, " AND ");
+        return $this->query($sSql);
     }
 }
 

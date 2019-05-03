@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `bx_albums_files` (
   `mime_type` varchar(128) NOT NULL,
   `ext` varchar(32) NOT NULL,
   `size` int(11) NOT NULL,
+  `duration` int(11) NOT NULL,
   `added` int(11) NOT NULL,
   `modified` int(11) NOT NULL,
   `private` int(11) NOT NULL,
@@ -340,8 +341,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_albums', 'bx_albums', 'allow_view_to', '', '', 0, 'custom', '_bx_albums_form_entry_input_sys_allow_view_to', '_bx_albums_form_entry_input_allow_view_to', '', 1, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_albums', 'bx_albums', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_albums', 'bx_albums', 'added', '', '', 0, 'datetime', '_bx_albums_form_entry_input_sys_date_added', '_bx_albums_form_entry_input_date_added', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_albums', 'bx_albums', 'changed', '', '', 0, 'datetime', '_bx_albums_form_entry_input_sys_date_changed', '_bx_albums_form_entry_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
-
+('bx_albums', 'bx_albums', 'changed', '', '', 0, 'datetime', '_bx_albums_form_entry_input_sys_date_changed', '_bx_albums_form_entry_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_albums', 'bx_albums', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
 INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES
 ('bx_albums_entry_add', 'delete_confirm', 2147483647, 0, 1),
@@ -355,7 +356,7 @@ INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_fo
 ('bx_albums_entry_edit', 'delete_confirm', 2147483647, 0, 1),
 ('bx_albums_entry_edit', 'title', 2147483647, 1, 2),
 ('bx_albums_entry_edit', 'text', 2147483647, 1, 3),
-('bx_albums_entry_edit', 'pictures', 2147483647, 0, 4),
+('bx_albums_entry_edit', 'pictures', 2147483647, 1, 4),
 ('bx_albums_entry_edit', 'allow_view_to', 2147483647, 1, 5),
 ('bx_albums_entry_edit', 'location', 2147483647, 1, 6),
 ('bx_albums_entry_edit', 'do_submit', 2147483647, 1, 7),

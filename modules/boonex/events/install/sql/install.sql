@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS `bx_events_data` (
   `featured` int(11) NOT NULL default '0',
   `join_confirmation` tinyint(4) NOT NULL DEFAULT '1',
   `reminder` int(11) NOT NULL DEFAULT '1',
-  `allow_view_to` varchar(255) DEFAULT NULL,
+  `allow_view_to` varchar(16) NOT NULL DEFAULT '3',
+  `allow_post_to` varchar(16) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `search_fields` (`event_name`, `event_desc`)
 );
@@ -261,6 +262,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_event', 'bx_events', 'allow_view_to', 3, '', 0, 'custom', '_bx_events_form_profile_input_sys_allow_view_to', '_bx_events_form_profile_input_allow_view_to', '_bx_events_form_profile_input_allow_view_to_desc', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_event', 'bx_events', 'allow_post_to', 'p', '', 0, 'custom', '_bx_events_form_profile_input_sys_allow_post_to', '_bx_events_form_profile_input_allow_post_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_event', 'bx_events', 'cover', 'a:1:{i:0;s:20:\"bx_events_cover_crop\";}', 'a:1:{s:20:\"bx_events_cover_crop\";s:24:\"_sys_uploader_crop_title\";}', 0, 'files', '_bx_events_form_profile_input_sys_cover', '_bx_events_form_profile_input_cover', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_event', 'bx_events', 'date_end', 0, '', 0, 'datetime', '_bx_events_form_profile_input_sys_date_end', '_bx_events_form_profile_input_date_end', '', 0, 0, 0, '', '', '', '', '', '_bx_events_form_profile_input_date_end_err', 'DateTimeTs', '', 1, 0),
 ('bx_event', 'bx_events', 'date_start', 0, '', 0, 'datetime', '_bx_events_form_profile_input_sys_date_start', '_bx_events_form_profile_input_date_start', '', 0, 0, 0, '', '', '', '', '', '_bx_events_form_profile_input_date_start_err', 'DateTimeTs', '', 1, 0),
@@ -295,7 +297,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_event_add', 'join_confirmation', 2147483647, 1, 14),
 ('bx_event_add', 'reminder', 2147483647, 1, 15),
 ('bx_event_add', 'allow_view_to', 2147483647, 1, 16),
-('bx_event_add', 'do_submit', 2147483647, 1, 17),
+('bx_event_add', 'allow_post_to', 2147483647, 1, 17),
+('bx_event_add', 'do_submit', 2147483647, 1, 18),
 
 ('bx_event_invite', 'initial_members', 2147483647, 1, 1),
 ('bx_event_invite', 'do_submit', 2147483647, 1, 2),
@@ -323,7 +326,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_event_edit', 'join_confirmation', 2147483647, 1, 14),
 ('bx_event_edit', 'reminder', 2147483647, 1, 15),
 ('bx_event_edit', 'allow_view_to', 2147483647, 1, 16),
-('bx_event_edit', 'do_submit', 2147483647, 1, 17),
+('bx_event_edit', 'allow_post_to', 2147483647, 1, 17),
+('bx_event_edit', 'do_submit', 2147483647, 1, 18),
 
 ('bx_event_edit_cover', 'allow_view_to', 2147483647, 0, 1),
 ('bx_event_edit_cover', 'time', 2147483647, 0, 2),
@@ -492,6 +496,34 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('bx_events_repeat_day_of_week', '5', 5, '_bx_events_cat_repeat_day_of_week_fri', ''),
 ('bx_events_repeat_day_of_week', '6', 6, '_bx_events_cat_repeat_day_of_week_sat', ''),
 ('bx_events_repeat_day_of_week', '7', 7, '_bx_events_cat_repeat_day_of_week_sun', '');
+
+-- COMMENTS
+INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
+('bx_events', 'bx_events', 'bx_events_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-event-profile&id={object_id}', '', 'bx_events_data', 'id', 'author', 'event_name', 'comments', '', '');
+
+-- VIEWS
+INSERT INTO `sys_objects_view` (`name`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_events', 'bx_events_views_track', '86400', '1', 'bx_events_data', 'id', 'author', 'views', '', '');
+
+-- VOTES
+INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
+('bx_events', 'bx_events_votes', 'bx_events_votes_track', '604800', '1', '1', '0', '1', 'bx_events_data', 'id', 'author', 'rate', 'votes', '', '');
+
+-- SCORES
+INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
+('bx_events', 'bx_events', 'bx_events_scores', 'bx_events_scores_track', '604800', '0', 'bx_events_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
+
+-- REPORTS
+INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_events', 'bx_events_reports', 'bx_events_reports_track', '1', 'page.php?i=view-event-profile&id={object_id}', 'bx_events_data', 'id', 'author', 'reports', '', '');
+
+-- FAFORITES
+INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_events', 'bx_events_favorites_track', '1', '1', '1', 'page.php?i=view-event-profile&id={object_id}', 'bx_events_data', 'id', 'author', 'favorites', '', '');
+
+-- FEATURED
+INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
+('bx_events', '1', '1', 'page.php?i=view-event-profile&id={object_id}', 'bx_events_data', 'id', 'author', 'featured', '', '');
 
 -- CONTENT INFO
 INSERT INTO `sys_objects_content_info` (`name`, `title`, `alert_unit`, `alert_action_add`, `alert_action_update`, `alert_action_delete`, `class_name`, `class_file`) VALUES

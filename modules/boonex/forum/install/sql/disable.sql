@@ -17,7 +17,7 @@ DELETE FROM `sys_pages_blocks` WHERE `module` = @sName OR `object` LIKE 'bx_foru
 -- MENU
 DELETE FROM `sys_objects_menu` WHERE `module` = @sName;
 DELETE FROM `sys_menu_sets` WHERE `module` = @sName;
-DELETE FROM `sys_menu_items` WHERE `module` = @sName OR `set_name` IN('bx_forum_view', 'bx_forum_view_more', 'bx_forum_view_actions', 'bx_forum_submenu', 'bx_forum_my', 'bx_forum_menu_manage_tools');
+DELETE FROM `sys_menu_items` WHERE `module` = @sName OR `set_name` IN('bx_forum_view', 'bx_forum_view_more', 'bx_forum_view_actions', 'bx_forum_submenu', 'bx_forum_my', 'bx_forum_snippet_meta_main', 'bx_forum_snippet_meta_counters', 'bx_forum_snippet_meta_reply', 'bx_forum_menu_manage_tools');
 
 
 -- GRID
@@ -49,30 +49,6 @@ DELETE FROM `sys_objects_metatags` WHERE `object` = @sName;
 
 -- CATEGORY
 DELETE FROM `sys_objects_category` WHERE `object` = 'bx_forum_cats';
-
-
--- COMMENTS
-DELETE FROM `sys_objects_cmts` WHERE `Name` = @sName;
-
-
--- VIEWS
-DELETE FROM `sys_objects_view` WHERE `Name` = @sName;
-
-
--- VOTES
-DELETE FROM `sys_objects_vote` WHERE `Name` = @sName;
-
-
--- SCORES
-DELETE FROM `sys_objects_score` WHERE `name` = @sName;
-
-
--- FAFORITES
-DELETE FROM `sys_objects_favorite` WHERE `Name` = @sName;
-
-
--- FEATURED
-DELETE FROM `sys_objects_feature` WHERE `name` = @sName;
 
 
 -- STATS

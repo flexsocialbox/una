@@ -62,6 +62,7 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 ('bx_posts_view_entry', 4, 'bx_posts', '', '_bx_posts_page_block_title_entry_actions', 13, 2147483647, 'service', 'a:2:{s:6:\"module\";s:8:\"bx_posts\";s:6:\"method\";s:14:\"entity_actions\";}', 0, 0, 0, 0),
 ('bx_posts_view_entry', 4, 'bx_posts', '', '_bx_posts_page_block_title_entry_social_sharing', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:8:\"bx_posts\";s:6:\"method\";s:21:\"entity_social_sharing\";}', 0, 0, 0, 0),
 ('bx_posts_view_entry', 4, 'bx_posts', '', '_bx_posts_page_block_title_entry_attachments', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:8:\"bx_posts\";s:6:\"method\";s:18:\"entity_attachments\";}', 0, 0, 0, 0),
+('bx_posts_view_entry', 4, 'bx_posts', '', '_bx_posts_page_block_title_entry_polls', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:8:\"bx_posts\";s:6:\"method\";s:12:\"entity_polls\";}', 0, 0, 0, 0),
 ('bx_posts_view_entry', 2, 'bx_posts', '', '_bx_posts_page_block_title_entry_comments', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:8:\"bx_posts\";s:6:\"method\";s:15:\"entity_comments\";}', 0, 0, 1, 4),
 ('bx_posts_view_entry', 3, 'bx_posts', '', '_bx_posts_page_block_title_entry_location', 3, 2147483647, 'service', 'a:4:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:13:\"locations_map\";s:6:\"params\";a:2:{i:0;s:8:\"bx_posts\";i:1;s:4:\"{id}\";}s:5:\"class\";s:20:\"TemplServiceMetatags\";}', 0, 0, 1, 3),
 ('bx_posts_view_entry', 3, 'bx_posts', '', '_bx_posts_page_block_title_featured_entries_view_extended', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_posts";s:6:"method";s:15:"browse_featured";s:6:"params";a:1:{i:0;s:8:"extended";}}', 0, 0, 1, 4);
@@ -193,6 +194,22 @@ SET @iAddMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 's
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('sys_add_content_links', 'bx_posts', 'create-post', '_bx_posts_menu_item_title_system_create_entry', '_bx_posts_menu_item_title_create_entry', 'page.php?i=create-post', '', '', 'file-alt col-red3', '', 2147483647, 1, 1, IFNULL(@iAddMenuOrder, 0) + 1);
 
+-- MENU: create post form attachments (link, photo, video, etc)
+
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_posts_entry_attachments', '_bx_posts_menu_title_entry_attachments', 'bx_posts_entry_attachments', 'bx_posts', 23, 0, 1, 'BxPostsMenuAttachments', 'modules/boonex/posts/classes/BxPostsMenuAttachments.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_posts_entry_attachments', 'bx_posts', '_bx_posts_menu_set_title_entry_attachments', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `editable`, `order`) VALUES 
+('bx_posts_entry_attachments', 'bx_posts', 'photo_simple', '_bx_posts_menu_item_title_system_cpa_photo_simple', '_bx_posts_menu_item_title_cpa_photo_simple', 'javascript:void(0)', 'javascript:{js_object_uploader_photos_simple}.showUploaderForm();', '_self', 'camera', '', '', 2147483647, '', 0, 0, 1, 1),
+('bx_posts_entry_attachments', 'bx_posts', 'photo_html5', '_bx_posts_menu_item_title_system_cpa_photo_html5', '_bx_posts_menu_item_title_cpa_photo_html5', 'javascript:void(0)', 'javascript:{js_object_uploader_photos_html5}.showUploaderForm();', '_self', 'camera', '', '', 2147483647, '', 1, 0, 1, 2),
+('bx_posts_entry_attachments', 'bx_posts', 'video_simple', '_bx_posts_menu_item_title_system_cpa_video_simple', '_bx_posts_menu_item_title_cpa_video_simple', 'javascript:void(0)', 'javascript:{js_object_uploader_videos_simple}.showUploaderForm();', '_self', 'video', '', '', 2147483647, '', 0, 0, 1, 3),
+('bx_posts_entry_attachments', 'bx_posts', 'video_html5', '_bx_posts_menu_item_title_system_cpa_video_html5', '_bx_posts_menu_item_title_cpa_video_html5', 'javascript:void(0)', 'javascript:{js_object_uploader_videos_html5}.showUploaderForm();', '_self', 'video', '', '', 2147483647, '', 1, 0, 1, 4),
+('bx_posts_entry_attachments', 'bx_posts', 'file_simple', '_bx_posts_menu_item_title_system_cpa_file_simple', '_bx_posts_menu_item_title_cpa_file_simple', 'javascript:void(0)', 'javascript:{js_object_uploader_files_simple}.showUploaderForm();', '_self', 'file', '', '', 2147483647, '', 0, 0, 1, 5),
+('bx_posts_entry_attachments', 'bx_posts', 'file_html5', '_bx_posts_menu_item_title_system_cpa_file_html5', '_bx_posts_menu_item_title_cpa_file_html5', 'javascript:void(0)', 'javascript:{js_object_uploader_files_html5}.showUploaderForm();', '_self', 'file', '', '', 2147483647, '', 1, 0, 1, 6),
+('bx_posts_entry_attachments', 'bx_posts', 'poll', '_bx_posts_menu_item_title_system_cpa_poll', '_bx_posts_menu_item_title_cpa_poll', 'javascript:void(0)', 'javascript:{js_object}.showPollForm(this);', '_self', 'tasks', '', '', 2147483647, '', 1, 0, 1, 7);
 
 -- MENU: actions menu for view entry 
 
@@ -221,13 +238,13 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_posts_view_actions', 'bx_posts', 'comment', '_sys_menu_item_title_system_va_comment', '', '', '', '', '', '', '', 0, 2147483647, 0, 0, 200),
 ('bx_posts_view_actions', 'bx_posts', 'view', '_sys_menu_item_title_system_va_view', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 210),
 ('bx_posts_view_actions', 'bx_posts', 'vote', '_sys_menu_item_title_system_va_vote', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 220),
+('bx_posts_view_actions', 'bx_posts', 'reaction', '_sys_menu_item_title_system_va_reaction', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 225),
 ('bx_posts_view_actions', 'bx_posts', 'score', '_sys_menu_item_title_system_va_score', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 230),
 ('bx_posts_view_actions', 'bx_posts', 'favorite', '_sys_menu_item_title_system_va_favorite', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 240),
 ('bx_posts_view_actions', 'bx_posts', 'feature', '_sys_menu_item_title_system_va_feature', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 250),
 ('bx_posts_view_actions', 'bx_posts', 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_posts_view_actions', 'bx_posts', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 270),
 ('bx_posts_view_actions', 'bx_posts', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_posts_view_actions', 'bx_posts', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_posts_view_actions', 'bx_posts', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_posts_view_actions', 'bx_posts', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_posts_view_actions', 'bx_posts', 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, 1, 0, 9999);
@@ -444,7 +461,13 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 INSERT INTO `sys_objects_uploader` (`object`, `active`, `override_class_name`, `override_class_file`) VALUES
 ('bx_posts_simple', 1, 'BxPostsUploaderSimple', 'modules/boonex/posts/classes/BxPostsUploaderSimple.php'),
-('bx_posts_html5', 1, 'BxPostsUploaderHTML5', 'modules/boonex/posts/classes/BxPostsUploaderHTML5.php');
+('bx_posts_html5', 1, 'BxPostsUploaderHTML5', 'modules/boonex/posts/classes/BxPostsUploaderHTML5.php'),
+('bx_posts_photos_simple', 1, 'BxPostsUploaderSimpleAttach', 'modules/boonex/posts/classes/BxPostsUploaderSimpleAttach.php'),
+('bx_posts_photos_html5', 1, 'BxPostsUploaderHTML5Attach', 'modules/boonex/posts/classes/BxPostsUploaderHTML5Attach.php'),
+('bx_posts_videos_simple', 1, 'BxPostsUploaderSimpleAttach', 'modules/boonex/posts/classes/BxPostsUploaderSimpleAttach.php'),
+('bx_posts_videos_html5', 1, 'BxPostsUploaderHTML5Attach', 'modules/boonex/posts/classes/BxPostsUploaderHTML5Attach.php'),
+('bx_posts_files_simple', 1, 'BxPostsUploaderSimpleAttach', 'modules/boonex/posts/classes/BxPostsUploaderSimpleAttach.php'),
+('bx_posts_files_html5', 1, 'BxPostsUploaderHTML5Attach', 'modules/boonex/posts/classes/BxPostsUploaderHTML5Attach.php');
 
 -- ALERTS
 

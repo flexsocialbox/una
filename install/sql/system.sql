@@ -4,7 +4,7 @@
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `sys_keys`, `sys_objects_editor`, `sys_objects_embeds`, `sys_objects_file_handlers`, `sys_objects_captcha`, `sys_objects_cmts`, `sys_cmts_images`, `sys_cmts_images_preview`, `sys_cmts_images2entries`, `sys_cmts_ids`, `sys_cmts_meta_keywords`, `sys_cmts_meta_mentions`, `sys_cmts_votes`, `sys_cmts_votes_track`, `sys_cmts_reports`, `sys_cmts_reports_track`, `sys_cmts_scores`, `sys_cmts_scores_track`, `sys_email_templates`, `sys_queue_push`, `sys_queue_email`, `sys_options`, sys_options_types, `sys_options_categories`, `sys_options_mixes`, `sys_options_mixes2options`,  `sys_localization_categories`, `sys_localization_keys`, `sys_localization_languages`, `sys_localization_strings`, `sys_acl_actions`, `sys_acl_actions_track`, `sys_acl_matrix`, `sys_acl_levels`, `sys_sessions`, `sys_acl_levels_members`, `sys_objects_rss`, `sys_objects_search`, `sys_objects_search_extended`, `sys_search_extended_fields`, `sys_statistics`, `sys_alerts`, `sys_alerts_handlers`, `sys_injections`, `sys_injections_admin`, `sys_modules`, `sys_modules_file_tracks`, `sys_modules_relations`, `sys_permalinks`, `sys_objects_privacy`, `sys_privacy_defaults`, `sys_privacy_groups`, `sys_objects_auths`, `sys_objects_score`, `sys_objects_vote`, `sys_objects_report`, `sys_objects_view`, `sys_objects_favorite`, `sys_objects_feature`, `sys_objects_chart`, `sys_objects_content_info`, `sys_content_info_grids`, `sys_cron_jobs`, `sys_objects_storage`, `sys_objects_uploader`, `sys_storage_user_quotas`, `sys_storage_tokens`, `sys_storage_ghosts`, `sys_storage_deletions`, `sys_storage_mime_types`, `sys_objects_transcoder`, `sys_transcoder_images_files`, `sys_transcoder_videos_files`, `sys_transcoder_audio_files`, `sys_transcoder_filters`, `sys_transcoder_queue`, `sys_transcoder_queue_files`, `sys_accounts`, `sys_profiles`, `sys_objects_form`, `sys_form_displays`, `sys_form_inputs`, `sys_form_display_inputs`, `sys_form_pre_lists`, `sys_form_pre_values`, `sys_menu_templates`, `sys_objects_menu`, `sys_menu_sets`, `sys_menu_items`, `sys_objects_grid`, `sys_grid_fields`, `sys_grid_actions`, `sys_objects_connection`, `sys_profiles_conn_subscriptions`, `sys_profiles_conn_friends`, `sys_objects_page`, `sys_pages_types`, `sys_pages_layouts`, `sys_pages_design_boxes`, `sys_pages_blocks`, `sys_objects_metatags`, `sys_objects_category`, `sys_objects_live_updates`, `sys_objects_payments`, `sys_files`, `sys_images`, `sys_images_custom`, `sys_images_resized`, `sys_preloader`, `sys_std_pages`, `sys_std_widgets`, `sys_std_pages_widgets`;
+DROP TABLE IF EXISTS `sys_keys`, `sys_objects_editor`, `sys_objects_embeds`, `sys_objects_file_handlers`, `sys_objects_captcha`, `sys_objects_cmts`, `sys_cmts_images`, `sys_cmts_images_preview`, `sys_cmts_images2entries`, `sys_cmts_ids`, `sys_cmts_meta_keywords`, `sys_cmts_meta_mentions`, `sys_cmts_votes`, `sys_cmts_votes_track`, `sys_cmts_reports`, `sys_cmts_reports_track`, `sys_cmts_scores`, `sys_cmts_scores_track`, `sys_email_templates`, `sys_queue_push`, `sys_queue_email`, `sys_options`, sys_options_types, `sys_options_categories`, `sys_options_mixes`, `sys_options_mixes2options`,  `sys_localization_categories`, `sys_localization_keys`, `sys_localization_languages`, `sys_localization_strings`, `sys_acl_actions`, `sys_acl_actions_track`, `sys_acl_matrix`, `sys_acl_levels`, `sys_sessions`, `sys_acl_levels_members`, `sys_objects_rss`, `sys_objects_search`, `sys_objects_search_extended`, `sys_search_extended_fields`, `sys_statistics`, `sys_alerts`, `sys_alerts_handlers`, `sys_injections`, `sys_injections_admin`, `sys_modules`, `sys_modules_file_tracks`, `sys_modules_relations`, `sys_permalinks`, `sys_objects_privacy`, `sys_privacy_defaults`, `sys_privacy_groups`, `sys_objects_auths`, `sys_objects_score`, `sys_objects_vote`, `sys_objects_report`, `sys_objects_view`, `sys_objects_favorite`, `sys_objects_feature`, `sys_objects_chart`, `sys_objects_content_info`, `sys_content_info_grids`, `sys_cron_jobs`, `sys_objects_storage`, `sys_objects_uploader`, `sys_storage_user_quotas`, `sys_storage_tokens`, `sys_storage_ghosts`, `sys_storage_deletions`, `sys_storage_mime_types`, `sys_objects_transcoder`, `sys_transcoder_images_files`, `sys_transcoder_videos_files`, `sys_transcoder_audio_files`, `sys_transcoder_filters`, `sys_transcoder_queue`, `sys_transcoder_queue_files`, `sys_accounts`, `sys_profiles`, `sys_objects_form`, `sys_form_displays`, `sys_form_inputs`, `sys_form_display_inputs`, `sys_form_pre_lists`, `sys_form_pre_values`, `sys_menu_templates`, `sys_objects_menu`, `sys_menu_sets`, `sys_menu_items`, `sys_objects_grid`, `sys_grid_fields`, `sys_grid_actions`, `sys_objects_connection`, `sys_profiles_conn_relations`, `sys_profiles_conn_subscriptions`, `sys_profiles_conn_friends`, `sys_objects_page`, `sys_pages_types`, `sys_pages_layouts`, `sys_pages_design_boxes`, `sys_pages_blocks`, `sys_objects_metatags`, `sys_objects_category`, `sys_objects_live_updates`, `sys_objects_payments`, `sys_files`, `sys_images`, `sys_images_custom`, `sys_images_resized`, `sys_preloader`, `sys_std_pages`, `sys_std_widgets`, `sys_std_pages_widgets`;
 
 ALTER DATABASE DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
@@ -291,7 +291,6 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 
 (@iCategoryId, 'sys_editor_default', '_adm_stg_cpt_option_sys_editor_default', 'sys_tinymce', 'digit', '', '', '', 50),
 (@iCategoryId, 'sys_captcha_default', '_adm_stg_cpt_option_sys_captcha_default', 'sys_recaptcha_new', 'digit', '', '', '', 51),
-(@iCategoryId, 'sys_embed_default', '_adm_stg_cpt_option_sys_embed_default', 'sys_embedly', 'digit', '', '', '', 52),
 
 (@iCategoryId, 'sys_live_updates_interval', '_adm_stg_cpt_option_sys_live_updates_interval', '10000', 'digit', '', '', '', 60),
 
@@ -300,7 +299,11 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_tinymce_plugins_standard', '_adm_stg_cpt_option_sys_tinymce_plugins_standard', 'advlist,autolink,autosave,code,hr,image,link,lists,media,paste,fullscreen', 'digit', '', '', '', 73),
 (@iCategoryId, 'sys_tinymce_toolbar_standard', '_adm_stg_cpt_option_sys_tinymce_toolbar_standard', 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | fullscreen', 'digit', '', '', '', 74),
 (@iCategoryId, 'sys_tinymce_plugins_full', '_adm_stg_cpt_option_sys_tinymce_plugins_full', 'advlist,anchor,autolink,autoresize,autosave,charmap,code,emoticons,hr,image,link,lists,media,nonbreaking,pagebreak,preview,paste,save,searchreplace,table,textcolor,visualblocks,fullscreen', 'digit', '', '', '', 76),
-(@iCategoryId, 'sys_tinymce_toolbar_full', '_adm_stg_cpt_option_sys_tinymce_toolbar_full', 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image, preview media | forecolor emoticons | fullscreen', 'digit', '', '', '', 77);
+(@iCategoryId, 'sys_tinymce_toolbar_full', '_adm_stg_cpt_option_sys_tinymce_toolbar_full', 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image, preview media | forecolor emoticons | fullscreen', 'digit', '', '', '', 77),
+
+(@iCategoryId, 'sys_search_keyword_min_len', '_adm_stg_cpt_option_sys_search_keyword_min_len', '1', 'digit', '', '', '', 80),
+
+(@iCategoryId, 'sys_relations', '_adm_stg_cpt_option_sys_relations', '', 'list', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:21:"get_options_relations";s:6:"params";a:0:{}s:5:"class";s:13:"TemplServices";}', '', '', 90);
 
 
 --
@@ -404,6 +407,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 
 (@iCategoryId, 'sys_maps_api_key', '_adm_stg_cpt_option_sys_maps_api_key', '', 'digit', '', '', '', 70),
 
+(@iCategoryId, 'sys_embed_default', '_adm_stg_cpt_option_sys_embed_default', 'sys_embedly', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_options_embed_default";s:5:"class";s:13:"TemplServices";}', '', '', 79),
 (@iCategoryId, 'sys_embedly_api_key', '_adm_stg_cpt_option_sys_embedly_api_key', '', 'digit', '', '', '', 80),
 
 (@iCategoryId, 'sys_iframely_api_key', '_adm_stg_cpt_option_sys_iframely_api_key', '', 'digit', '', '', '', 90);
@@ -847,7 +851,7 @@ CREATE TABLE `sys_acl_levels` (
   `Active` enum('yes','no') NOT NULL default 'no',
   `Purchasable` enum('yes','no') NOT NULL default 'yes',
   `Removable` enum('yes','no') NOT NULL default 'yes',
-  `QuotaSize` int(11) NOT NULL,
+  `QuotaSize` bigint(20) NOT NULL,
   `QuotaNumber` int(11) NOT NULL,
   `QuotaMaxFileSize` int(11) NOT NULL,
   `Order` int(11) NOT NULL default '0',
@@ -2908,7 +2912,7 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('sys_login', 'system', 'rememberMe', '1', '', 0, 'switcher', '_sys_form_login_input_caption_system_remember_me', '_sys_form_login_input_remember_me', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('sys_login', 'system', 'login', '_sys_form_login_input_submit', '', 0, 'submit', '_sys_form_login_input_caption_system_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 ('sys_login', 'system', 'submit_text', '', '', 0, 'custom', '_sys_form_login_input_caption_system_submit_text', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
-('sys_login', 'system', 'phone', '', '', 0, 'text', '_sys_form_login_input_caption_system_phone', '_sys_form_login_input_phone', '', 1, 0, 0, '', '', '', 'PhoneExist', '', '_sys_form_login_input_phone_error_format', 'Xss', '', 1, 0),
+('sys_login', 'system', 'phone', '', '', 0, 'text', '_sys_form_login_input_caption_system_phone', '_sys_form_login_input_phone', '_sys_form_login_input_phone_info', 1, 0, 0, '', '', '', 'PhoneExist', '', '_sys_form_login_input_phone_error_format', 'Xss', '', 1, 0),
 ('sys_login', 'system', 'code', '', '', 0, 'text', '_sys_form_login_input_caption_system_code', '_sys_form_login_input_code', '', 1, 0, 0, '', '', '', 'CodeExist', '', '_sys_form_login_input_code_error_empty', 'Xss', '', 0, 0),
 ('sys_login', 'system', 'back', '', '', '', 'value', '_sys_form_login_input_caption_system_back', '_sys_form_login_input_back', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('sys_login', 'system', 'do_checkcode', '_sys_form_login_input_checkcode', '', 0, 'submit', '_sys_form_login_input_caption_system_checkcode', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
@@ -2935,7 +2939,7 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('sys_confirm_email', 'system', 'code', '', '', 0, 'text', '_sys_form_confirm_email_input_caption_system_code', '_sys_form_confirm_email_input_code', '', 1, 0, 0, '', '', '', 'CodeExist', '', '_sys_form_confirm_email_input_code_error', 'Xss', '', 0, 0),
 ('sys_confirm_email', 'system', 'do_submit', '_sys_form_confirm_email_input_submit', '', 0, 'submit', '_sys_form_confirm_email_input_caption_system_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 
-('sys_confirm_phone', 'system', 'phone', '', '', 0, 'text', '_sys_form_confirm_phone_input_caption_system_phone', '_sys_form_confirm_phone_input_phone', '', 1, 0, 0, '', '', '', 'PhoneUniq', '', '_sys_form_confirm_phone_input_phone_error_format', 'Xss', '', 1, 0),
+('sys_confirm_phone', 'system', 'phone', '', '', 0, 'text', '_sys_form_confirm_phone_input_caption_system_phone', '_sys_form_confirm_phone_input_phone', '_sys_form_confirm_phone_input_phone_info', 1, 0, 0, '', '', '', 'PhoneUniq', '', '_sys_form_confirm_phone_input_phone_error_format', 'Xss', '', 1, 0),
 ('sys_confirm_phone', 'system', 'code', '', '', 0, 'text', '_sys_form_confirm_phone_input_caption_system_code', '_sys_form_confirm_phone_confirmation_input_code', '', 1, 0, 0, '', '', '', 'CodeExist', '', '_sys_form_confirm_phone_input_code_error_empty', 'Xss', '', 0, 0),
 ('sys_confirm_phone', 'system', 'do_submit', '_sys_form_confirm_phone_input_submit', '', 0, 'submit', '_sys_form_confirm_phone_input_caption_system_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 ('sys_confirm_phone', 'system', 'do_sendsms', '_sys_form_confirm_phone_input_sendsms', '', 0, 'submit', '_sys_form_confirm_phone_input_caption_system_do_sendsms', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
@@ -3087,7 +3091,9 @@ INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`, `exte
 ('Country', '_adm_form_txt_pre_lists_country', 'system', '0', '1'),
 ('Sex', '_adm_form_txt_pre_lists_sex', 'system', '1', '1'),
 ('Language', '_adm_form_txt_pre_lists_language', 'system', '0', '1'),
-('sys_report_types', '_sys_pre_lists_report_types', 'system', '0', '0');
+('sys_report_types', '_sys_pre_lists_report_types', 'system', '0', '0'),
+('sys_vote_reactions', '_sys_pre_lists_vote_reactions', 'system', '0', '0'),
+('sys_relations', '_sys_pre_lists_relations', 'system', '0', '1');
 
 
 CREATE TABLE `sys_form_pre_values` (
@@ -3097,6 +3103,7 @@ CREATE TABLE `sys_form_pre_values` (
   `Order` int(10) unsigned NOT NULL default '0',
   `LKey` varchar(255) NOT NULL default '',
   `LKey2` varchar(255) NOT NULL default '',
+  `Data` text NOT NULL default '',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `KeyAndValue` (`Key`, `Value`)
 );
@@ -3416,6 +3423,24 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('sys_report_types', 'nude', 4, '_sys_pre_lists_report_types_nude', ''),
 ('sys_report_types', 'other', 5, '_sys_pre_lists_report_types_other', '');
 
+INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`, `Data`) VALUES
+('sys_vote_reactions', 'like', 1, '_sys_pre_lists_vote_reactions_like', '', 'a:2:{s:4:"icon";s:9:"thumbs-up";s:6:"weight";s:1:"1";}'),
+('sys_vote_reactions', 'love', 2, '_sys_pre_lists_vote_reactions_love', '', 'a:2:{s:4:"icon";s:26:"heart sys-colored col-red1";s:6:"weight";s:1:"1";}'),
+('sys_vote_reactions', 'joy', 3, '_sys_pre_lists_vote_reactions_joy', '', 'a:2:{s:4:"icon";s:32:"grin-squint sys-colored col-red3";s:6:"weight";s:1:"1";}'),
+('sys_vote_reactions', 'surprise', 4, '_sys_pre_lists_vote_reactions_surprise', '', 'a:2:{s:4:"icon";s:29:"surprise sys-colored col-red3";s:6:"weight";s:1:"1";}'),
+('sys_vote_reactions', 'sadness', 5, '_sys_pre_lists_vote_reactions_sadness', '', 'a:2:{s:4:"icon";s:29:"sad-tear sys-colored col-red3";s:6:"weight";s:1:"1";}'),
+('sys_vote_reactions', 'anger', 6, '_sys_pre_lists_vote_reactions_anger', '', 'a:2:{s:4:"icon";s:26:"angry sys-colored col-red3";s:6:"weight";s:1:"1";}');
+
+INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`, `Data`) VALUES
+('sys_relations', '1', 1, '_sys_pre_lists_relations_husband', '', 'a:1:{i:0;s:1:"2";}'),
+('sys_relations', '2', 2, '_sys_pre_lists_relations_wife', '', 'a:1:{i:0;s:1:"1";}'),
+('sys_relations', '3', 3, '_sys_pre_lists_relations_father', '', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}'),
+('sys_relations', '4', 4, '_sys_pre_lists_relations_mother', '', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}'),
+('sys_relations', '5', 5, '_sys_pre_lists_relations_son', '', 'a:2:{i:0;s:1:"3";i:1;s:1:"4";}'),
+('sys_relations', '6', 6, '_sys_pre_lists_relations_daughter', '', 'a:2:{i:0;s:1:"3";i:1;s:1:"4";}'),
+('sys_relations', '7', 7, '_sys_pre_lists_relations_brother', '', 'a:2:{i:0;s:1:"7";i:1;s:1:"8";}'),
+('sys_relations', '8', 8, '_sys_pre_lists_relations_sister', '', 'a:2:{i:0;s:1:"7";i:1;s:1:"8";}');
+
 -- --------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `sys_menu_templates` (
@@ -3448,7 +3473,8 @@ INSERT INTO `sys_menu_templates` (`id`, `template`, `title`, `visible`) VALUES
 (19, 'menu_floating_blocks_wide.html', '_sys_menu_template_title_floating_blocks_wide', 0),
 (20, 'menu_custom_ver.html', '_sys_menu_template_title_custom_ver', 0),
 (21, 'menu_profile_stats.html', '_sys_menu_template_title_profile_stats', 0),
-(22, 'menu_interactive.html', '_sys_menu_template_title_interactive', 1);
+(22, 'menu_interactive.html', '_sys_menu_template_title_interactive', 1),
+(23, 'menu_buttons_icon_hor.html', '_sys_menu_template_title_buttons_icon_hor', 1);
 
 CREATE TABLE IF NOT EXISTS `sys_objects_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3491,7 +3517,8 @@ INSERT INTO `sys_objects_menu` (`object`, `title`, `set_name`, `module`, `templa
 ('sys_switch_template', '_sys_menu_title_switch_template', 'sys_switch_template', 'system', 6, 0, 1, 'BxTemplMenuSwitchTemplate', ''),
 ('sys_set_acl_level', '_sys_menu_title_set_acl_level', '', 'system', 6, 0, 1, 'BxTemplMenuSetAclLevel', ''),
 ('sys_social_sharing', '_sys_menu_title_social_sharing', 'sys_social_sharing', 'system', 18, 0, 1, 'BxTemplMenuSocialSharing', ''),
-('sys_create_post', '_sys_menu_title_create_post', 'sys_add_content_links', 'system', 22, 0, 1, 'BxTemplMenuCreatePost', '');
+('sys_create_post', '_sys_menu_title_create_post', 'sys_add_content_links', 'system', 22, 0, 1, 'BxTemplMenuCreatePost', ''),
+('sys_add_relation', '_sys_menu_title_add_relation', '', 'system', 6, 0, 1, 'BxTemplMenuAddRelation', '');
 
 CREATE TABLE IF NOT EXISTS `sys_menu_sets` (
   `set_name` varchar(64) NOT NULL,
@@ -3624,9 +3651,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- social sharing menu
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
 ('sys_social_sharing', 'system', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '_sys_menu_item_title_social_sharing_facebook', 'https://www.facebook.com/sharer/sharer.php?u={url_encoded}', '', '_blank', 'fab facebook-f', '', 2147483647, 1, 1, 1),
-('sys_social_sharing', 'system', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '_sys_menu_item_title_social_sharing_googleplus', 'https://plus.google.com/share?url={url_encoded}', '', '_blank', 'fab google-plus-g', '', 2147483647, 1, 1, 2),
-('sys_social_sharing', 'system', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '_sys_menu_item_title_social_sharing_twitter', 'https://twitter.com/share?url={url_encoded}', '', '_blank', 'fab twitter', '', 2147483647, 1, 1, 3),
-('sys_social_sharing', 'system', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '_sys_menu_item_title_social_sharing_pinterest', 'http://pinterest.com/pin/create/button/?url={url_encoded}&media={img_url_encoded}&description={title_encoded}', '', '_blank', 'fab pinterest', '', 2147483647, 1, 1, 4);
+('sys_social_sharing', 'system', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '_sys_menu_item_title_social_sharing_twitter', 'https://twitter.com/share?url={url_encoded}', '', '_blank', 'fab twitter', '', 2147483647, 1, 1, 2),
+('sys_social_sharing', 'system', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '_sys_menu_item_title_social_sharing_pinterest', 'http://pinterest.com/pin/create/button/?url={url_encoded}&media={img_url_encoded}&description={title_encoded}', '', '_blank', 'fab pinterest', '', 2147483647, 1, 1, 3);
 
 -- dashboard manage tools
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
@@ -3927,8 +3953,13 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
 ('sys_grid_connections', 'Sql', 'SELECT `p`.`id`, `c`.`added`, `c`.`mutual` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridConnections', ''),
 ('sys_grid_connections_requests', 'Sql', 'SELECT `p`.`id`, `c`.`added`, `c`.`mutual` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridConnectionsRequests', ''),
+
 ('sys_grid_subscriptions', 'Sql', 'SELECT `p`.`id`, `c`.`added` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridSubscriptions', ''),
-('sys_grid_subscribed_me', 'Sql', 'SELECT `p`.`id`, `c`.`added` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridSubscribedMe', '');
+('sys_grid_subscribed_me', 'Sql', 'SELECT `p`.`id`, `c`.`added` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridSubscribedMe', ''),
+
+('sys_grid_relations', 'Sql', 'SELECT `p`.`id`, `c`.`relation`, `c`.`mutual`, `c`.`added` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridRelations', ''),
+('sys_grid_related_me', 'Sql', 'SELECT `p`.`id`, `c`.`relation`, `c`.`mutual`, `c`.`added` FROM `sys_profiles` AS `p` INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` = `p`.`account_id`) {join_connections}', 'sys_profiles', 'id', 'c`.`added', '', '', 10, NULL, 'start', '', 'name,email', '', 'auto', '', '', 2147483647, 'BxDolGridRelatedMe', '');
+
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `params`, `order`) VALUES
 ('sys_grid_connections', 'name', '_sys_name', '40%', '', 1),
@@ -3943,20 +3974,36 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `params`, `or
 ('sys_grid_subscriptions', 'actions', '', '30%', '', 2),
 
 ('sys_grid_subscribed_me', 'name', '_sys_name', '70%', '', 1),
-('sys_grid_subscribed_me', 'actions', '', '30%', '', 2);
+('sys_grid_subscribed_me', 'actions', '', '30%', '', 2),
 
-INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `confirm`, `order`) VALUES
-('sys_grid_connections', 'single', 'accept', '_sys_accept', '', 0, 1),
-('sys_grid_connections', 'single', 'delete', '', 'remove', 1, 2),
-('sys_grid_connections', 'single', 'add_friend', '_sys_add_friend', 'plus', 0, 3),
+('sys_grid_relations', 'name', '_sys_name', '40%', '', 1),
+('sys_grid_relations', 'relation', '_sys_relation', '15%', '', 2),
+('sys_grid_relations', 'mutual', '_sys_status', '15%', '', 3),
+('sys_grid_relations', 'actions', '', '30%', '', 4),
 
-('sys_grid_connections_requests', 'single', 'accept', '_sys_accept', '', 0, 1),
-('sys_grid_connections_requests', 'single', 'delete', '', 'remove', 1, 2),
+('sys_grid_related_me', 'name', '_sys_name', '40%', '', 1),
+('sys_grid_related_me', 'relation', '_sys_relation', '15%', '', 2),
+('sys_grid_related_me', 'mutual', '_sys_status', '15%', '', 3),
+('sys_grid_related_me', 'actions', '', '30%', '', 4);
 
-('sys_grid_subscriptions', 'single', 'subscribe', '_sys_subscribe', 'check', 0, 1),
-('sys_grid_subscriptions', 'single', 'delete', '', 'remove', 1, 2),
+INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
+('sys_grid_connections', 'single', 'accept', '_sys_accept', '', 0, 0, 1),
+('sys_grid_connections', 'single', 'delete', '', 'remove', 0, 1, 2),
+('sys_grid_connections', 'single', 'add_friend', '_sys_add_friend', 'plus', 0, 0, 3),
 
-('sys_grid_subscribed_me', 'single', 'subscribe', '_sys_subscribe', 'check', 0, 1);
+('sys_grid_connections_requests', 'single', 'accept', '_sys_accept', '', 0, 0, 1),
+('sys_grid_connections_requests', 'single', 'delete', '', 'remove', 0, 1, 2),
+
+('sys_grid_subscriptions', 'single', 'subscribe', '_sys_subscribe', 'check', 0, 0, 1),
+('sys_grid_subscriptions', 'single', 'delete', '', 'remove', 0, 1, 2),
+
+('sys_grid_subscribed_me', 'single', 'subscribe', '_sys_subscribe', 'check', 0, 0, 1),
+
+('sys_grid_relations', 'single', 'delete', '_Delete', 'remove', 1, 1, 1),
+
+('sys_grid_related_me', 'single', 'confirm', '_sys_confirm', 'check-circle', 1, 0, 1),
+('sys_grid_related_me', 'single', 'decline', '_sys_decline', 'times-circle', 1, 1, 2),
+('sys_grid_related_me', 'single', 'add', '_sys_add_relation', 'plus-circle', 1, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -3974,8 +4021,20 @@ CREATE TABLE IF NOT EXISTS `sys_objects_connection` (
 
 INSERT INTO `sys_objects_connection` (`object`, `table`, `type`, `override_class_name`, `override_class_file`) VALUES
 ('sys_profiles_friends', 'sys_profiles_conn_friends', 'mutual', '', ''),
-('sys_profiles_subscriptions', 'sys_profiles_conn_subscriptions', 'one-way', '', '');
+('sys_profiles_subscriptions', 'sys_profiles_conn_subscriptions', 'one-way', '', ''),
+('sys_profiles_relations', 'sys_profiles_conn_relations', 'mutual', 'BxDolRelation', '');
 
+CREATE TABLE IF NOT EXISTS `sys_profiles_conn_relations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `initiator` int(11) NOT NULL DEFAULT '0',
+  `content` int(11) NOT NULL DEFAULT '0',
+  `relation` int(11) NOT NULL DEFAULT '0',
+  `mutual` tinyint(4) NOT NULL DEFAULT '0',
+  `added` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `initiator` (`initiator`,`content`),
+  KEY `content` (`content`)
+);
 
 CREATE TABLE IF NOT EXISTS `sys_profiles_conn_subscriptions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -4287,7 +4346,7 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 
 ('sys_privacy', 1, 'system', '', '_sys_page_block_title_privacy', 11, 2147483647, 'lang', '_sys_page_lang_block_privacy', 0, 1, 1, 1),
 
-('sys_dashboard', 3, 'system', '', '_sys_page_block_title_profile_stats', 13, 2147483644, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:13:"profile_stats";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', 0, 1, 1, 1),
+('sys_dashboard', 3, 'system', '', '_sys_page_block_title_profile_stats', 3, 2147483644, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:13:"profile_stats";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', 0, 1, 1, 1),
 
 ('sys_dashboard', 3, 'system', '', '_sys_page_block_title_profile_membership', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:18:"profile_membership";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', 0, 1, 0, 0),
 
@@ -4474,6 +4533,9 @@ INSERT INTO `sys_preloader`(`module`, `type`, `content`, `active`, `order`) VALU
 ('system', 'js_system', 'BxDolScore.js', 1, 34),
 ('system', 'js_system', 'BxDolView.js', 1, 35),
 ('system', 'js_system', 'BxDolVote.js', 1, 36),
+('system', 'js_system', 'BxDolVoteLikes.js', 1, 37),
+('system', 'js_system', 'BxDolVoteReactions.js', 1, 38),
+('system', 'js_system', 'BxDolVoteStars.js', 1, 39),
 
 ('system', 'js_translation', '_Are_you_sure', 1, 1),
 ('system', 'js_translation', '_error occured', 1, 2),

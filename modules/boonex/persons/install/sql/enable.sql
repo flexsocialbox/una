@@ -44,9 +44,11 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES
 ('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_subscriptions', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:21:\"profile_subscriptions\";}', 0, 1, 0, 0),
 ('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_subscribed_me', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:21:\"profile_subscribed_me\";}', 0, 1, 0, 0),
+('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_related_me', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:10:"bx_persons";s:6:"method";s:18:"profile_related_me";}', 0, 1, 0, 0),
 ('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_comments', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:15:\"entity_comments\";}', 0, 0, 0, 0),
 ('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_description', 13, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:17:\"entity_text_block\";}', 0, 0, 1, 1),
 ('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_friends', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:15:\"profile_friends\";}', 0, 1, 1, 2),
+('bx_persons_view_profile', 2, 'bx_persons', '', '_bx_persons_page_block_title_profile_relations', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:10:"bx_persons";s:6:"method";s:17:"profile_relations";}', 0, 1, 1, 3),
 ('bx_persons_view_profile', 3, 'bx_persons', '', '_bx_persons_page_block_title_profile_location', 13, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:15:\"entity_location\";}', 0, 0, 0, 0),
 ('bx_persons_view_profile', 3, 'bx_persons', '', '_bx_persons_page_block_title_profile_info', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:10:\"bx_persons\";s:6:\"method\";s:11:\"entity_info\";}', 0, 0, 1, 1),
 ('bx_persons_view_profile', 3, 'bx_persons', '', '_bx_persons_page_block_title_profile_all_actions', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:10:"bx_persons";s:6:"method";s:18:"entity_all_actions";}', 0, 0, 0, 0),
@@ -117,6 +119,14 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
 ('bx_persons_profile_subscriptions', 1, 'bx_persons', '_bx_persons_page_block_title_system_profile_subscriptions', '_bx_persons_page_block_title_profile_subscriptions', 11, 2147483647, 'service', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:19:\"subscriptions_table\";s:5:\"class\";s:23:\"TemplServiceConnections\";}', 0, 0, 1, 1),
 ('bx_persons_profile_subscriptions', 1, 'bx_persons', '_bx_persons_page_block_title_system_profile_subscribed_me', '_bx_persons_page_block_title_profile_subscribed_me', 11, 2147483647, 'service', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:19:\"subscribed_me_table\";s:5:\"class\";s:23:\"TemplServiceConnections\";}', 0, 0, 1, 2);
+
+-- PAGE: profile relations
+INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_persons_profile_relations', 'persons-profile-relations', '_bx_persons_page_title_sys_profile_relations', '_bx_persons_page_title_profile_relations', 'bx_persons', 5, 2147483647, 1, 'page.php?i=persons-profile-relations', '', '', '', 0, 1, 0, 'BxPersonsPageEntry', 'modules/boonex/persons/classes/BxPersonsPageEntry.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
+('bx_persons_profile_relations', 1, 'bx_persons', '_bx_persons_page_block_title_system_profile_relations', '_bx_persons_page_block_title_profile_relations', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:15:"relations_table";s:5:"class";s:23:"TemplServiceConnections";}', 0, 0, 1, 1),
+('bx_persons_profile_relations', 1, 'bx_persons', '_bx_persons_page_block_title_system_profile_related_me', '_bx_persons_page_block_title_profile_related_me', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:16:"related_me_table";s:5:"class";s:23:"TemplServiceConnections";}', 0, 0, 1, 2);
 
 -- PAGE: view entry comments
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
@@ -220,6 +230,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('bx_persons_view_actions', 'bx_persons', 'profile-friend-add', '_bx_persons_menu_item_title_system_befriend', '{title_add_friend}', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_friends\', \'add\', \'{profile_id}\')', '', 'user-plus', '', 0, 2147483647, 1, 0, 10),
+('bx_persons_view_actions', 'bx_persons', 'profile-relation-add', '_bx_persons_menu_item_title_system_relation_add', '_bx_persons_menu_item_title_relation_add', 'javascript:void(0)', 'bx_menu_popup(''sys_add_relation'', window, {}, {profile_id: {profile_id}});', '', 'sync', '', 0, 2147483647, 1, 0, 15),
 ('bx_persons_view_actions', 'bx_persons', 'profile-subscribe-add', '_bx_persons_menu_item_title_system_subscribe', '_bx_persons_menu_item_title_subscribe', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_subscriptions\', \'add\', \'{profile_id}\')', '', 'check', '', 0, 2147483647, 1, 0, 20),
 ('bx_persons_view_actions', 'bx_persons', 'profile-set-acl-level', '_sys_menu_item_title_system_set_acl_level', '_sys_menu_item_title_set_acl_level', 'javascript:void(0)', 'bx_menu_popup(''sys_set_acl_level'', window, {}, {profile_id: {profile_id}});', '', 'certificate', '', 0, 192, 1, 0, 30),
 ('bx_persons_view_actions', 'bx_persons', 'profile-actions-more', '_bx_persons_menu_item_title_system_more_actions', '_bx_persons_menu_item_title_more_actions', 'javascript:void(0)', 'bx_menu_popup(''bx_persons_view_actions_more'', this, {}, {profile_id:{profile_id}});', '', 'cog', 'bx_persons_view_actions_more', 1, 2147483647, 1, 0, 9999);
@@ -234,6 +245,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('bx_persons_view_actions_more', 'bx_persons', 'profile-friend-remove', '_bx_persons_menu_item_title_system_unfriend', '{title_remove_friend}', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_friends\', \'remove\', \'{profile_id}\')', '', 'user-times', '', 2147483647, 1, 0, 10),
+('bx_persons_view_actions_more', 'bx_persons', 'profile-relation-remove', '_bx_persons_menu_item_title_system_relation_delete', '_bx_persons_menu_item_title_relation_delete', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_relations\', \'remove\', \'{profile_id}\')', '', 'sync', '', 2147483647, 1, 0, 15),
 ('bx_persons_view_actions_more', 'bx_persons', 'profile-subscribe-remove', '_bx_persons_menu_item_title_system_unsubscribe', '_bx_persons_menu_item_title_unsubscribe', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_subscriptions\', \'remove\', \'{profile_id}\')', '', 'check', '', 2147483647, 1, 0, 20),
 ('bx_persons_view_actions_more', 'bx_persons', 'edit-persons-cover', '_bx_persons_menu_item_title_system_edit_cover', '_bx_persons_menu_item_title_edit_cover', 'page.php?i=edit-persons-cover&id={content_id}', '', '', 'edit', '', 2147483647, 1, 0, 25),
 ('bx_persons_view_actions_more', 'bx_persons', 'edit-persons-profile', '_bx_persons_menu_item_title_system_edit_profile', '_bx_persons_menu_item_title_edit_profile', 'page.php?i=edit-persons-profile&id={content_id}', '', '', 'pencil-alt', '', 2147483647, 1, 0, 30),
@@ -252,6 +264,8 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('bx_persons_view_actions_all', 'bx_persons', 'profile-friend-add', '_bx_persons_menu_item_title_system_befriend', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 10),
 ('bx_persons_view_actions_all', 'bx_persons', 'profile-friend-remove', '_bx_persons_menu_item_title_system_unfriend', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 20),
+('bx_persons_view_actions_all', 'bx_persons', 'profile-relation-add', '_bx_persons_menu_item_title_system_relation_add', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 23),
+('bx_persons_view_actions_all', 'bx_persons', 'profile-relation-remove', '_bx_persons_menu_item_title_system_relation_delete', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 27),
 ('bx_persons_view_actions_all', 'bx_persons', 'profile-subscribe-add', '_bx_persons_menu_item_title_system_subscribe', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 30),
 ('bx_persons_view_actions_all', 'bx_persons', 'profile-subscribe-remove', '_bx_persons_menu_item_title_system_unsubscribe', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 40),
 ('bx_persons_view_actions_all', 'bx_persons', 'profile-set-acl-level', '_sys_menu_item_title_system_set_acl_level', '', '', '', '', '', '', '', 0, 192, 1, 0, 50),
@@ -297,8 +311,9 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_persons_view_submenu', 'bx_persons', 'view-persons-profile', '_bx_persons_menu_item_title_system_view_profile_view', '_bx_persons_menu_item_title_view_profile_view', 'page.php?i=view-persons-profile&id={content_id}', '', '', 'user col-blue3', '', 2147483647, 1, 0, 1),
 ('bx_persons_view_submenu', 'bx_persons', 'persons-profile-info', '_bx_persons_menu_item_title_system_view_profile_info', '_bx_persons_menu_item_title_view_profile_info', 'page.php?i=persons-profile-info&id={content_id}', '', '', 'info-circle col-gray', '', 2147483647, 1, 0, 2),
 ('bx_persons_view_submenu', 'bx_persons', 'persons-profile-friends', '_bx_persons_menu_item_title_system_view_profile_friends', '_bx_persons_menu_item_title_view_profile_friends', 'page.php?i=persons-profile-friends&profile_id={profile_id}', '', '', 'users col-blue3', '', 2147483647, 1, 0, 3),
-('bx_persons_view_submenu', 'bx_persons', 'persons-profile-subscriptions', '_bx_persons_menu_item_title_system_view_profile_subscriptions', '_bx_persons_menu_item_title_view_profile_subscriptions', 'page.php?i=persons-profile-subscriptions&profile_id={profile_id}', '', '', 'check col-blue3', '', 2147483647, 1, 0, 4),
-('bx_persons_view_submenu', 'bx_persons', 'persons-profile-comments', '_bx_persons_menu_item_title_system_view_profile_comments', '_bx_persons_menu_item_title_view_profile_comments', 'page.php?i=persons-profile-comments&id={content_id}', '', '', '', '', 2147483647, 0, 0, 5);
+('bx_persons_view_submenu', 'bx_persons', 'persons-profile-relations', '_bx_persons_menu_item_title_system_view_profile_relations', '_bx_persons_menu_item_title_view_profile_relations', 'page.php?i=persons-profile-relations&profile_id={profile_id}', '', '', 'sync col-blue3', '', 2147483647, 1, 0, 4),
+('bx_persons_view_submenu', 'bx_persons', 'persons-profile-subscriptions', '_bx_persons_menu_item_title_system_view_profile_subscriptions', '_bx_persons_menu_item_title_view_profile_subscriptions', 'page.php?i=persons-profile-subscriptions&profile_id={profile_id}', '', '', 'check col-blue3', '', 2147483647, 1, 0, 5),
+('bx_persons_view_submenu', 'bx_persons', 'persons-profile-comments', '_bx_persons_menu_item_title_system_view_profile_comments', '_bx_persons_menu_item_title_view_profile_comments', 'page.php?i=persons-profile-comments&id={content_id}', '', '', '', '', 2147483647, 0, 0, 6);
 
 -- MENU: custom menu for snippet meta info
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -321,9 +336,10 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_persons_snippet_meta', 'bx_persons', 'membership', '_sys_menu_item_title_system_sm_membership', '_sys_menu_item_title_sm_membership', '', '', '', '', '', 2147483647, 0, 0, 1, 11);
 
 -- MENU: notifications menu in account popup
-SET @iNotifMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_account_notifications' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
+SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_account_notifications' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
-('sys_account_notifications', 'bx_persons', 'notifications-friend-requests', '_bx_persons_menu_item_title_system_friends', '_bx_persons_menu_item_title_friends', 'page.php?i=persons-profile-friends&profile_id={member_id}', '', '', 'users col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_unconfirmed_connections_num";s:6:"params";a:1:{i:0;s:20:"sys_profiles_friends";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, IFNULL(@iNotifMenuOrder, 0) + 1);
+('sys_account_notifications', 'bx_persons', 'notifications-friend-requests', '_bx_persons_menu_item_title_system_friends', '_bx_persons_menu_item_title_friends', 'page.php?i=persons-profile-friends&profile_id={member_id}', '', '', 'users col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_unconfirmed_connections_num";s:6:"params";a:1:{i:0;s:20:"sys_profiles_friends";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 1),
+('sys_account_notifications', 'bx_persons', 'notifications-relation-requests', '_bx_persons_menu_item_title_system_relations', '_bx_persons_menu_item_title_relations', 'page.php?i=persons-profile-relations&profile_id={member_id}', '', '', 'sync col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:31:"get_unconfirmed_connections_num";s:6:"params";a:1:{i:0;s:22:"sys_profiles_relations";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2);
 
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
@@ -332,7 +348,9 @@ INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `tit
 ('sys_profile_stats', 'bx_persons', 'profile-stats-manage-profiles', '_bx_persons_menu_item_title_system_manage_my_profiles', '_bx_persons_menu_item_title_manage_my_profiles', 'page.php?i=persons-manage', '', '_self', 'users col-blue3', 'a:2:{s:6:"module";s:10:"bx_persons";s:6:"method";s:41:"get_menu_addon_manage_tools_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 2),
 ('sys_profile_stats', 'bx_persons', 'profile-stats-favorite-persons', '_bx_persons_menu_item_title_system_favorites', '_bx_persons_menu_item_title_favorites', 'page.php?i=persons-profile-favorites&profile_id={member_id}', '', '', 'star col-blue3', 'a:2:{s:6:"module";s:10:"bx_persons";s:6:"method";s:38:"get_menu_addon_favorites_profile_stats";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 3),
 ('sys_profile_stats', 'bx_persons', 'profile-stats-subscriptions', '_bx_persons_menu_item_title_system_subscriptions', '_bx_persons_menu_item_title_subscriptions', 'page.php?i=persons-profile-subscriptions&profile_id={member_id}#subscriptions', '', '_self', 'rss col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_connected_content_num";s:6:"params";a:1:{i:0;s:26:"sys_profiles_subscriptions";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 4),
-('sys_profile_stats', 'bx_persons', 'profile-stats-subscribed-me', '_bx_persons_menu_item_title_system_subscribed_me', '_bx_persons_menu_item_title_subscribed_me', 'page.php?i=persons-profile-subscriptions&profile_id={member_id}#subscribers', '', '_self', 'rss col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:28:"get_connected_initiators_num";s:6:"params";a:1:{i:0;s:26:"sys_profiles_subscriptions";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 5);
+('sys_profile_stats', 'bx_persons', 'profile-stats-subscribed-me', '_bx_persons_menu_item_title_system_subscribed_me', '_bx_persons_menu_item_title_subscribed_me', 'page.php?i=persons-profile-subscriptions&profile_id={member_id}#subscribers', '', '_self', 'rss col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:28:"get_connected_initiators_num";s:6:"params";a:1:{i:0;s:26:"sys_profiles_subscriptions";}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 5),
+('sys_profile_stats', 'bx_persons', 'profile-stats-relations', '_bx_persons_menu_item_title_system_relations', '_bx_persons_menu_item_title_relations', 'page.php?i=persons-profile-relations&profile_id={member_id}#relations', '', '_self', 'sync col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_connected_content_num";s:6:"params";a:3:{i:0;s:22:"sys_profiles_relations";i:1;i:0;i:2;i:1;}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 6),
+('sys_profile_stats', 'bx_persons', 'profile-stats-related-me', '_bx_persons_menu_item_title_system_related_me', '_bx_persons_menu_item_title_related_me', 'page.php?i=persons-profile-relations&profile_id={member_id}#related-me', '', '_self', 'sync col-blue3', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:28:"get_connected_initiators_num";s:6:"params";a:3:{i:0;s:22:"sys_profiles_relations";i:1;i:0;i:2;i:1;}s:5:"class";s:23:"TemplServiceConnections";}', '', 2147483646, 1, 0, @iNotifMenuOrder + 7);
 
 -- MENU: manage tools submenu
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
@@ -414,35 +432,6 @@ INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES
 (@iModerator, @iIdActionProfileEditAny),
 (@iAdministrator, @iIdActionProfileEditAny);
 
-
--- COMMENTS
-INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
-('bx_persons', 'bx_persons', 'bx_persons_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-persons-profile&id={object_id}', '', 'bx_persons_data', 'id', 'author', 'fullname', 'comments', '', '');
-
--- VIEWS
-INSERT INTO `sys_objects_view` (`name`, `module`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_persons', 'bx_persons', 'bx_persons_views_track', '86400', '1', 'bx_persons_data', 'id', 'author', 'views', '', '');
-
--- VOTES
-INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
-('bx_persons', 'bx_persons_votes', 'bx_persons_votes_track', '604800', '1', '1', '0', '1', 'bx_persons_data', 'id', '', 'rate', 'votes', 'BxPersonsVote', 'modules/boonex/persons/classes/BxPersonsVote.php');
-
--- SCORES
-INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
-('bx_persons', 'bx_persons', 'bx_persons_scores', 'bx_persons_scores_track', '604800', '0', 'bx_persons_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
-
--- FAFORITES
-INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_persons', 'bx_persons_favorites_track', '1', '1', '0', 'page.php?i=view-persons-profile&id={object_id}', 'bx_persons_data', 'id', 'author', 'favorites', 'BxPersonsFavorite', 'modules/boonex/persons/classes/BxPersonsFavorite.php');
-
--- FEATURED
-INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
-('bx_persons', '1', '1', 'page.php?i=view-persons-profile&id={object_id}', 'bx_persons_data', 'id', 'author', 'featured', '', '');
-
--- REPORTS
-INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_persons', 'bx_persons_reports', 'bx_persons_reports_track', '1', 'page.php?i=view-persons-profile&id={object_id}', 'bx_persons_data', 'id', 'author', 'reports', 'BxPersonsReport', 'modules/boonex/persons/classes/BxPersonsReport.php');
-
 -- METATAGS
 INSERT INTO `sys_objects_metatags` (`object`, `table_keywords`, `table_locations`, `table_mentions`, `override_class_name`, `override_class_file`) VALUES
 ('bx_persons', 'bx_persons_meta_keywords', 'bx_persons_meta_locations', 'bx_persons_meta_mentions', '', '');
@@ -466,7 +455,7 @@ INSERT INTO `sys_objects_chart` (`object`, `title`, `table`, `field_date_ts`, `f
 
 -- GRIDS: administration
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_persons_administration', 'Sql', 'SELECT `td`.*, `ta`.`email` AS `account`, `ta`.`logged` AS `last_online`, `tp`.`status` AS `status` FROM `bx_persons_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_persons'' LEFT JOIN `sys_accounts` AS `ta` ON `tp`.`account_id`=`ta`.`id` WHERE 1 ', 'bx_persons_data', 'id', 'last_online', 'status', '', 20, NULL, 'start', '', 'fullname', '', 'like', 'reports', '', 192, 'BxPersonsGridAdministration', 'modules/boonex/persons/classes/BxPersonsGridAdministration.php'),
+('bx_persons_administration', 'Sql', 'SELECT `td`.*, `ta`.`email` AS `account`, `ta`.`logged` AS `last_online`, `tp`.`status` AS `status` FROM `bx_persons_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_persons'' LEFT JOIN `sys_accounts` AS `ta` ON `tp`.`account_id`=`ta`.`id` WHERE 1 ', 'bx_persons_data', 'id', 'last_online', 'status', '', 20, NULL, 'start', '', 'fullname,email', '', 'like', 'reports', '', 192, 'BxPersonsGridAdministration', 'modules/boonex/persons/classes/BxPersonsGridAdministration.php'),
 ('bx_persons_common', 'Sql', 'SELECT `td`.*, `ta`.`email` AS `account`, `ta`.`logged` AS `last_online`, `tp`.`status` AS `status` FROM `bx_persons_data` AS `td` LEFT JOIN `sys_profiles` AS `tp` ON `td`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_persons'' LEFT JOIN `sys_accounts` AS `ta` ON `tp`.`account_id`=`ta`.`id` WHERE 1 ', 'bx_persons_data', 'id', 'last_online', 'status', '', 20, NULL, 'start', '', 'fullname', '', 'like', '', '', 2147483647, 'BxPersonsGridCommon', 'modules/boonex/persons/classes/BxPersonsGridCommon.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
@@ -511,12 +500,16 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_persons', 'timeline_delete', @iHandler),
 ('bx_persons', 'timeline_comment', @iHandler),
 ('bx_persons', 'timeline_vote', @iHandler),
+('bx_persons', 'timeline_score', @iHandler),
 ('bx_persons', 'timeline_report', @iHandler),
-('bx_persons', 'timeline_repost', @iHandler);
+('bx_persons', 'timeline_repost', @iHandler),
+('bx_persons', 'timeline_pin', @iHandler),
+('bx_persons', 'timeline_promote', @iHandler);
 
 -- PRIVACY 
 INSERT INTO `sys_objects_privacy` (`object`, `module`, `action`, `title`, `default_group`, `spaces`, `table`, `table_field_id`, `table_field_author`, `override_class_name`, `override_class_file`) VALUES
-('bx_persons_allow_view_to', 'bx_persons', 'view', '_bx_persons_form_profile_input_allow_view_to', '3', '', 'bx_persons_data', 'id', 'author', 'BxPersonsPrivacy', 'modules/boonex/persons/classes/BxPersonsPrivacy.php');
+('bx_persons_allow_view_to', 'bx_persons', 'view', '_bx_persons_form_profile_input_allow_view_to', '3', '', 'bx_persons_data', 'id', 'author', 'BxPersonsPrivacy', 'modules/boonex/persons/classes/BxPersonsPrivacy.php'),
+('bx_persons_allow_post_to', 'bx_persons', 'post', '_bx_persons_form_profile_input_allow_post_to', '3', '', 'bx_persons_data', 'id', 'author', 'BxPersonsPrivacyPost', 'modules/boonex/persons/classes/BxPersonsPrivacyPost.php');
 
 -- EMAIL TEMPLATES
 INSERT INTO `sys_email_templates` (`Module`, `NameSystem`, `Name`, `Subject`, `Body`) VALUES

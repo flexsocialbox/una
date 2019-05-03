@@ -63,7 +63,8 @@ html.bx-media-phone {
     box-shadow: @bx-shadow-card;
 }
 .bx-popup-applied {
-    .radius(@bx-border-radius-popup);
+    border-radius: @bx-border-radius-popup;
+    background-clip: padding-box;
 }
 .bx-popup-applied:not(.bx-popup-chain),
 .bx-popup-applied.bx-popup-chain .bx-popup-chain-item {
@@ -124,26 +125,26 @@ html.bx-media-phone {
 
 /* body */
 a {
-	color: @bx-color-link-body; 
+    color: @bx-color-link-body; 
 }
 a:hover {
-	color: @bx-color-link-body-hover; 
+    color: @bx-color-link-body-hover; 
 }
-.sys-icon,
-.sys-icon-a {
-	color: @bx-color-icon-body; 
+.sys-icon:not(.sys-colored),
+.sys-icon-a:not(.sys-colored) {
+    color: @bx-color-icon-body; 
 }
-a:hover > .sys-icon,
-a:hover > .sys-icon-a {
-	color: @bx-color-icon-body-hover; 
+a:hover > .sys-icon:not(.sys-colored),
+a:hover > .sys-icon-a:not(.sys-colored) {
+    color: @bx-color-icon-body-hover; 
 }
 .sys-icon-a i {
-	.background-color (@bx-color-icon-body) !important;
-	color: @bx-color-icon-body;
+    .background-color (@bx-color-icon-body) !important;
+    color: @bx-color-icon-body;
 }
 a:hover > .sys-icon-a i {
-	.background-color (@bx-color-icon-body-hover) !important;
-	color: @bx-color-icon-body-hover;
+    .background-color (@bx-color-icon-body-hover) !important;
+    color: @bx-color-icon-body-hover;
 }
 
 /* header */
@@ -349,8 +350,7 @@ a.bx-def-font-h3:hover {
 }
 
 /* cover */
-.bx-menu-toolbar-padding,
-.bx-menu-toolbar-padding .bx-cover-wrapper {
+.bx-menu-toolbar-padding .bx-def-cover-color-bg {
     background-color: @bx-color-cover;
 }
 
@@ -359,7 +359,8 @@ a.bx-def-font-h3:hover {
     border-style: @bx-border-type;
     border-color: @bx-color-border-cover;
 
-    .radius(@bx-border-radius-cover);
+    border-radius: @bx-border-radius-cover;
+    background-clip: padding-box;
 
     -webkit-box-shadow: @bx-shadow-cover;
     -moz-box-shadow: @bx-shadow-cover;
@@ -380,7 +381,8 @@ a.bx-def-font-h3:hover {
     border-style: @bx-border-type;
     border-color: @bx-color-border-cover-icon;
 
-    .radius(@bx-border-radius-cover-icon);
+    border-radius: @bx-border-radius-cover-icon;
+    background-clip: padding-box;
 
     -webkit-box-shadow: @bx-shadow-cover-icon;
     -moz-box-shadow: @bx-shadow-cover-icon;
@@ -405,23 +407,25 @@ a.bx-def-font-h3:hover {
 
 /* block */
 .bx-def-border-block {
-	border-width: @bx-border-width-block;
-	border-style: @bx-border-type;
-	border-color: @bx-color-border-block;
+    border-width: @bx-border-width-block;
+    border-style: @bx-border-type;
+    border-color: @bx-color-border-block;
 
-	.radius(@bx-border-radius-block);
+    border-radius: @bx-border-radius-block;
+    background-clip: padding-box;
 }
 .bx-def-border-radius-block {
-    .radius(@bx-border-radius-block);
+    border-radius: @bx-border-radius-block;
+    background-clip: padding-box;
 }
 .bx-db-header {
-	padding: @bx-title-padding-block;
+    padding: @bx-title-padding-block;
 
-	border-width: @bx-border-width-block-title;
-	border-style: solid;
-	border-color: @bx-color-border-block-title;
+    border-width: @bx-border-width-block-title;
+    border-style: solid;
+    border-color: @bx-color-border-block-title;
 
-	.radius(@bx-border-radius-block-title);	
+    border-radius: @bx-border-radius-block-title;
 }
 .bx-def-color-bg-block .bx-db-header,
 .bx-def-image-bg-block .bx-db-header {
@@ -456,32 +460,54 @@ a.bx-def-font-h3:hover {
 .bx-def-color-bg-box-hover:hover {
     .background-color (@bx-color-box-hover);
 }
+.bx-def-box-round-corners,
 .bx-def-box.bx-def-round-corners {
-	.radius(@bx-border-radius-box);
-	overflow: hidden;
+    border-radius: @bx-border-radius-box;
+    background-clip: padding-box;
+}
+.bx-def-box-round-corners-int {
+    border-radius: @bx-border-radius-box-itl @bx-border-radius-box-itr @bx-border-radius-box-ibr @bx-border-radius-box-ibl;
+    background-clip: padding-box;
+}
+.bx-def-box-round-corners-int-top {
+    border-radius: @bx-border-radius-box-itl @bx-border-radius-box-itr 0 0;
+    background-clip: padding-box;
+}
+.bx-def-box-round-corners-int-bottom {
+    border-radius: 0 0 @bx-border-radius-box-ibr @bx-border-radius-box-ibl;
+    background-clip: padding-box;
+}
+.bx-base-pofile-unit-with-cover .bx-def-round-corners .bx-base-pofile-unit-cover {
+    border-radius: @bx-border-radius-box-itl @bx-border-radius-box-itr 0 0;
+}
+.bx-base-text-unit.bx-base-text-unit-ext.bx-def-round-corners img.bx-base-text-unit-cover.bx-def-round-corners,
+.bx-base-text-unit.bx-base-text-unit-ext .bx-def-round-corners img.bx-base-text-unit-cover.bx-def-round-corners {
+    border-radius: @bx-border-radius-box-itl @bx-border-radius-box-itr 0 0;
+}
+.bx-base-text-unit.bx-base-text-unit-gallery.bx-def-round-corners .bx-base-text-unit-thumb.bx-def-round-corners,
+.bx-base-text-unit.bx-base-text-unit-gallery .bx-def-round-corners .bx-base-text-unit-thumb.bx-def-round-corners {
+    border-radius: @bx-border-radius-box-itl @bx-border-radius-box-itr 0 0;
 }
 
 /* box: timeline */
 .bx-tl-view div.bx-tl-item div.bx-tl-item-footer {
-    .radius(@bx-border-radius-box);
-
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;    
+    border-radius: 0 0 @bx-border-radius-box-ibr @bx-border-radius-box-ibl;
 }
 
 /* popup */
 .bx-popup-border {
-	border-width: @bx-border-width-popup;
-	border-style: solid;
-	border-color: @bx-color-border-popup;
+    border-width: @bx-border-width-popup;
+    border-style: solid;
+    border-color: @bx-color-border-popup;
 
-	.radius(@bx-border-radius-popup);
+    border-radius: @bx-border-radius-popup;
+    background-clip: padding-box;
 }
 .bx-popup-color-bg {
-	background-color: @bx-color-popup;
+    background-color: @bx-color-popup;
 
-	background-image: @bx-image-bg-popup;
-	background-repeat: @bx-image-bg-popup-repeat;
+    background-image: @bx-image-bg-popup;
+    background-repeat: @bx-image-bg-popup-repeat;
     background-size: @bx-image-bg-popup-size;
 }
 .bx-popup-content-indent {
@@ -718,15 +744,17 @@ a.bx-def-font-h3:hover {
 .bx-form-value .bx-form-input-textarea,
 .bx-form-value .bx-form-input-password,
 .bx-form-value .bx-form-input-text {
-	border-color: @bx-color-border-form-input;
-	border-width: @bx-border-width-form-input;
-	.radius(@bx-border-radius-form-input);
+    border-color: @bx-color-border-form-input;
+    border-width: @bx-border-width-form-input;
 
-	background-color: @bx-color-form-input;
+    border-radius: @bx-border-radius-form-input;
+    background-clip: padding-box;
 
-	-webkit-box-shadow: @bx-shadow-form-input;
-	-moz-box-shadow: @bx-shadow-form-input;
-	box-shadow: @bx-shadow-form-input;
+    background-color: @bx-color-form-input;
+
+    -webkit-box-shadow: @bx-shadow-form-input;
+    -moz-box-shadow: @bx-shadow-form-input;
+    box-shadow: @bx-shadow-form-input;
 }
 .bx-form-value .bx-form-input-slider,
 .bx-form-value .bx-form-input-doublerange,
@@ -794,7 +822,8 @@ a.bx-def-font-h3:hover {
 	border-style: solid;
 	border-color: @bx-color-border-button;
 
-	.radius(@bx-border-radius-button);
+        border-radius: @bx-border-radius-button;
+	background-clip: padding-box;
 
 	-webkit-box-shadow: @bx-shadow-button;
 	-moz-box-shadow: @bx-shadow-button;
@@ -819,7 +848,8 @@ a.bx-def-font-h3:hover {
 	border-style: solid;
 	border-color: @bx-color-border-button-primary;
 
-	.radius(@bx-border-radius-button-primary);
+        border-radius: @bx-border-radius-button-primary;
+	background-clip: padding-box;
 
 	-webkit-box-shadow: @bx-shadow-button-primary;
 	-moz-box-shadow: @bx-shadow-button-primary;
@@ -870,18 +900,18 @@ a.bx-def-font-h3:hover {
 
 	color: @bx-font-color-button-primary-hover;
 }
-.bx-btn .sys-icon {
+.bx-btn .sys-icon:not(.sys-colored) {
 	color: @bx-font-color-button;
 }
-.bx-btn.bx-btn-primary .sys-icon {
+.bx-btn.bx-btn-primary .sys-icon:not(.sys-colored) {
 	color: @bx-font-color-button-primary;
 }
-.bx-btn:hover .sys-icon,
-.bx-btn:active .sys-icon {
+.bx-btn:hover .sys-icon:not(.sys-colored),
+.bx-btn:active .sys-icon:not(.sys-colored) {
 	color: @bx-font-color-button-hover;
 }
-.bx-btn.bx-btn-primary:hover .sys-icon,
-.bx-btn.bx-btn-primary:active .sys-icon {
+.bx-btn.bx-btn-primary:hover .sys-icon:not(.sys-colored),
+.bx-btn.bx-btn-primary:active .sys-icon:not(.sys-colored) {
 	color: @bx-font-color-button-primary-hover;
 }
 
@@ -898,7 +928,8 @@ a.bx-def-font-h3:hover {
 	border-style: solid;
 	border-color: @bx-color-border-button-large;
 
-	.radius(@bx-border-radius-button-large);
+        border-radius: @bx-border-radius-button-large;
+	background-clip: padding-box;
 
 	-webkit-box-shadow: @bx-shadow-button-large;
 	-moz-box-shadow: @bx-shadow-button-large;
@@ -923,7 +954,8 @@ a.bx-def-font-h3:hover {
 	border-style: solid;
 	border-color: @bx-color-border-button-large-primary;
 
-	.radius(@bx-border-radius-button-large-primary);
+        border-radius: @bx-border-radius-button-large-primary;
+	background-clip: padding-box;
 
 	-webkit-box-shadow: @bx-shadow-button-large-primary;
 	-moz-box-shadow: @bx-shadow-button-large-primary;
@@ -1002,7 +1034,8 @@ a.bx-def-font-h3:hover {
 	border-style: solid;
 	border-color: @bx-color-border-button-small;
 
-	.radius(@bx-border-radius-button-small);
+        border-radius: @bx-border-radius-button-small;
+        background-clip: padding-box;
 
 	-webkit-box-shadow: @bx-shadow-button-small;
 	-moz-box-shadow: @bx-shadow-button-small;
@@ -1027,7 +1060,8 @@ a.bx-def-font-h3:hover {
 	border-style: solid;
 	border-color: @bx-color-border-button-small-primary;
 
-	.radius(@bx-border-radius-button-small-primary);
+        border-radius: @bx-border-radius-button-small-primary;
+        background-clip: padding-box;
 
 	-webkit-box-shadow: @bx-shadow-button-small-primary;
 	-moz-box-shadow: @bx-shadow-button-small-primary;
@@ -1119,7 +1153,18 @@ ul.bx-menu-toolbar li a .bx-menu-item-addon.bx-def-unit-alert-middle {
 }
 
 
-/*--- Timeline: Font size ---*/
+/*--- Timeline -> Card: Annachmants ---*/
+div.bx-tl-item div.bx-tl-item-images.bx-tl-ii-gallery div.bx-tl-item-image img,
+div.bx-tl-item div.bx-tl-item-attachments.bx-tl-ia-gallery div.bx-tl-item-attachment img,
+div.bx-tl-item .bx-tl-item-links .bx-tl-item-link {
+    border-radius: @bx-border-radius-box;
+}
+div.bx-tl-item div.bx-tl-item-images.bx-tl-ii-gallery div.bx-tl-item-image img,
+div.bx-tl-item div.bx-tl-item-attachments.bx-tl-ia-gallery div.bx-tl-item-attachment img {
+    background-clip: padding-box;
+}
+
+/*--- Timeline Card -> Comments: Font size ---*/
 div.bx-tl-item-comments-holder div.bx-tl-item-comments .cmts.cmts-margin {
 	.font-size(@bx-font-size-default);
 }

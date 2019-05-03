@@ -100,7 +100,9 @@
     <string name="_bx_cnv_field_collaborators"><![CDATA[Participants]]></string>
 
     <string name="_bx_cnv_grid_action_delete"><![CDATA[Delete]]></string>
-    <string name="_bx_cnv_grid_action_compose"><![CDATA[New conversation]]></string>
+    <string name="_bx_cnv_grid_action_compose"><![CDATA[Compose]]></string>
+	<string name="_bx_cnv_grid_filter_item_title_adm_all"><![CDATA[All]]></string>
+	<string name="_bx_cnv_grid_filter_item_title_adm_unread"><![CDATA[Unread]]></string>
 
     <string name="_bx_cnv_collaborator_author"><![CDATA[author]]></string>
     <string name="_bx_cnv_collaborator_last_replier"><![CDATA[last replier]]></string>
@@ -130,5 +132,7 @@
 <p>New reply in <a href="{PageUrl}">{PageTitle}</a> conversation from <a href="{SenderUrl}">{SenderDisplayName}</a>:</p>
 <hr />
 <p>{Message}</p>
+<hr />
+Don't reply to this email, to reply to the sender please go to <a href="{PageUrl}">conversation page</a>.
 {email_footer}]]></string>
 </resources>

@@ -644,21 +644,31 @@ function bx_menu_show_live_update(oData) {
  * @param iAclLevel - acl level id to assign to a given rofile
  */
 function bx_set_acl_level (iProfileId, iAclLevel, mixedLoadingElement) {
+    var bBulk = !$.isNumeric(iProfileId);
+    var iAclCard = !bBulk && $('#sys-acl-profile-' + iProfileId).length > 0 ? 1 : 0;
 
-    if ('undefined' != typeof(mixedLoadingElement))
+    var bLoading = typeof(mixedLoadingElement) != 'undefined';
+    if(bLoading)
         bx_loading($(mixedLoadingElement), true);
 
-    $.post(sUrlRoot + 'menu.php', {o:'sys_set_acl_level', 'profile_id': iProfileId, 'acl_level_id': iAclLevel}, function(data) {
-
-        if ('undefined' != typeof(mixedLoadingElement))
+    $.post(sUrlRoot + 'menu.php', {o:'sys_set_acl_level', profile_id: iProfileId, acl_level_id: iAclLevel, acl_card:iAclCard}, function(oData) {
+        if(bLoading)
             bx_loading($(mixedLoadingElement), false);
 
-        if (data.length) {
-            bx_alert(data);
-        } else if ($(mixedLoadingElement).hasClass('bx-popup-applied')) {
-            $(mixedLoadingElement).dolPopupHide().remove();
+        if(oData.msg != undefined && oData.msg.length) {
+            bx_alert(oData.msg);
+            return;
         }
-    });
+
+        if($(mixedLoadingElement).hasClass('bx-popup-applied'))
+            $(mixedLoadingElement).dolPopupHide().remove();
+
+        if(typeof(oData.card) == 'object')
+            for(var iField in oData.card) {
+                var oCard = $(oData.card[iField]);
+                $('#' + oCard.attr('id')).replaceWith(oCard);
+            }
+    }, 'json');
 }
 
 function validateLoginForm(eForm) {
@@ -825,12 +835,18 @@ function bx_append_url_params (sUrl, mixedParams) {
     return sUrl + sParams;
 }
 
-function bx_search_on_type (e, n, sFormSel, sResultsContSel, sLoadingContSel, bSortResults) {
+function bx_search_on_type (e, n, sFormSel, sResultsContSel, sLoadingContSel, bSortResults, iMinLen) {
+    var oForm = $(e.target).parents(sFormSel + ':first');
+
     if ('undefined' != typeof(e) && 13 == e.keyCode) {
-        $(sFormSel).find('input[name=live_search]').val(0);
-        $(sFormSel).submit();
+        oForm.find('input[name=live_search]').val(0);
+        oForm.submit();
         return false;
     }
+
+    iMinLen = typeof(iMinLen) != 'undefined' ? parseInt(iMinLen) : 0;
+    if(iMinLen > 0 && iMinLen > (oForm.find('input[name=keyword]').val().length + 1))
+        return true;
 
     if ('undefined' != typeof(glBxSearchTimeoutHandler) && glBxSearchTimeoutHandler)
         clearTimeout(glBxSearchTimeoutHandler);
@@ -995,31 +1011,34 @@ function bx_autocomplete_fields(iId, sUrl, sName, bShowImg, bOnlyOnce, onSelect)
 		$('#' + iId + '.bx-form-input-autotoken input').outerWidth('100%');
 };
 
-function bx_alert(sMessage, fOnClickOk)
+function bx_alert(sMessage, fOnClickOk, oParams)
 {
-	$(document).dolPopupAlert({
-		message: sMessage,
-		onClickOk: fOnClickOk
-	});
+    $(document).dolPopupAlert({
+        message: sMessage,
+        onClickOk: fOnClickOk,
+        params: oParams
+    });
 }
 
-function bx_confirm(sMessage, fOnClickYes, fOnClickNo)
+function bx_confirm(sMessage, fOnClickYes, fOnClickNo, oParams)
 {
-	$(document).dolPopupConfirm({
-		message: sMessage,
-		onClickYes: fOnClickYes,
-		onClickNo: fOnClickNo
-	});
+    $(document).dolPopupConfirm({
+        message: sMessage,
+        onClickYes: fOnClickYes,
+        onClickNo: fOnClickNo,
+        params: oParams
+    });
 }
 
-function bx_prompt(sMessage, sValue, fOnClickOk, fOnClickCancel)
+function bx_prompt(sMessage, sValue, fOnClickOk, fOnClickCancel, oParams)
 {
-	$(document).dolPopupPrompt({
-		message: sMessage,
-		value: sValue,
-		onClickOk: fOnClickOk,
-		onClickCancel: fOnClickCancel
-	});
+    $(document).dolPopupPrompt({
+        message: sMessage,
+        value: sValue,
+        onClickOk: fOnClickOk,
+        onClickCancel: fOnClickCancel,
+        params: oParams
+    });
 }
 
 function bx_get_scripts (aFiles, fCallback) 

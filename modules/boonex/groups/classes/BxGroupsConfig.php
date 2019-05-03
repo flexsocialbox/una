@@ -51,10 +51,12 @@ class BxGroupsConfig extends BxBaseModProfileConfig
             'FIELD_COVER' => 'cover',
             'FIELD_JOIN_CONFIRMATION' => 'join_confirmation',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
+            'FIELD_ALLOW_POST_TO' => 'allow_post_to',
             'FIELD_VIEWS' => 'views',
             'FIELD_COMMENTS' => 'comments',
             'FIELDS_QUICK_SEARCH' => array('group_name'),
             'FIELD_LOCATION_PREFIX' => 'location',
+			'FIELD_LABELS' => 'labels',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
 
             // page URIs
@@ -75,6 +77,7 @@ class BxGroupsConfig extends BxBaseModProfileConfig
             'PARAM_SEARCHABLE_FIELDS' => 'bx_groups_searchable_fields',
             'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_groups_per_page_browse_showcase',
             'PARAM_PER_PAGE_BROWSE_RECOMMENDED' => 'bx_groups_per_page_browse_recommended',
+			'PARAM_LABELS' => 'bx_groups_labels',
 
             // objects
             'OBJECT_STORAGE' => 'bx_groups_pics',
@@ -116,8 +119,9 @@ class BxGroupsConfig extends BxBaseModProfileConfig
             'OBJECT_PAGE_VIEW_ENTRY_CLOSED' => 'bx_groups_view_profile_closed',
             'OBJECT_PRIVACY_VIEW' => 'bx_groups_allow_view_to',
             'OBJECT_PRIVACY_VIEW_NOTIFICATION_EVENT' => 'bx_groups_allow_view_notification_to',
+            'OBJECT_PRIVACY_POST' => 'bx_groups_allow_post_to',
             'OBJECT_GRID_ADMINISTRATION' => 'bx_groups_administration',
-        	'OBJECT_GRID_COMMON' => 'bx_groups_common',
+            'OBJECT_GRID_COMMON' => 'bx_groups_common',
             'OBJECT_GRID_CONNECTIONS' => 'bx_groups_fans',
             'OBJECT_CONNECTIONS' => 'bx_groups_fans',
             'OBJECT_UPLOADERS_COVER' => array('bx_groups_cover_crop'),

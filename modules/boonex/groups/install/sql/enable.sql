@@ -16,8 +16,8 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `e
 ('bx_groups_num_rss', '10', @iCategId, '_bx_groups_option_num_rss', 'digit', '', '', '', 12),
 ('bx_groups_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
 ('bx_groups_per_page_browse_recommended', '10', @iCategId, '_sys_option_per_page_browse_recommended', 'digit', '', '', '', 16),
-('bx_groups_searchable_fields', 'group_name,group_desc', @iCategId, '_bx_groups_option_searchable_fields', 'list', 'a:2:{s:6:"module";s:9:"bx_groups";s:6:"method";s:21:"get_searchable_fields";}', '', '', 30);
-
+('bx_groups_searchable_fields', 'group_name,group_desc', @iCategId, '_bx_groups_option_searchable_fields', 'list', 'a:2:{s:6:"module";s:9:"bx_groups";s:6:"method";s:21:"get_searchable_fields";}', '', '', 30),
+('bx_groups_labels', '', @iCategId, '_sys_option_labels', 'text', '', '', '', 40);
 
 -- PAGES
 
@@ -244,7 +244,6 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_groups_view_actions_all', 'bx_groups', 'repost', '_sys_menu_item_title_system_va_repost', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 260),
 ('bx_groups_view_actions_all', 'bx_groups', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 270),
 ('bx_groups_view_actions_all', 'bx_groups', 'social-sharing-facebook', '_sys_menu_item_title_system_social_sharing_facebook', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 300),
-('bx_groups_view_actions_all', 'bx_groups', 'social-sharing-googleplus', '_sys_menu_item_title_system_social_sharing_googleplus', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 310),
 ('bx_groups_view_actions_all', 'bx_groups', 'social-sharing-twitter', '_sys_menu_item_title_system_social_sharing_twitter', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 320),
 ('bx_groups_view_actions_all', 'bx_groups', 'social-sharing-pinterest', '_sys_menu_item_title_system_social_sharing_pinterest', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 330),
 ('bx_groups_view_actions_all', 'bx_groups', 'edit-group-cover', '_bx_groups_menu_item_title_system_edit_cover', '', '', '', '', '', '', '', 0, 2147483647, 1, 0, 400),
@@ -399,35 +398,6 @@ INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES
 (@iModerator, @iIdActionProfileEditAny),
 (@iAdministrator, @iIdActionProfileEditAny);
 
-
--- COMMENTS
-INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
-('bx_groups', 'bx_groups', 'bx_groups_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-group-profile&id={object_id}', '', 'bx_groups_data', 'id', 'author', 'group_name', 'comments', '', '');
-
--- VIEWS
-INSERT INTO `sys_objects_view` (`name`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_groups', 'bx_groups_views_track', '86400', '1', 'bx_groups_data', 'id', 'author', 'views', '', '');
-
--- VOTES
-INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
-('bx_groups', 'bx_groups_votes', 'bx_groups_votes_track', '604800', '1', '1', '0', '1', 'bx_groups_data', 'id', 'author', 'rate', 'votes', '', '');
-
--- SCORES
-INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
-('bx_groups', 'bx_groups', 'bx_groups_scores', 'bx_groups_scores_track', '604800', '0', 'bx_groups_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
-
--- REPORTS
-INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_groups', 'bx_groups_reports', 'bx_groups_reports_track', '1', 'page.php?i=view-group-profile&id={object_id}', 'bx_groups_data', 'id', 'author', 'reports', '', '');
-
--- FAFORITES
-INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_groups', 'bx_groups_favorites_track', '1', '1', '1', 'page.php?i=view-group-profile&id={object_id}', 'bx_groups_data', 'id', 'author', 'favorites', '', '');
-
--- FEATURED
-INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
-('bx_groups', '1', '1', 'page.php?i=view-group-profile&id={object_id}', 'bx_groups_data', 'id', 'author', 'featured', '', '');
-
 -- METATAGS
 INSERT INTO `sys_objects_metatags` (`object`, `table_keywords`, `table_locations`, `table_mentions`, `override_class_name`, `override_class_file`) VALUES
 ('bx_groups', 'bx_groups_meta_keywords', 'bx_groups_meta_locations', 'bx_groups_meta_mentions', '', '');
@@ -520,14 +490,18 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_groups', 'timeline_delete', @iHandler),
 ('bx_groups', 'timeline_comment', @iHandler),
 ('bx_groups', 'timeline_vote', @iHandler),
+('bx_groups', 'timeline_score', @iHandler),
 ('bx_groups', 'timeline_report', @iHandler),
-('bx_groups', 'timeline_repost', @iHandler);
+('bx_groups', 'timeline_repost', @iHandler),
+('bx_groups', 'timeline_pin', @iHandler),
+('bx_groups', 'timeline_promote', @iHandler);
 
 -- PRIVACY 
 
 INSERT INTO `sys_objects_privacy` (`object`, `module`, `action`, `title`, `default_group`, `spaces`, `table`, `table_field_id`, `table_field_author`, `override_class_name`, `override_class_file`) VALUES
 ('bx_groups_allow_view_to', 'bx_groups', 'view', '_bx_groups_form_profile_input_allow_view_to', '3', '', 'bx_groups_data', 'id', 'author', 'BxGroupsPrivacy', 'modules/boonex/groups/classes/BxGroupsPrivacy.php'),
-('bx_groups_allow_view_notification_to', 'bx_groups', 'view_event', '_bx_groups_form_profile_input_allow_view_notification_to', '3', '', 'bx_notifications_events', 'id', 'object_owner_id', 'BxGroupsPrivacyNotifications', 'modules/boonex/groups/classes/BxGroupsPrivacyNotifications.php');
+('bx_groups_allow_view_notification_to', 'bx_groups', 'view_event', '_bx_groups_form_profile_input_allow_view_notification_to', '3', '', 'bx_notifications_events', 'id', 'object_owner_id', 'BxGroupsPrivacyNotifications', 'modules/boonex/groups/classes/BxGroupsPrivacyNotifications.php'),
+('bx_groups_allow_post_to', 'bx_groups', 'post', '_bx_groups_form_profile_input_allow_post_to', 'p', '', 'bx_groups_data', 'id', 'author', 'BxGroupsPrivacyPost', 'modules/boonex/groups/classes/BxGroupsPrivacyPost.php');
 
 -- EMAIL TEMPLATES
 

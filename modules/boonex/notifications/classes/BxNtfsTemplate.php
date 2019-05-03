@@ -120,10 +120,14 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
     {
     	$oModule = $this->getModule();
 
+        if(!empty($aEvent['content']) && is_string($aEvent['content']))
+            $aEvent['content'] = unserialize($aEvent['content']);
+
     	if((int)$aEvent['processed'] == 0)
             $this->_processContent($aEvent);
 
-        $aEvent['content'] = unserialize($aEvent['content']);
+        if((int)$aEvent['processed'] == 0 || empty($aEvent['content']))
+            return '';
 
         $sParam = 'perform_privacy_check';
         if(!isset($aBrowseParams[$sParam]) || $aBrowseParams[$sParam] === true) {
@@ -155,7 +159,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
         }
 
         $iObjectOwner = (int)$aEvent['object_owner_id'];
-        if(empty($iObjectOwner) || !empty($aEvent['content']['entry_author']))
+        if(empty($iObjectOwner) && !empty($aEvent['content']['entry_author']))
             $iObjectOwner = (int)$aEvent['content']['entry_author'];
 
         $oObjectOwner = $oModule->getObjectUser($iObjectOwner);
@@ -195,12 +199,16 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
         if(empty($sEvent) || empty($aEvent['content_parsed']))
             return false;
 
-        return $this->parseHtmlByName('et_new_event.html', array(
-        	'icon_url' => !empty($aEvent['content']['owner_icon']) ? $aEvent['content']['owner_icon'] : $this->getIconUrl('std-icon.svg'),
-            'content_url' => $this->_getContentLink($aEvent),
-            'content' => $aEvent['content_parsed'],
-            'date' => bx_process_output($aEvent['date'], BX_DATA_DATETIME_TS),
-        ));
+        $aContent = &$aEvent['content'];
+        return array(
+            'content' => $this->parseHtmlByName('et_new_event.html', array(
+                'icon_url' => !empty($aContent['owner_icon']) ? $aContent['owner_icon'] : $this->getIconUrl('std-icon.svg'),
+                'content_url' => $this->_getContentLink($aEvent),
+                'content' => $aEvent['content_parsed'],
+                'date' => bx_process_output($aEvent['date'], BX_DATA_DATETIME_TS),
+            )),
+            'settings' => !empty($aContent['settings']['email']) ? $aContent['settings']['email'] : array()
+        );
     }
 
     public function getNotificationPush(&$aEvent)
@@ -210,16 +218,20 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
             return false;
 
         $sMessage = preg_replace('/<\/?[a-zA-Z0-9=\'":;\(\)\s_-]+>/i', '"', $aEvent['content_parsed']);
-		if($sMessage)
+        if($sMessage)
             $sMessage = BxTemplFunctions::getInstance()->getStringWithLimitedLength(html_entity_decode($sMessage), $this->_oConfig->getPushMaxLen());
 
         if(empty($sMessage))
             return false;
 
+        $aContent = &$aEvent['content'];
         return array(
-            'url' => $this->_getContentLink($aEvent),
-            'message' => $sMessage,
-            'icon' => !empty($aEvent['content']['owner_icon']) ? $aEvent['content']['owner_icon'] : ''
+            'content' => array(
+                'url' => $this->_getContentLink($aEvent),
+                'message' => $sMessage,
+                'icon' => !empty($aContent['owner_icon']) ? $aContent['owner_icon'] : ''
+            ),
+            'settings' => !empty($aContent['settings']['push']) ? $aContent['settings']['push'] : array()
         );
     }
 
@@ -235,29 +247,31 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
     protected function _processContent(&$aEvent)
     {
     	$aContent = $this->_getContent($aEvent);
-		if(empty($aContent) || !is_array($aContent)) 
-			return;
+        if(empty($aContent) || !is_array($aContent)) 
+            return;
 
-		$aSet = array();
-		if(!empty($aContent['entry_author'])) {
-			$aSet['object_owner_id'] = (int)$aContent['entry_author'];
-			unset($aContent['entry_author']);
-		}
+        $aSet = array();
+        if(!empty($aContent['entry_author'])) {
+            $aSet['object_owner_id'] = (int)$aContent['entry_author'];
+            unset($aContent['entry_author']);
+        }
 
-		if(!empty($aContent['entry_privacy'])) {
-			$aSet['allow_view_event_to'] = $aContent['entry_privacy'];
-			$aEvent['allow_view_event_to'] = $aContent['entry_privacy'];
-			unset($aContent['entry_privacy']);
-		}
+        if(!empty($aContent['entry_privacy'])) {
+            $aSet['allow_view_event_to'] = $aContent['entry_privacy'];
+            $aEvent['allow_view_event_to'] = $aContent['entry_privacy'];
+            unset($aContent['entry_privacy']);
+        }
 
-		$aEvent['content'] = serialize($aContent);
-		$aSet = array_merge($aSet, array(
-			'content' => $aEvent['content'], 
-			'processed' => 1
-		));
+        $aEvent['content'] = $aContent;
+        $aEvent['processed'] = 1;
 
-		$this->_oDb->updateEvent($aSet, array('id' => $aEvent['id']));
-		return;
+        $aSet = array_merge($aSet, array(
+            'content' => serialize($aEvent['content']), 
+            'processed' => 1
+        ));
+
+        $this->_oDb->updateEvent($aSet, array('id' => $aEvent['id']));
+        return;
     }
 
     protected function _getContent(&$aEvent)
@@ -268,13 +282,13 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
 
         $aHandler = $this->_oConfig->getHandlers($sHandler);
         if(!empty($aHandler['module_name']) && !empty($aHandler['module_class']) && !empty($aHandler['module_method']))
-        	return BxDolService::call($aHandler['module_name'], $aHandler['module_method'], array($aEvent), $aHandler['module_class']);
+            return BxDolService::call($aHandler['module_name'], $aHandler['module_method'], array($aEvent), $aHandler['module_class']);
 
         $sMethod = 'display' . bx_gen_method_name($aHandler['alert_unit'] . '_' . $aHandler['alert_action']);
-		if(!method_exists($this, $sMethod))
-        	return array();
+        if(!method_exists($this, $sMethod))
+            return array();
 
-		return $this->$sMethod($aEvent);
+        return $this->$sMethod($aEvent);
     }
 
     protected function _getContentObjectId(&$aEvent)

@@ -131,9 +131,12 @@ class BxBasePage extends BxDolPage
 
     public function getPageCoverParams()
     {
-    	$aParams = BxDolMenu::getObjectInstance('sys_site_submenu')->getPageCoverParams();
-    	if(!empty($aParams) && is_array($aParams))
-    		return $aParams;
+        $oMenuSubmenu = BxDolMenu::getObjectInstance('sys_site_submenu');
+        if($oMenuSubmenu) {
+            $aParams = $oMenuSubmenu->getPageCoverParams();
+            if(!empty($aParams) && is_array($aParams))
+                return $aParams;
+        }
 
     	return array (
             'title' => $this->_getPageTitle(),
@@ -165,10 +168,11 @@ class BxBasePage extends BxDolPage
     protected function _getPageCode ()
     {
     	$aHiddenOn = array(
-			pow(2, BX_DB_HIDDEN_PHONE - 1) => 'bx-def-media-phone-hide',
-			pow(2, BX_DB_HIDDEN_TABLET - 1) => 'bx-def-media-tablet-hide',
-			pow(2, BX_DB_HIDDEN_DESKTOP - 1) => 'bx-def-media-desktop-hide'
-		);
+            pow(2, BX_DB_HIDDEN_PHONE - 1) => 'bx-def-media-phone-hide',
+            pow(2, BX_DB_HIDDEN_TABLET - 1) => 'bx-def-media-tablet-hide',
+            pow(2, BX_DB_HIDDEN_DESKTOP - 1) => 'bx-def-media-desktop-hide',
+            pow(2, BX_DB_HIDDEN_MOBILE - 1) => 'bx-def-mobile-app-hide'
+        );
 
         $aVars = array (
             'page_id' => 'bx-page-' . $this->_aObject['uri'],
@@ -180,12 +184,11 @@ class BxBasePage extends BxDolPage
                 $sContentWithBox = $this->_getBlockCode($aBlock);
 
             	$sHiddenOn = '';
-		    	if(!empty($aBlock['hidden_on']))
-		    		foreach($aHiddenOn as $iHiddenOn => $sClass)
-		    			if((int)$aBlock['hidden_on'] & $iHiddenOn)
-		    				$sHiddenOn .= ' ' . $sClass;
-    	
-    	
+                if(!empty($aBlock['hidden_on']))
+                    foreach($aHiddenOn as $iHiddenOn => $sClass)
+                        if((int)$aBlock['hidden_on'] & $iHiddenOn)
+                            $sHiddenOn .= ' ' . $sClass;
+
                 if ($sContentWithBox)
                     $sCell .= '<div class="bx-page-block-container bx-def-padding-sec-topbottom' . $sHiddenOn . '" id="bx-page-block-' . $aBlock['id'] . '">' . $sContentWithBox . '</div>';
             }
@@ -287,7 +290,11 @@ class BxBasePage extends BxDolPage
         if(empty($this->_aObject['submenu']))
             return;
 
-        BxDolMenu::getObjectInstance('sys_site_submenu')->setObjectSubmenu($this->_aObject['submenu'], $aParams);
+        $oMenuSubmenu = BxDolMenu::getObjectInstance('sys_site_submenu');
+        if(!$oMenuSubmenu)
+            return;
+
+        $oMenuSubmenu->setObjectSubmenu($this->_aObject['submenu'], $aParams);
     }
 
     /**

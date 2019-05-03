@@ -26,7 +26,7 @@
 	<string name="_bx_channels_form_profile_input_initial_members"><![CDATA[Пригласить участников]]></string>
 	<string name="_bx_channels_form_profile_input_sys_channel_name"><![CDATA[Название канала]]></string>
 	<string name="_bx_channels_form_profile_input_channel_name"><![CDATA[Название канала]]></string>
-	<string name="_bx_channels_form_profile_input_channel_name_err"><![CDATA[Эта информация необходима. Пожалуйста, заполните это поле.]]></string>
+	<string name="_bx_channels_form_profile_input_channel_name_err"><![CDATA[Пожалуйста, заполните это поле. Имя канала должно быть уникальным.]]></string>
     <string name="_bx_channels_form_profile_input_sys_picture"><![CDATA[Картинка канала]]></string>
 	<string name="_bx_channels_form_profile_input_picture"><![CDATA[Загрузить новую картинку канала]]></string>
 	<string name="_bx_channels_form_profile_input_picture_err"><![CDATA[Необходима картинка канала.]]></string>
@@ -222,6 +222,7 @@
 	
     <string name="_bx_channels_txt_ntfs_timeline_post_common"><![CDATA[В канале <b class="bx-ntfs-content-profile">{owner_name}</b> новая публикация <b class="bx-ntfs-content-entry">{subentry_sample}</b>]]></string>
     <string name="_bx_channels_ntfs_txt_subobject_added"><![CDATA[В канале <b class="bx-ntfs-content-profile">{owner_name}</b> новая публикация <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
+    <string name="_bx_channels_ntfs_txt_subobject_added_profile"><![CDATA[<b class="bx-ntfs-content-entry">{entry_caption}</b> был добавлен в <b class="bx-ntfs-content-profile">{owner_name}</b> канал]]></string>
     <string name="_bx_channels_alert_action_hashtag_added"><![CDATA[Новые хештеги]]></string>
     <string name="_bx_channels_alert_action_hashtag_added_notif_follow_context"><![CDATA[Новые хештеги]]></string>
 </resources>

@@ -69,6 +69,15 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
         if (!($aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId)))
             return MsgBox(_t('_sys_txt_error_occured'));
 
+        if (isset($CNF['FIELD_VIDEO']))
+            $oForm->processFiles($CNF['FIELD_VIDEO'], $iContentId, false);
+
+        if (isset($CNF['FIELD_FILE']))
+            $oForm->processFiles($CNF['FIELD_FILE'], $iContentId, false);
+
+        if (isset($CNF['FIELD_POLL']))
+            $oForm->processPolls($CNF['FIELD_POLL'], $iContentId);
+
         // change profile to 'pending' only if profile is 'active'
         if ($oProfile->isActive() && !empty($aTrackTextFieldsChanges['changed_fields']))
             $oProfile->disapprove(BX_PROFILE_ACTION_AUTO);
@@ -84,11 +93,35 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
         if ($s = parent::onDataAddAfter($iAccountId, $iContentId))
             return $s;
 
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
         if (!($aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId)))
             return MsgBox(_t('_sys_txt_error_occured'));
 
+        if(($oForm = $this->getObjectFormAdd()) !== false) {
+            if (isset($CNF['FIELD_VIDEO']))
+                $oForm->processFiles($CNF['FIELD_VIDEO'], $iContentId, true);
+
+            if (isset($CNF['FIELD_FILE']))
+                $oForm->processFiles($CNF['FIELD_FILE'], $iContentId, true);
+
+            if (isset($CNF['FIELD_POLL']))
+                $oForm->processPolls($CNF['FIELD_POLL'], $iContentId);
+        }
+
         // alert
         $this->_alertAfterAdd($aContentInfo);
+
+        return '';
+    }
+
+    public function onDataDeleteAfter($iContentId, $aContentInfo, $oProfile)
+    {
+        $sResult = parent::onDataDeleteAfter ($iContentId, $aContentInfo, $oProfile);
+        if(!empty($sResult))
+            return $sResult;
+
+        $this->_oModule->_oDb->deletePolls(array('content_id' => $iContentId));
 
         return '';
     }
@@ -97,11 +130,19 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $aParams = array('object_author_id' => $aContentInfo[$CNF['FIELD_AUTHOR']]);
-        if(isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
-        	$aParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
+        $iId = (int)$aContentInfo[$CNF['FIELD_ID']];
+        $iAuthorId = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
 
-        bx_alert($this->_oModule->getName(), 'added', $aContentInfo[$CNF['FIELD_ID']], false, $aParams);
+        $aParams = array('object_author_id' => $iAuthorId);
+        if(isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
+            $aParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
+        if(!empty($CNF['OBJECT_METATAGS']))
+            $aParams['timeline_group'] = array(
+                'by' => $this->_oModule->_oConfig->getName() . '_' . $iAuthorId . '_' . $iId,
+                'field' => 'owner_id'
+            );
+
+        bx_alert($this->_oModule->getName(), 'added', $iId, false, $aParams);
     }
 
     protected function _alertAfterEdit($aContentInfo)

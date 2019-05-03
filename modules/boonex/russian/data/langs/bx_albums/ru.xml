@@ -9,7 +9,8 @@
 	<string name="_bx_albums_option_summary_chars"><![CDATA[Количество символов в автогенерируемой сводке к альбомам]]></string>
 	<string name="_bx_albums_option_plain_summary_chars"><![CDATA[Количество символов в описании альбома при отсутствующей картинке альбома]]></string>
 	<string name="_bx_albums_option_per_page_browse"><![CDATA[Количество элементов на странице]]></string>
-	<string name="_bx_albums_option_per_page_profile"><![CDATA[Количество элементов на странице профайла]]></string>
+    <string name="_bx_albums_option_per_page_profile"><![CDATA[Количество элементов на странице профайла]]></string>
+    <string name="_bx_albums_option_album_browsing_unit"><![CDATA[Количество элементов в карточке альбома]]></string>
 	<string name="_bx_albums_option_rss_num"><![CDATA[Количество элементов в ленте RSS]]></string>
 	<string name="_bx_albums_option_searchable_fields"><![CDATA[Поля для поиска по ключевому слову]]></string>
 
@@ -162,6 +163,8 @@
     <string name="_bx_albums_menu_item_title_edit_album"><![CDATA[Редактировать альбом]]></string>
     <string name="_bx_albums_menu_item_title_system_add_images"><![CDATA[Добавить/Изменить изображения]]></string>
     <string name="_bx_albums_menu_item_title_add_images"><![CDATA[Добавить/Изменить изображения]]></string>
+    <string name="_bx_albums_menu_item_title_system_edit_image"><![CDATA[Изменить изображение]]></string>
+    <string name="_bx_albums_menu_item_title_edit_image"><![CDATA[Изменить изображение]]></string>
     <string name="_bx_albums_menu_item_title_system_delete_entry"><![CDATA[Удалить]]></string>
     <string name="_bx_albums_menu_item_title_delete_entry"><![CDATA[Удалить]]></string>
     <string name="_bx_albums_menu_item_title_system_view_entry"><![CDATA[Просмотреть альбом]]></string>
@@ -196,6 +199,8 @@
 	<string name="_bx_albums_menu_item_title_admt_albums"><![CDATA[Альбомы - {addon} спрятан]]></string>
 	<string name="_bx_albums_menu_item_title_manage_my"><![CDATA[Мои альбомы]]></string>
 	<string name="_bx_albums_menu_item_title_manage_all"><![CDATA[Все альбомы]]></string>
+        <string name="_bx_albums_menu_item_title_system_sm_items"><![CDATA[Элементы]]></string>
+        <string name="_bx_albums_menu_item_title_sm_items"><![CDATA[элементов: {0}]]></string>
 
 	<string name="_bx_albums_grid_filter_item_title_adm_select_one_filter1"><![CDATA[Все статусы]]></string>
 	<string name="_bx_albums_grid_filter_item_title_adm_active"><![CDATA[Активный]]></string>
@@ -230,15 +235,16 @@
     <string name="_bx_albums_txt_media_single"><![CDATA[изображение]]></string>
     <string name="_bx_albums_txt_media_comment_single"><![CDATA[комментарий к изображению]]></string>
     <string name="_bx_albums_txt_media_vote_single"><![CDATA[голос за изображение]]></string>
-	<string name="_bx_albums_txt_media_title_alt"><![CDATA[медиа-файлы автора {0}]]></string>
-	<string name="_bx_albums_txt_media_album_link"><![CDATA[<a href="{0}">{1}</a> альбом от <a href="{2}">{3}</a>]]></string>
-	<string name="_bx_albums_txt_media_album_camera"><![CDATA[Камера]]></string>
-	<string name="_bx_albums_txt_media_album_focal_length"><![CDATA[Фокусное расстояние]]></string>
-	<string name="_bx_albums_txt_media_album_focal_length_value"><![CDATA[{0} мм]]></string>
-	<string name="_bx_albums_txt_media_album_aperture"><![CDATA[Диафрагма]]></string>
-	<string name="_bx_albums_txt_media_album_shutter_speed"><![CDATA[Выдержка]]></string>
-	<string name="_bx_albums_txt_media_album_shutter_speed_value"><![CDATA[{0} сек]]></string>
-	<string name="_bx_albums_txt_media_album_iso"><![CDATA[Чувствительность (ISO)]]></string>
+    <string name="_bx_albums_txt_media_title_alt"><![CDATA[медиа-файлы автора {0}]]></string>
+    <string name="_bx_albums_txt_media_title_empty"><![CDATA[Без заголовка]]></string>
+    <string name="_bx_albums_txt_media_album_link"><![CDATA[<a href="{0}">{1}</a> альбом от <a href="{2}">{3}</a>]]></string>
+    <string name="_bx_albums_txt_media_album_camera"><![CDATA[Камера]]></string>
+    <string name="_bx_albums_txt_media_album_focal_length"><![CDATA[Фокусное расстояние]]></string>
+    <string name="_bx_albums_txt_media_album_focal_length_value"><![CDATA[{0} мм]]></string>
+    <string name="_bx_albums_txt_media_album_aperture"><![CDATA[Диафрагма]]></string>
+    <string name="_bx_albums_txt_media_album_shutter_speed"><![CDATA[Выдержка]]></string>
+    <string name="_bx_albums_txt_media_album_shutter_speed_value"><![CDATA[{0} сек]]></string>
+    <string name="_bx_albums_txt_media_album_iso"><![CDATA[Чувствительность (ISO)]]></string>
 
     <string name="_bx_albums_alert_action_medias_added"><![CDATA[добавить изображения]]></string>
     <string name="_bx_albums_alert_action_medias_added_follow_member"><![CDATA[Новые изображения]]></string>

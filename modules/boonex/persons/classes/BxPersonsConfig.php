@@ -16,7 +16,8 @@ class BxPersonsConfig extends BxBaseModProfileConfig
         parent::__construct($aModule);
 
         $this->_aMenuItems2MethodsSubmenu = array_merge($this->_aMenuItems2MethodsSubmenu, array(
-        	'persons-profile-subscriptions' => 'checkAllowedSubscriptionsView'
+            'persons-profile-relations' => 'checkAllowedRelationsView',
+            'persons-profile-subscriptions' => 'checkAllowedSubscriptionsView'
         ));
 
         $this->_aMenuItems2MethodsActions = array_merge($this->_aMenuItems2MethodsActions, array(
@@ -46,6 +47,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'FIELD_PICTURE' => 'picture',
             'FIELD_COVER' => 'cover',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
+            'FIELD_ALLOW_POST_TO' => 'allow_post_to',
             'FIELD_VIEWS' => 'views',
             'FIELD_COMMENTS' => 'comments',
             'FIELDS_QUICK_SEARCH' => array('fullname'),
@@ -61,6 +63,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'URI_EDIT_ENTRY' => 'edit-persons-profile',
             'URI_EDIT_COVER' => 'edit-persons-cover',
             'URI_MANAGE_COMMON' => 'persons-manage',
+            'URI_VIEW_SUBSCRIPTIONS' => 'persons-profile-subscriptions',
 
             'URL_HOME' => 'page.php?i=persons-home',
             'URL_CREATE' => 'page.php?i=create-persons-profile',
@@ -120,6 +123,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'OBJECT_PAGE_VIEW_ENTRY' => 'bx_persons_view_profile',
             'OBJECT_PAGE_VIEW_ENTRY_CLOSED' => 'bx_persons_view_profile_closed',
             'OBJECT_PRIVACY_VIEW' => 'bx_persons_allow_view_to',
+            'OBJECT_PRIVACY_POST' => 'bx_persons_allow_post_to',
             'OBJECT_GRID_ADMINISTRATION' => 'bx_persons_administration',
             'OBJECT_GRID_COMMON' => 'bx_persons_common',
             'OBJECT_UPLOADERS_COVER' => array('bx_persons_cover_crop'),

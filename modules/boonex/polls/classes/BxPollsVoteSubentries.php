@@ -9,7 +9,7 @@
  * @{
  */
 
-class BxPollsVoteSubentries extends BxTemplVote
+class BxPollsVoteSubentries extends BxTemplVoteLikes
 {
     protected $_sModule;
     protected $_oModule;
@@ -29,29 +29,39 @@ class BxPollsVoteSubentries extends BxTemplVote
 
         $CNF = $this->_oModule->_oConfig->CNF;
 
-        $this->_aElementDefaults['likes'] = array_merge($this->_aElementDefaults['likes'], array(
+        $this->_aElementDefaults = array_merge($this->_aElementDefaults, array(
             'show_do_vote_label' => true,
             'show_counter' => false
         ));
 
         $this->_aObjectInfo = $this->_oModule->_oDb->getSubentries(array('type' => 'id', 'id' => $iId));
-        $this->_aContentInfo = $this->_oModule->_oDb->getContentInfoBySubentryId($iId);
+        $this->_aContentInfo = array();
 
         $this->_sTmplNameElementBlock = 'subentries_ve_block.html';
         $this->_sTmplNameCounterText = 'subentries_vc_text.html';
     }
 
-    public function getJsClick()
+    public function setEntry($aEntry)
+    {
+        $this->_aContentInfo = $aEntry;
+    }
+
+    public function getEntryField($sField)
+    {
+        if(empty($this->_aContentInfo))
+            $this->_aContentInfo = $this->_oModule->_oDb->getContentInfoBySubentryId($this->getId());
+
+        return isset($this->_aContentInfo[$sField]) ? $this->_aContentInfo[$sField] : false;
+    }
+
+    public function getJsClick($iValue = 0)
     {
         $CNF = $this->_oModule->_oConfig->CNF;
-
-        if(!$this->isLikeMode())
-            return false;
 
         $sJsObjectVote = $this->getJsObjectName();
         $sJsObjectEntry = $this->_oModule->_oConfig->getJsObject('entry');
 
-        return $sJsObjectVote . '.vote(this, ' . $this->getMaxValue() . ', function(oLink, oData) {' . $sJsObjectEntry . '.onVote(oLink, oData, ' . $this->_aContentInfo[$CNF['FIELD_ID']] . ');})';
+        return $sJsObjectVote . '.vote(this, ' . $this->getValue() . ', function(oLink, oData) {' . $sJsObjectEntry . '.onVote(oLink, oData, ' . $this->getEntryField($CNF['FIELD_ID']) . ', \'' . $this->getEntryField('salt') . '\');})';
     }
 
     public function getCounter($aParams = array())
@@ -62,7 +72,7 @@ class BxPollsVoteSubentries extends BxTemplVote
 
         $iObjectId = $this->getId();
         $iAuthorId = $this->_getAuthorId();
-        if((int)$this->_aContentInfo[$CNF['FIELD_HIDDEN_RESULTS']] == 1)
+        if((int)$this->getEntryField($CNF['FIELD_HIDDEN_RESULTS']) == 1)
             if(!$this->isPerformed($iObjectId, $iAuthorId))
                 return '';
 
@@ -86,7 +96,7 @@ class BxPollsVoteSubentries extends BxTemplVote
     {
         $CNF = $this->_oModule->_oConfig->CNF;
 
-        return $this->_oModule->_oDb->isPerformed($this->_aContentInfo[$CNF['FIELD_ID']], $iAuthorId);
+        return $this->_oModule->_oDb->isPerformed($this->getEntryField($CNF['FIELD_ID']), $iAuthorId);
     }
 
 	/**
@@ -100,22 +110,22 @@ class BxPollsVoteSubentries extends BxTemplVote
     /**
      * Internal functions
      */
-    protected function _getIconDoLike($bVoted)
+    protected function _getIconDo($bVoted)
     {
     	return $bVoted ?  'far dot-circle' : 'far circle';
     }
 
-    protected function _getTitleDoLike($bVoted)
+    protected function _getTitleDo($bVoted)
     {
     	return bx_process_output($this->_aObjectInfo['title']);
     }
 
-    protected function _getTitleDoBy()
+    protected function _getTitleDoBy($aParams = array())
     {
-    	return '_bx_polls_txt_subentry_vote_do_by';
+    	return _t('_bx_polls_txt_subentry_vote_do_by');
     }
 
-    protected function _getLabelCounter($iCount)
+    protected function _getLabelCounter($iCount, $aParams = array())
     {
         return _t('_bx_polls_txt_subentry_vote_counter', $iCount);
     }
@@ -134,7 +144,7 @@ class BxPollsVoteSubentries extends BxTemplVote
     {
         $CNF = $this->_oModule->_oConfig->CNF;
 
-        if((int)$this->_aContentInfo[$CNF['FIELD_ANONYMOUS_VOTING']] == 1)
+        if((int)$this->getEntryField($CNF['FIELD_ANONYMOUS_VOTING']) == 1)
             return $this->_oTemplate->getHtml($this->_sTmplNameCounterText);
 
         return self::$_sTmplContentCounter;

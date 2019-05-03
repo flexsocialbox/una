@@ -154,9 +154,7 @@ class BxCnlModule extends BxBaseModGroupsModule
         if(!BxDolRequest::serviceExists($aEventContent['module_name'], 'get_timeline_post'))
             return false;      
 
-        $iEventOwnerId = (int)(is_array($aEvent['owner_id']) ? array_shift($aEvent['owner_id']) : $aEvent['owner_id']);
-
-        return BxDolService::call($aEventContent['module_name'], 'get_timeline_post', array(array('owner_id' => $iEventOwnerId, 'object_id' => $aEventContent['content_id'])));
+        return BxDolService::call($aEventContent['module_name'], 'get_timeline_post', array(array('owner_id' => $aEventContent['author_id'], 'object_id' => $aEventContent['content_id'])));
     }
     
     /**
@@ -181,27 +179,34 @@ class BxCnlModule extends BxBaseModGroupsModule
 
     public function serviceGetNotificationsPostHashtag($aEvent)
     {
-         if(empty($aEvent) || !is_array($aEvent))
+        if(empty($aEvent) || !is_array($aEvent))
             return '';
-         
-         $aContentEvent = $this->_oDb->getContentById($aEvent['subobject_id']);
-         if(empty($aContentEvent) || !is_array($aContentEvent))
-             return '';
-         
-         $oModule = BxDolModule::getInstance($aContentEvent['module_name']);
-         if ($oModule){
-             if (isset($oModule->_oConfig->CNF['OBJECT_PRIVACY_VIEW'])){
-                 $oPrivacy = BxDolPrivacy::getObjectInstance($oModule->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
-                 if (!$oPrivacy->check($aContentEvent['content_id']))
-                     return '';
-             }
-             $aRv = $oModule->serviceGetNotificationsPost(array('object_id' => $aContentEvent['content_id']));
-             $aRv['lang_key'] = '_bx_channels_ntfs_txt_subobject_added';
-             $aRv['channel_url'] = $this->serviceGetLink($aContentEvent['cnl_id']);
-             return $aRv;
-         }
-         
-         return '';
+
+        $aContentEvent = $this->_oDb->getContentById($aEvent['subobject_id']);
+        if(empty($aContentEvent) || !is_array($aContentEvent))
+            return '';
+
+        $oModule = BxDolModule::getInstance($aContentEvent['module_name']);
+        if ($oModule) {
+            if (isset($oModule->_oConfig->CNF['OBJECT_PRIVACY_VIEW'])){
+                $oPrivacy = BxDolPrivacy::getObjectInstance($oModule->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
+                if (!$oPrivacy->check($aContentEvent['content_id']))
+                    return '';
+            }
+
+            $aRv = $oModule->serviceGetNotificationsPost(array(
+                'object_id' => $aContentEvent['content_id']
+            ));
+
+            $aRv['lang_key'] = '_bx_channels_ntfs_txt_subobject_added';
+            if(method_exists($oModule, 'serviceActAsProfile') && $oModule->serviceActAsProfile())
+                $aRv['lang_key'] = '_bx_channels_ntfs_txt_subobject_added_profile';
+
+            $aRv['entry_url'] = $this->serviceGetLink($aContentEvent['cnl_id']);
+            return $aRv;
+        }
+
+        return '';
     }
     
     public function serviceBrowseAuthor($iProfileId = 0, $aParams = array())

@@ -12,6 +12,7 @@
 class BxNtfsDb extends BxBaseModNotificationsDb
 {
     protected $_sTableEvt2Usr;
+    protected $_sTableQueue;
 
     /*
      * Constructor.
@@ -27,12 +28,17 @@ class BxNtfsDb extends BxBaseModNotificationsDb
         );
 
         $this->_sTableEvt2Usr = $this->_sPrefix . 'events2users';
+        $this->_sTableQueue = $this->_sPrefix . 'queue';
     }
 
     public function markAsRead($iUserId, $iEventId)
     {
-    	$sSql = $this->prepare("REPLACE `" . $this->_sTableEvt2Usr . "` SET `user_id`=?, `event_id`=?", $iUserId, $iEventId);
-    	return (int)$this->query($sSql) > 0;
+        $this->queueDeleteByProfile($iUserId, $iEventId);
+
+        return (int)$this->query("REPLACE `" . $this->_sTableEvt2Usr . "` SET `user_id`=:user_id, `event_id`=:event_id", array(
+            'user_id' => $iUserId,
+            'event_id' => $iEventId
+        )) > 0;
     }
 
     public function getLastRead($iUserId)
@@ -116,9 +122,20 @@ class BxNtfsDb extends BxBaseModNotificationsDb
                     break;
 
                 case BX_NTFS_TYPE_OBJECT_OWNER_AND_CONNECTIONS:
-                    $sWhereClauseObjectOwner = $this->prepareAsString("`{$this->_sTable}`.`owner_id` <> `{$this->_sTable}`.`object_owner_id` AND `{$this->_sTable}`.`object_owner_id`=? ", $aParams['owner_id']);
+                    /**
+                     * 'personal' notifications are taken by: 
+                     * 1. 'owner_id', in case of somebody performed an action in requested profile's context
+                     * 'object_privacy_view' < 0 AND 'owner_id' == ABS('object_privacy_view'))
+                     * Currently it happens when somebody posted a Direct Timeline post in requested profile.
+                     * 2. 'object_owner_id', in case of somebody performed an action with content 
+                     * owned by the requested profile.
+                     */
+                    $sWhereClauseObjectOwner = $this->prepareAsString("`{$this->_sTable}`.`owner_id` <> `{$this->_sTable}`.`object_owner_id` AND ((`{$this->_sTable}`.`owner_id`=? AND `{$this->_sTable}`.`object_privacy_view`<0 AND `{$this->_sTable}`.`owner_id`=ABS(`{$this->_sTable}`.`object_privacy_view`)) OR `{$this->_sTable}`.`object_owner_id`=?) ", $aParams['owner_id'], $aParams['owner_id']);
                     $sWhereClauseObjectOwner .= $this->prepareAsString("AND `{$this->_sTableSettings}`.`type`=?", BX_NTFS_STYPE_PERSONAL);
 
+                    /**
+                     * 'follow' notifications are taken by connection with `owner_id`
+                     */
                     $sWhereClauseConnections = '0';
                     $oConnection = BxDolConnection::getObjectInstance($this->_oConfig->getObject('conn_subscriptions'));
                     $aQueryParts = $oConnection->getConnectedContentAsSQLPartsExt($this->_sTable, 'owner_id', $aParams['owner_id']);
@@ -139,6 +156,79 @@ class BxNtfsDb extends BxBaseModNotificationsDb
             }
 
         return array($sJoinClause, $sWhereClause);
+    }
+
+    public function queueGet($aParams)
+    {
+    	$aMethod = array('name' => 'getAll', 'params' => array(0 => 'query'));
+
+    	$sSelectClause = "*";
+    	$sWhereClause = $sOrderClause = $sLimitClause = "";
+
+        switch($aParams['type']) {
+            case 'id':
+            	$aMethod['name'] = 'getRow';
+            	$aMethod['params'][1] = array(
+                    'id' => $aParams['id']
+                );
+
+                $sWhereClause = " AND `id`=:id";
+                break;
+
+            case 'all_to_send':
+                $aMethod['params'][1] = array(
+                    'timeout' => $aParams['timeout']
+                );
+
+                $sWhereClause = " AND `date`+:timeout < UNIX_TIMESTAMP()";
+                $sOrderClause = "`date` ASC";
+                break;
+        }
+
+        $sOrderClause = !empty($sOrderClause) ? "ORDER BY " . $sOrderClause : $sOrderClause;
+        $sLimitClause = !empty($sLimitClause) ? "LIMIT " . $sLimitClause : $sLimitClause;
+
+        $aMethod['params'][0] = "SELECT
+                " . $sSelectClause . "
+            FROM `" . $this->_sTableQueue . "`
+            WHERE 1" . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
+
+        return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
+    }
+
+    public function queueAdd($aSet)
+    {
+        if(empty($aSet))
+            return false;
+
+        return (int)$this->query("INSERT INTO `" . $this->_sTableQueue . "` SET " . $this->arrayToSQL($aSet)) > 0;
+    }
+
+    public function queueDelete($aWhere)
+    {
+    	if(empty($aWhere))
+            return false;
+
+        return (int)$this->query("DELETE FROM `" . $this->_sTableQueue . "` WHERE " . $this->arrayToSQL($aWhere, ' AND ')) > 0;
+    }
+
+    public function queueDeleteByProfile($iProfileId, $iEventId)
+    {
+        return (int)$this->query("DELETE FROM `" . $this->_sTableQueue . "` WHERE `profile_id`=:profile_id AND `event_id`<=:event_id", array(
+            'profile_id' => $iProfileId,
+            'event_id' => $iEventId
+        )) > 0;
+    }
+
+    public function queueDeleteByIds($mixedId)
+    {
+        if(empty($mixedId))
+            return false;
+
+        if(!is_array($mixedId))
+            $mixedId = array($mixedId);
+
+        return (int)$this->query("DELETE FROM `" . $this->_sTableQueue . "` WHERE `id` IN (" . $this->implode_escape($mixedId) . ")") > 0;
     }
 }
 

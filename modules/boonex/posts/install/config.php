@@ -20,7 +20,7 @@ $aConfig = array(
     'note' => 'Basic blogging module.',
     'version' => '9.0.12.DEV',
     'vendor' => 'BoonEx',
-	'help_url' => 'http://feed.una.io/?section={module_name}',
+    'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
         '9.0.x'
@@ -60,20 +60,30 @@ $aConfig = array(
      * Note. Don't add storage objects used in transcoder objects.
      */
     'storages' => array(
-    	'bx_posts_files',
-    	'bx_posts_photos'
+        'bx_posts_covers',
+    	'bx_posts_photos',
+        'bx_posts_videos',
+        'bx_posts_files'
     ),
 
     /**
      * Transcoders.
      */
     'transcoders' => array(
-		'bx_posts_preview',
+        'bx_posts_preview',
         'bx_posts_gallery',
         'bx_posts_cover',
 
         'bx_posts_preview_photos',
-        'bx_posts_gallery_photos'
+        'bx_posts_gallery_photos', 
+
+        'bx_posts_videos_poster',
+        'bx_posts_videos_poster_preview',
+        'bx_posts_videos_mp4',
+        'bx_posts_videos_webm',
+
+        'bx_posts_preview_files',
+        'bx_posts_gallery_files'
     ),
 
     /**

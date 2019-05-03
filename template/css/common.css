@@ -37,6 +37,20 @@ blockquote {
     padding-left: 10px;
 }
 
+.bx-tl-content pre,
+.bx-base-text-entity-content pre,
+.bx-content-description pre,
+.cmt-body pre {
+    /* NOTE: this style was copied to editor.css */
+    padding: 5px;
+    border: 1px solid green;
+    background-color: white;
+    color: #009900;
+    display: block;
+    margin: 0;
+    overflow-x: auto;
+}
+
 .bx-main {
 	position: relative;
 	display: -webkit-flex;
@@ -89,6 +103,11 @@ blockquote {
     content: "\00b7";
 
     color: #999999;
+}
+
+.bx-tag s {
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .sys-icon-a {
@@ -503,10 +522,11 @@ div.bx-popup-chain-item .bx-loading-ajax {
 }
 
 .bx-loading-ajax-btn {
-	position: relative;
+    position: relative;
     display: inline-block;
-
     vertical-align: top;
+
+    min-width: 2.0rem;
 
     margin-left: 5px;
 }
@@ -689,18 +709,6 @@ input.bx-btn {
 .bx-btn.bx-btn-primary:hover,
 .bx-btn.bx-btn-primary:active { 
     background-color: #3a8686;
-}
-
-.bx-btn.bx-btn-disabled:active,
-.bx-btn.bx-btn-disabled:hover,
-.bx-btn.bx-btn-disabled,
-.bx-btn.bx-btn-small.bx-btn-disabled:active,
-.bx-btn.bx-btn-small.bx-btn-disabled:hover,
-.bx-btn.bx-btn-small.bx-btn-disabled,
-.bx-btn.bx-btn-primary.bx-btn-disabled:active,
-.bx-btn.bx-btn-primary.bx-btn-disabled:hover,
-.bx-btn.bx-btn-primary.bx-btn-disabled {
-    background-color: #ddd;
 }
 
 .bx-btn.bx-btn-symbol {

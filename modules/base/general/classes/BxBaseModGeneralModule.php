@@ -36,6 +36,7 @@ class BxBaseModGeneralModule extends BxDolModule
             'absolute_action_url' => false,
             'visibility_autoselect' => false,
             'context_id' => 0,
+            'custom' => array()
         );
     }
 
@@ -49,16 +50,22 @@ class BxBaseModGeneralModule extends BxDolModule
     
     public function actionGetCreatePostForm()
     {
+        $sName = $this->_oConfig->getName();
+
     	$aParams = bx_process_input(array_intersect_key($_GET, $this->_aFormParams));
     	$aParams = array_merge($this->_aFormParams, $aParams);
 
-    	$sForm = $this->serviceGetCreatePostForm($aParams);
-    	if(empty($sForm))
-    		return echoJson(array());
+    	$mixedResponse = $this->serviceGetCreatePostForm($aParams);
+    	if(empty($mixedResponse))
+            return echoJson(array());
+        else if(is_array($mixedResponse)) {
+            $mixedResponse['module'] = $sName;
+            return echoJson($mixedResponse);
+        }
 
-	   	return echoJson(array(
-    		'module' => $this->_oConfig->getName(),
-    		'content' => $sForm
+        return echoJson(array(
+            'module' => $sName,
+            'content' => $mixedResponse
     	));
     }
 
@@ -69,7 +76,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
     	$oForm = $this->serviceGetObjectForm('add', $aParams);
     	if(!$oForm)
-    		return ''; 	
+            return ''; 	
 
     	return $this->serviceEntityCreate($aParams);
     }
@@ -422,7 +429,7 @@ class BxBaseModGeneralModule extends BxDolModule
         if (!in_array($sType, array('add', 'edit', 'view', 'delete')))
             return false;
 
-		$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
         bx_import('FormsEntryHelper', $this->_aModule);
         $sClass = $this->_aModule['class_prefix'] . 'FormsEntryHelper';
@@ -435,24 +442,31 @@ class BxBaseModGeneralModule extends BxDolModule
 
         $sParamsKey = 'absolute_action_url';
         if(isset($aParams[$sParamsKey]) && (bool)$aParams[$sParamsKey] === true) {
-        	$sKeyUri = 'URI_' . strtoupper($sType) . '_ENTRY';
-        	if(!empty($this->_oConfig->CNF[$sKeyUri]))
-        		$oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $this->_oConfig->CNF[$sKeyUri]);
+            $sKeyUri = 'URI_' . strtoupper($sType) . '_ENTRY';
+            if(!empty($this->_oConfig->CNF[$sKeyUri]))
+                $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $this->_oConfig->CNF[$sKeyUri]);
         }
 
         $sParamsKey = 'ajax_mode';
         if(isset($aParams[$sParamsKey]) && is_bool($aParams[$sParamsKey]))
         	$oForm->setAjaxMode((bool)$aParams[$sParamsKey]);
 
-		$sKey = 'FIELD_ALLOW_VIEW_TO';
-		if(!empty($aParams['context_id']) && !empty($CNF[$sKey]) && !empty($oForm->aInputs[$CNF[$sKey]])) {
-			foreach($oForm->aInputs[$CNF[$sKey]]['values'] as $aValue)
-				if(isset($aValue['key']) && (int)$aValue['key'] == -(int)$aParams['context_id']) {
-					$oForm->aInputs[$CNF[$sKey]]['value'] = -(int)$aParams['context_id'];
-					$oForm->aInputs[$CNF[$sKey]]['type'] = 'hidden';
-					break;
-				}
-		}
+        $sKey = 'FIELD_ALLOW_VIEW_TO';
+        if(!empty($aParams['context_id']) && !empty($CNF[$sKey]) && !empty($oForm->aInputs[$CNF[$sKey]])) {
+            foreach($oForm->aInputs[$CNF[$sKey]]['values'] as $aValue)
+                if(isset($aValue['key']) && (int)$aValue['key'] == -(int)$aParams['context_id']) {
+                    $oForm->aInputs[$CNF[$sKey]]['value'] = -(int)$aParams['context_id'];
+                    $oForm->aInputs[$CNF[$sKey]]['type'] = 'hidden';
+                    break;
+                }
+        }
+
+        bx_alert('system', 'get_object_form', 0, 0, array(
+            'module' => $this->_oConfig->getName(),
+            'type' => $sType,
+            'params' => $aParams,
+            'form' => &$oForm
+        ));
 
         return $oForm;
     }
@@ -766,7 +780,7 @@ class BxBaseModGeneralModule extends BxDolModule
      */
     public function serviceGetNotificationsPost($aEvent)
     {
-		$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
         $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
         if(empty($aContentInfo) || !is_array($aContentInfo))
@@ -775,14 +789,29 @@ class BxBaseModGeneralModule extends BxDolModule
         $sEntryUrl = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]);
         $sEntryCaption = isset($aContentInfo[$CNF['FIELD_TITLE']]) ? $aContentInfo[$CNF['FIELD_TITLE']] : strmaxtextlen($aContentInfo[$CNF['FIELD_TEXT']], 20, '...');
 
-		return array(
-			'entry_sample' => $CNF['T']['txt_sample_single'],
-			'entry_url' => $sEntryUrl,
-			'entry_caption' => $sEntryCaption,
-			'entry_author' => $aContentInfo[$CNF['FIELD_AUTHOR']],
-			'entry_privacy' => '', //may be empty or not specified. In this case Public privacy will be used.
-			'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-		);
+        return array(
+            'entry_sample' => $CNF['T']['txt_sample_single'],
+            'entry_url' => $sEntryUrl,
+            'entry_caption' => $sEntryCaption,
+            'entry_author' => $aContentInfo[$CNF['FIELD_AUTHOR']],
+            'entry_privacy' => '', //may be empty or not specified. In this case Public privacy will be used.
+            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
+            /*
+             * Custom settings for email and/or push notifications can be provided here. 
+             * Only necessary parts of 'settings' array can be used.
+             * 
+            'settings' => array(
+                'email' => array(
+                    'template' => '',   //--- custom email template
+                    'markers' => '',    //--- markers to parse email parts (subject, body) with
+                    'subject' => ''     //--- custom email subject
+                ),
+                'push' => array(
+                    'subject' => ''     //--- custom push notification subject
+                )
+            )
+             */
+        );
     }
 
 	/**
@@ -973,8 +1002,13 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($sTitle) && !empty($aContentInfo[$CNF['FIELD_TEXT']]))
             $sTitle = $aContentInfo[$CNF['FIELD_TEXT']];
 
+        $iOwnerId = $iAuthorIdAbs;
+        if((int)$aEvent['object_privacy_view'] < 0)
+            $iOwnerId = abs($aEvent['object_privacy_view']);
+
         return array(
-            'owner_id' => $iAuthorId,
+            'owner_id' => $iOwnerId,
+            'object_owner_id' => $iAuthorId,
             'icon' => !empty($CNF['ICON']) ? $CNF['ICON'] : '',
             'sample' => isset($CNF['T']['txt_sample_single_with_article']) ? $CNF['T']['txt_sample_single_with_article'] : $CNF['T']['txt_sample_single'],
             'sample_wo_article' => $CNF['T']['txt_sample_single'],
@@ -1057,36 +1091,9 @@ class BxBaseModGeneralModule extends BxDolModule
 
         return $iProfileId;
     }
-    
+
+
     // ====== PERMISSION METHODS
-
-    public function checkAllowedSetThumb ($iContentId = 0)
-    {
-        return CHECK_ACTION_RESULT_ALLOWED;
-    }
-    
-    /**
-     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make "true === " checking.
-     */
-    public function checkAllowedBrowse ()
-    {
-        // check alert to allow custom checks
-        $mixedResult = null;
-        bx_alert('system', 'check_allowed_browse', 0, 0, array('module' => $this->getName(), 'profile_id' => $this->_iProfileId, 'override_result' => &$mixedResult));
-        if($mixedResult !== null)
-            return $mixedResult;
-
-        return CHECK_ACTION_RESULT_ALLOWED;
-    }
-
-    /**
-     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make strict(===) checking.
-     */
-    public function checkAllowedView ($aDataEntry, $isPerformAction = false)
-    {
-        return $this->serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction);
-    }
-
     public function serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction = false, $iProfileId = false)
     {
         if (!$iProfileId)
@@ -1117,6 +1124,33 @@ class BxBaseModGeneralModule extends BxDolModule
             return $mixedResult;
 
         return CHECK_ACTION_RESULT_ALLOWED;
+    }
+
+    public function checkAllowedSetThumb ($iContentId = 0)
+    {
+        return CHECK_ACTION_RESULT_ALLOWED;
+    }
+    
+    /**
+     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make "true === " checking.
+     */
+    public function checkAllowedBrowse ()
+    {
+        // check alert to allow custom checks
+        $mixedResult = null;
+        bx_alert('system', 'check_allowed_browse', 0, 0, array('module' => $this->getName(), 'profile_id' => $this->_iProfileId, 'override_result' => &$mixedResult));
+        if($mixedResult !== null)
+            return $mixedResult;
+
+        return CHECK_ACTION_RESULT_ALLOWED;
+    }
+
+    /**
+     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make strict(===) checking.
+     */
+    public function checkAllowedView ($aDataEntry, $isPerformAction = false)
+    {
+        return $this->serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction);
     }
 
     /**
@@ -1339,7 +1373,10 @@ class BxBaseModGeneralModule extends BxDolModule
             $sFuncCheckAccess = $CNF['MENU_ITEM_TO_METHOD'][$sObject][$aItem['name']];
 
         // check custom visibility settings defined in module config class
-        if($sFuncCheckAccess && CHECK_ACTION_RESULT_ALLOWED !== call_user_func_array(array($this, $sFuncCheckAccess), isset($aContentInfo) ? array(&$aContentInfo) : array()))
+        if(!isset($aContentInfo))
+            $aContentInfo = array();
+
+        if($sFuncCheckAccess && CHECK_ACTION_RESULT_ALLOWED !== call_user_func_array(array($this, $sFuncCheckAccess), array(&$aContentInfo)))
             return false;
 
         return true;
@@ -1424,28 +1461,44 @@ class BxBaseModGeneralModule extends BxDolModule
 
     	//--- Image(s)
         $aImages = $this->_getImagesForTimelinePost($aEvent, $aContentInfo, $sUrl, $aBrowseParams);
+        $aImagesAttach = $this->_getImagesForTimelinePostAttach($aEvent, $aContentInfo, $sUrl, $aBrowseParams);
 
         //--- Video(s)
         $aVideos = $this->_getVideosForTimelinePost($aEvent, $aContentInfo, $sUrl, $aBrowseParams);
+        $aVideosAttach = $this->_getVideosForTimelinePostAttach($aEvent, $aContentInfo, $sUrl, $aBrowseParams);
+
+        //--- Files(s)
+        $aFiles = $this->_getFilesForTimelinePost($aEvent, $aContentInfo, $sUrl, $aBrowseParams);
+        $aFilesAttach = $this->_getFilesForTimelinePostAttach($aEvent, $aContentInfo, $sUrl, $aBrowseParams);
+
+        //--- Title
+        $sTitle = '';
+        if(isset($CNF['FIELD_TITLE']) && isset($aContentInfo[$CNF['FIELD_TITLE']]))
+            $sTitle = $aContentInfo[$CNF['FIELD_TITLE']];
+        else if(isset($CNF['FIELD_TEXT']) && isset($aContentInfo[$CNF['FIELD_TEXT']]))
+            $sTitle = strmaxtextlen($aContentInfo[$CNF['FIELD_TEXT']], 20, '...');
 
         //--- Text
         $sText = isset($CNF['FIELD_TEXT']) && isset($aContentInfo[$CNF['FIELD_TEXT']]) ? $aContentInfo[$CNF['FIELD_TEXT']] : '';
         if(!empty($CNF['OBJECT_METATAGS']) && is_string($sText)) {
-        	$oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
-        	$sText = $oMetatags->metaParse($aContentInfo[$CNF['FIELD_ID']], $sText);
+            $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
+            $sText = $oMetatags->metaParse($aContentInfo[$CNF['FIELD_ID']], $sText);
         }
 
     	return array(
-    		'sample' => isset($CNF['T']['txt_sample_single_with_article']) ? $CNF['T']['txt_sample_single_with_article'] : $CNF['T']['txt_sample_single'],
-    		'sample_wo_article' => $CNF['T']['txt_sample_single'],
-    	    'sample_action' => isset($CNF['T']['txt_sample_action']) ? $CNF['T']['txt_sample_action'] : '',
-			'url' => $sUrl,
-			'title' => isset($CNF['FIELD_TITLE']) && isset($aContentInfo[$CNF['FIELD_TITLE']]) ? $aContentInfo[$CNF['FIELD_TITLE']] : 
-			(isset($CNF['FIELD_TEXT']) && isset($aContentInfo[$CNF['FIELD_TEXT']]) ? strmaxtextlen($aContentInfo[$CNF['FIELD_TEXT']], 20, '...') : ''),
-			'text' => $sText,
-			'images' => $aImages,
-            'videos' => $aVideos
-		);
+            'sample' => isset($CNF['T']['txt_sample_single_with_article']) ? $CNF['T']['txt_sample_single_with_article'] : $CNF['T']['txt_sample_single'],
+            'sample_wo_article' => $CNF['T']['txt_sample_single'],
+            'sample_action' => isset($CNF['T']['txt_sample_action']) ? $CNF['T']['txt_sample_action'] : '',
+            'url' => $sUrl,
+            'title' => $sTitle,
+            'text' => $sText,
+            'images' => $aImages,
+            'images_attach' => $aImagesAttach,
+            'videos' => $aVideos,
+            'videos_attach' => $aVideosAttach,
+            'files' => $aFiles,
+            'files_attach' => $aFilesAttach
+        );
     }
 
     protected function _getImagesForTimelinePost($aEvent, $aContentInfo, $sUrl, $aBrowseParams = array())
@@ -1472,11 +1525,31 @@ class BxBaseModGeneralModule extends BxDolModule
             $sImageOrig = $sImage;
 
         return array(
-		    array('url' => $sUrl, 'src' => $sImage, 'src_orig' => $sImageOrig),
-		);
+            array('url' => $sUrl, 'src' => $sImage, 'src_orig' => $sImageOrig),
+        );
+    }
+
+    protected function _getImagesForTimelinePostAttach($aEvent, $aContentInfo, $sUrl, $aBrowseParams = array())
+    {
+        return array();
     }
 
     protected function _getVideosForTimelinePost($aEvent, $aContentInfo, $sUrl, $aBrowseParams = array())
+    {
+        return array();
+    }
+
+    protected function _getVideosForTimelinePostAttach($aEvent, $aContentInfo, $sUrl, $aBrowseParams = array())
+    {
+        return array();
+    }
+
+    protected function _getFilesForTimelinePost($aEvent, $aContentInfo, $sUrl, $aBrowseParams = array())
+    {
+        return array();
+    }
+
+    protected function _getFilesForTimelinePostAttach($aEvent, $aContentInfo, $sUrl, $aBrowseParams = array())
     {
         return array();
     }

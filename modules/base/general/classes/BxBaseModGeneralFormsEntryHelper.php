@@ -15,7 +15,15 @@
 class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
 {
     protected $_oModule;
+
+    /**
+     * 'Ajax Mode' determines the format of response. If it's TRUE the response 
+     * (a form or an error appeared during form creation) should be returned 
+     * as text during initial loading, while all other responses appeared after 
+     * form submit should be arrays, which are ready to path to echoJson.
+     */
     protected $_bAjaxMode;
+
     protected $_bDynamicMode;
 
     public function __construct($oModule)
@@ -163,26 +171,31 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
     {
         if (!$sCheckFunction)
             $sCheckFunction = 'checkAllowedAdd';
-        
+
         $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $bAsJson = false;
+
+        // get form object
+        $oForm = $this->getObjectFormAdd($sDisplay);
+        if (!$oForm)
+            return $this->prepareResponse(MsgBox(_t('_sys_txt_error_occured')), $bAsJson, 'msg');
+
+        $bAsJson = $this->_bAjaxMode && $oForm->isSubmitted();
 
         // check access
         if (CHECK_ACTION_RESULT_ALLOWED !== ($sMsg = $this->_oModule->$sCheckFunction())) {
             $oProfile = BxDolProfile::getInstance();
             if ($oProfile && ($aProfileInfo = $oProfile->getInfo()) && $aProfileInfo['type'] == 'system' && is_subclass_of($this->_oModule, 'BxBaseModProfileModule') && $this->_oModule->serviceActAsProfile()) // special check for system profile is needed, because of incorrect error message
-                return $this->prepareResponse(MsgBox(_t('_sys_txt_access_denied')), $this->_bAjaxMode, 'msg');
+                return $this->prepareResponse(MsgBox(_t('_sys_txt_access_denied')), $bAsJson, 'msg');
             else
-                return $this->prepareResponse(MsgBox($sMsg), $this->_bAjaxMode, 'msg');
+                return $this->prepareResponse(MsgBox($sMsg), $bAsJson, 'msg');
         }
 
         // check and display form
-        $oForm = $this->getObjectFormAdd($sDisplay);
-        if (!$oForm)
-            return $this->prepareResponse(MsgBox(_t('_sys_txt_error_occured')), $this->_bAjaxMode, 'msg');
-
         $oForm->initChecker();
         if (!$oForm->isSubmittedAndValid())
-            return $this->prepareResponse($oForm->getCode($this->_bDynamicMode), $this->_bAjaxMode && $oForm->isSubmitted(), 'form', array(
+            return $this->prepareResponse($oForm->getCode($this->_bDynamicMode), $bAsJson, 'form', array(
             	'form_id' => $oForm->getId()
             ));
 
@@ -191,23 +204,23 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         $iContentId = $oForm->insert ($aValsToAdd);
         if (!$iContentId) {
             if (!$oForm->isValid())
-                return $this->prepareResponse($oForm->getCode($this->_bDynamicMode), $this->_bAjaxMode, 'form', array(
-                	'form_id' => $oForm->getId()
+                return $this->prepareResponse($oForm->getCode($this->_bDynamicMode), $bAsJson, 'form', array(
+                    'form_id' => $oForm->getId()
                 ));
             else
-                return $this->prepareResponse(MsgBox(_t('_sys_txt_error_entry_creation')), $this->_bAjaxMode, 'msg');
+                return $this->prepareResponse(MsgBox(_t('_sys_txt_error_entry_creation')), $bAsJson, 'msg');
         }
 
         $sResult = $this->onDataAddAfter (getLoggedId(), $iContentId);
         if ($sResult)
-            return $this->prepareResponse($sResult, $this->_bAjaxMode, 'msg');
+            return $this->prepareResponse($sResult, $bAsJson, 'msg');
 
         // process uploaded files
         if (isset($CNF['FIELD_PHOTO']))
             $oForm->processFiles ($CNF['FIELD_PHOTO'], $iContentId, true);
 
         // perform action
-        $this->_oModule->checkAllowedAdd(true);
+        $this->_oModule->$sCheckFunction(true);
 
         // redirect
         list ($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
@@ -219,10 +232,12 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
     	$sUrl = 'page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']];
-        if($this->_bAjaxMode)
-        	$this->prepareResponse($sUrl, $this->_bAjaxMode, 'redirect');
-		else
-        	$this->_redirectAndExit($sUrl);
+        if($this->_bAjaxMode) {
+            echoJson($this->prepareResponse($sUrl, $this->_bAjaxMode, 'redirect'));
+            exit;
+        }
+        else
+            $this->_redirectAndExit($sUrl);
     }
 
     public function editDataForm ($iContentId, $sDisplay = false, $sCheckFunction = false, $bErrorMsg = true)
@@ -278,7 +293,7 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
             $oForm->processFiles ($CNF['FIELD_PHOTO'], $iContentId, false);
 
         // perform action
-        $this->_oModule->checkAllowedEdit($aContentInfo, true);
+        $this->_oModule->$sCheckFunction($aContentInfo, true);
         
         // redirect
         $this->redirectAfterEdit($aContentInfo);
@@ -320,7 +335,7 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
             return MsgBox($sError);
 
         // perform action
-        $this->_oModule->checkAllowedDelete($aContentInfo, true);
+        $this->_oModule->$sCheckFunction($aContentInfo, true);
 
         // redirect
         $this->redirectAfterDelete($aContentInfo);
@@ -491,17 +506,16 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
     protected function prepareResponse($mixedResponse, $bAsJson = false, $sKey = 'msg', $aAdditional = array())
     {
     	if(!$bAsJson)
-    		return $mixedResponse;
+            return $mixedResponse;
 
-		$aResponse = array(
-			$sKey => $mixedResponse
-		);
+        $aResponse = array(
+            $sKey => $mixedResponse
+        );
 
-		if(!empty($aAdditional) && is_array($aAdditional))
-			$aResponse = array_merge($aResponse, $aAdditional);
+        if(!empty($aAdditional) && is_array($aAdditional))
+            $aResponse = array_merge($aResponse, $aAdditional);
 
-		echoJson($aResponse);
-		exit;
+        return $aResponse;
     }
 }
 

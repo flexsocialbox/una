@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS `bx_spaces_data` (
   `reports` int(11) NOT NULL default '0',
   `featured` int(11) NOT NULL default '0',
   `join_confirmation` tinyint(4) NOT NULL DEFAULT '1',
-  `allow_view_to` varchar(255) DEFAULT NULL,
+  `allow_view_to` varchar(16) NOT NULL DEFAULT '3',
+  `allow_post_to` varchar(16) NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `search_fields` (`space_name`, `space_desc`)
 );
@@ -244,6 +245,7 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 
 INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES 
 ('bx_space', 'bx_spaces', 'allow_view_to', 3, '', 0, 'custom', '_bx_spaces_form_profile_input_sys_allow_view_to', '_bx_spaces_form_profile_input_allow_view_to', '_bx_spaces_form_profile_input_allow_view_to_desc', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_space', 'bx_spaces', 'allow_post_to', 3, '', 0, 'custom', '_bx_spaces_form_profile_input_sys_allow_post_to', '_bx_spaces_form_profile_input_allow_post_to', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_space', 'bx_spaces', 'delete_confirm', 1, '', 0, 'checkbox', '_bx_spaces_form_profile_input_sys_delete_confirm', '_bx_spaces_form_profile_input_delete_confirm', '_bx_spaces_form_profile_input_delete_confirm_info', 1, 0, 0, '', '', '', 'avail', '', '_bx_spaces_form_profile_input_delete_confirm_error', '', '', 1, 0),
 ('bx_space', 'bx_spaces', 'do_submit', '_sys_form_account_input_submit', '', 0, 'submit', '_bx_spaces_form_profile_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_space', 'bx_spaces', 'space_desc', '', '', 0, 'textarea', '_bx_spaces_form_profile_input_sys_space_desc', '_bx_spaces_form_profile_input_space_desc', '', 0, 0, 2, '', '', '', '', '', '', 'XssHtml', '', 1, 1),
@@ -268,7 +270,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_space_add', 'location', 2147483647, 1, 11),
 ('bx_space_add', 'join_confirmation', 2147483647, 1, 12),
 ('bx_space_add', 'allow_view_to', 2147483647, 1, 13),
-('bx_space_add', 'do_submit', 2147483647, 1, 14),
+('bx_space_add', 'allow_post_to', 2147483647, 1, 14),
+('bx_space_add', 'do_submit', 2147483647, 1, 15),
 
 ('bx_space_invite', 'initial_members', 2147483647, 1, 1),
 ('bx_space_invite', 'do_submit', 2147483647, 1, 2),
@@ -290,7 +293,8 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_space_edit', 'location', 2147483647, 1, 10),
 ('bx_space_edit', 'join_confirmation', 2147483647, 1, 11),
 ('bx_space_edit', 'allow_view_to', 2147483647, 1, 12),
-('bx_space_edit', 'do_submit', 2147483647, 1, 13),
+('bx_space_edit', 'allow_post_to', 2147483647, 1, 13),
+('bx_space_edit', 'do_submit', 2147483647, 1, 14),
 
 ('bx_space_edit_cover', 'join_confirmation', 2147483647, 0, 0),
 ('bx_space_edit_cover', 'space_desc', 2147483647, 0, 0),
@@ -325,6 +329,34 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 ('bx_spaces_cats', '4', 4, '_bx_spaces_cat_Causes', ''),
 ('bx_spaces_cats', '5', 5, '_bx_spaces_cat_Fun', ''),
 ('bx_spaces_cats', '6', 6, '_bx_spaces_cat_Uncategorised', '');
+
+-- COMMENTS
+INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
+('bx_spaces', 'bx_spaces', 'bx_spaces_cmts', 1, 5000, 1000, 3, 5, 3, 'tail', 1, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-space-profile&id={object_id}', '', 'bx_spaces_data', 'id', 'author', 'space_name', 'comments', '', '');
+
+-- VIEWS
+INSERT INTO `sys_objects_view` (`name`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_spaces', 'bx_spaces_views_track', '86400', '1', 'bx_spaces_data', 'id', 'author', 'views', '', '');
+
+-- VOTES
+INSERT INTO `sys_objects_vote` (`Name`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
+('bx_spaces', 'bx_spaces_votes', 'bx_spaces_votes_track', '604800', '1', '1', '0', '1', 'bx_spaces_data', 'id', 'author', 'rate', 'votes', '', '');
+
+-- SCORES
+INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
+('bx_spaces', 'bx_spaces', 'bx_spaces_scores', 'bx_spaces_scores_track', '604800', '0', 'bx_spaces_data', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
+
+-- REPORTS
+INSERT INTO `sys_objects_report` (`name`, `table_main`, `table_track`, `is_on`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_spaces', 'bx_spaces_reports', 'bx_spaces_reports_track', '1', 'page.php?i=view-space-profile&id={object_id}', 'bx_spaces_data', 'id', 'author', 'reports', '', '');
+
+-- FAFORITES
+INSERT INTO `sys_objects_favorite` (`name`, `table_track`, `is_on`, `is_undo`, `is_public`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_spaces', 'bx_spaces_favorites_track', '1', '1', '1', 'page.php?i=view-space-profile&id={object_id}', 'bx_spaces_data', 'id', 'author', 'favorites', '', '');
+
+-- FEATURED
+INSERT INTO `sys_objects_feature` (`name`, `is_on`, `is_undo`, `base_url`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_flag`, `class_name`, `class_file`) VALUES 
+('bx_spaces', '1', '1', 'page.php?i=view-space-profile&id={object_id}', 'bx_spaces_data', 'id', 'author', 'featured', '', '');
 
 -- CONTENT INFO
 INSERT INTO `sys_objects_content_info` (`name`, `title`, `alert_unit`, `alert_action_add`, `alert_action_update`, `alert_action_delete`, `class_name`, `class_file`) VALUES

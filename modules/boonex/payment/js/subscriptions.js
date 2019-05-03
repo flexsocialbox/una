@@ -49,11 +49,18 @@ BxPaymentSubscriptions.prototype.cancel = function(oLink, iId, sGrid) {
 
 	var oParams = {};
 	if(sGrid != undefined)
-		oParams.grid = sGrid;
+            oParams.grid = sGrid;
 
-	bx_confirm('', function() {
-		$this._performRequest(oLink, iId, 'subscription_cancel', oParams);
-	});
+	bx_confirm(_t('_bx_payment_msg_confirm_cancelation'), function() {
+            $this._performRequest(oLink, iId, 'subscription_cancel', oParams);
+	}, function() {}, {
+            yes: {
+                title: _t('_bx_payment_txt_unsubscribe_yes')
+            },
+            no: {
+                title: _t('_bx_payment_txt_unsubscribe_no')
+            }
+        });
 };
 
 BxPaymentSubscriptions.prototype._performRequest = function(oLink, iId, sUri, oParams) {

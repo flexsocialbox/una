@@ -117,10 +117,17 @@ class BxBaseModProfileGridAdministration extends BxBaseModGeneralGridAdministrat
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
-    {
-        if(strpos($sFilter, $this->_sParamsDivider) !== false)
-            list($this->_sFilter1Value, $sFilter) = explode($this->_sParamsDivider, $sFilter);
-
+    { 
+        $iFilterPartsCount = substr_count($sFilter, $this->_sParamsDivider);
+        switch ($iFilterPartsCount) {
+            case 1:
+                list($this->_sFilter1Value, $sFilter) = explode($this->_sParamsDivider, $sFilter);
+                break;
+            case 2:
+                list($this->_sFilter1Value, $this->_sFilter2Value, $sFilter) = explode($this->_sParamsDivider, $sFilter);
+                break;
+        }
+        
     	if(!empty($this->_sFilter1Value))
         	$this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `tp`.`status`=?", $this->_sFilter1Value);
 
@@ -144,13 +151,7 @@ class BxBaseModProfileGridAdministration extends BxBaseModGeneralGridAdministrat
     {
     	$oProfile = $this->_getProfileObject($aRow['id']);
 
-        $mixedValue = $this->_oTemplate->parseHtmlByName('name_link.html', array(
-            'href' => $oProfile->getUrl(),
-            'title' => $mixedValue,
-            'content' => $mixedValue
-        ));
-
-        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+        return parent::_getCellDefault($oProfile->getUnit(), $sKey, $aField, $aRow);
     }
 
     protected function _getCellLastOnline($mixedValue, $sKey, $aField, $aRow)

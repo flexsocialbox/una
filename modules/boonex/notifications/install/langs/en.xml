@@ -43,6 +43,7 @@
     <string name="_bx_ntfs_option_events_hide_email"><![CDATA[Email notifications]]></string>
     <string name="_bx_ntfs_option_events_hide_push"><![CDATA[Push notifications]]></string>
     <string name="_bx_ntfs_option_enable_group_settings"><![CDATA[Group Settings]]></string>
+    <string name="_bx_ntfs_option_delivery_timeout"><![CDATA[Delay before sending Email and/or Push notifications (in seconds)]]></string>
 
     <string name="_bx_ntfs_privacy_view"><![CDATA[View event]]></string>
 
@@ -77,7 +78,7 @@
     <string name="_bx_ntfs_setting_title_mask"><![CDATA[{0}: {1}]]></string>
     <string name="_bx_ntfs_setting_type_personal"><![CDATA[Activity related to you]]></string>
     <string name="_bx_ntfs_setting_type_follow_member"><![CDATA[Activity by members you follow]]></string>
-    <string name="_bx_ntfs_setting_type_follow_context"><![CDATA[Activity in spaces you follow]]></string>
+    <string name="_bx_ntfs_setting_type_follow_context"><![CDATA[Activity in spaces (groups, events, etc.) you follow]]></string>
     <string name="_bx_ntfs_setting_type_other"><![CDATA[Other Activity]]></string>
 
     <string name="_bx_ntfs_alert_module_meta_mention"><![CDATA[Profiles Mentions]]></string>
