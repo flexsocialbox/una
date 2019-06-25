@@ -4,7 +4,7 @@
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `sys_keys`, `sys_objects_editor`, `sys_objects_embeds`, `sys_objects_file_handlers`, `sys_objects_captcha`, `sys_objects_cmts`, `sys_cmts_images`, `sys_cmts_images_preview`, `sys_cmts_images2entries`, `sys_cmts_ids`, `sys_cmts_meta_keywords`, `sys_cmts_meta_mentions`, `sys_cmts_votes`, `sys_cmts_votes_track`, `sys_cmts_reports`, `sys_cmts_reports_track`, `sys_cmts_scores`, `sys_cmts_scores_track`, `sys_email_templates`, `sys_queue_push`, `sys_queue_email`, `sys_options`, sys_options_types, `sys_options_categories`, `sys_options_mixes`, `sys_options_mixes2options`,  `sys_localization_categories`, `sys_localization_keys`, `sys_localization_languages`, `sys_localization_strings`, `sys_acl_actions`, `sys_acl_actions_track`, `sys_acl_matrix`, `sys_acl_levels`, `sys_sessions`, `sys_acl_levels_members`, `sys_objects_rss`, `sys_objects_search`, `sys_objects_search_extended`, `sys_search_extended_fields`, `sys_statistics`, `sys_alerts`, `sys_alerts_handlers`, `sys_injections`, `sys_injections_admin`, `sys_modules`, `sys_modules_file_tracks`, `sys_modules_relations`, `sys_permalinks`, `sys_objects_privacy`, `sys_privacy_defaults`, `sys_privacy_groups`, `sys_objects_auths`, `sys_objects_score`, `sys_objects_vote`, `sys_objects_report`, `sys_objects_view`, `sys_objects_favorite`, `sys_objects_feature`, `sys_objects_chart`, `sys_objects_content_info`, `sys_content_info_grids`, `sys_cron_jobs`, `sys_objects_storage`, `sys_objects_uploader`, `sys_storage_user_quotas`, `sys_storage_tokens`, `sys_storage_ghosts`, `sys_storage_deletions`, `sys_storage_mime_types`, `sys_objects_transcoder`, `sys_transcoder_images_files`, `sys_transcoder_videos_files`, `sys_transcoder_audio_files`, `sys_transcoder_filters`, `sys_transcoder_queue`, `sys_transcoder_queue_files`, `sys_accounts`, `sys_profiles`, `sys_objects_form`, `sys_form_displays`, `sys_form_inputs`, `sys_form_display_inputs`, `sys_form_pre_lists`, `sys_form_pre_values`, `sys_menu_templates`, `sys_objects_menu`, `sys_menu_sets`, `sys_menu_items`, `sys_objects_grid`, `sys_grid_fields`, `sys_grid_actions`, `sys_objects_connection`, `sys_profiles_conn_relations`, `sys_profiles_conn_subscriptions`, `sys_profiles_conn_friends`, `sys_objects_page`, `sys_pages_types`, `sys_pages_layouts`, `sys_pages_design_boxes`, `sys_pages_blocks`, `sys_objects_metatags`, `sys_objects_category`, `sys_objects_live_updates`, `sys_objects_payments`, `sys_files`, `sys_images`, `sys_images_custom`, `sys_images_resized`, `sys_preloader`, `sys_std_pages`, `sys_std_widgets`, `sys_std_pages_widgets`;
+DROP TABLE IF EXISTS `sys_keys`, `sys_objects_editor`, `sys_objects_player`, `sys_objects_embeds`, `sys_objects_file_handlers`, `sys_objects_captcha`, `sys_objects_cmts`, `sys_cmts_images`, `sys_cmts_images_preview`, `sys_cmts_images2entries`, `sys_cmts_ids`, `sys_cmts_meta_keywords`, `sys_cmts_meta_mentions`, `sys_cmts_votes`, `sys_cmts_votes_track`, `sys_cmts_reports`, `sys_cmts_reports_track`, `sys_cmts_scores`, `sys_cmts_scores_track`, `sys_email_templates`, `sys_queue_push`, `sys_queue_email`, `sys_options`, sys_options_types, `sys_options_categories`, `sys_options_mixes`, `sys_options_mixes2options`,  `sys_localization_categories`, `sys_localization_keys`, `sys_localization_languages`, `sys_localization_strings`, `sys_acl_actions`, `sys_acl_actions_track`, `sys_acl_matrix`, `sys_acl_levels`, `sys_sessions`, `sys_acl_levels_members`, `sys_objects_rss`, `sys_objects_search`, `sys_objects_search_extended`, `sys_search_extended_fields`, `sys_statistics`, `sys_alerts`, `sys_alerts_handlers`, `sys_injections`, `sys_injections_admin`, `sys_modules`, `sys_modules_file_tracks`, `sys_modules_relations`, `sys_permalinks`, `sys_objects_privacy`, `sys_privacy_defaults`, `sys_privacy_groups`, `sys_objects_auths`, `sys_objects_score`, `sys_objects_vote`, `sys_objects_report`, `sys_objects_view`, `sys_objects_favorite`, `sys_objects_feature`, `sys_objects_chart`, `sys_objects_content_info`, `sys_content_info_grids`, `sys_cron_jobs`, `sys_objects_storage`, `sys_objects_uploader`, `sys_storage_user_quotas`, `sys_storage_tokens`, `sys_storage_ghosts`, `sys_storage_deletions`, `sys_storage_mime_types`, `sys_objects_transcoder`, `sys_transcoder_images_files`, `sys_transcoder_videos_files`, `sys_transcoder_audio_files`, `sys_transcoder_filters`, `sys_transcoder_queue`, `sys_transcoder_queue_files`, `sys_accounts`, `sys_profiles`, `sys_objects_form`, `sys_form_displays`, `sys_form_inputs`, `sys_form_display_inputs`, `sys_form_pre_lists`, `sys_form_pre_values`, `sys_menu_templates`, `sys_objects_menu`, `sys_menu_sets`, `sys_menu_items`, `sys_objects_grid`, `sys_grid_fields`, `sys_grid_actions`, `sys_objects_connection`, `sys_profiles_conn_relations`, `sys_profiles_conn_subscriptions`, `sys_profiles_conn_friends`, `sys_objects_page`, `sys_pages_types`, `sys_pages_layouts`, `sys_pages_design_boxes`, `sys_pages_blocks`, `sys_labels`, `sys_objects_metatags`, `sys_objects_category`, `sys_objects_live_updates`, `sys_objects_payments`, `sys_files`, `sys_images`, `sys_images_custom`, `sys_images_resized`, `sys_preloader`, `sys_std_pages`, `sys_std_widgets`, `sys_std_pages_widgets`;
 
 ALTER DATABASE DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
@@ -39,6 +39,24 @@ CREATE TABLE `sys_objects_editor` (
 INSERT INTO `sys_objects_editor` (`object`, `title`, `skin`, `override_class_name`, `override_class_file`) VALUES
 ('sys_tinymce', 'TinyMCE', 'lightgray', 'BxTemplEditorTinyMCE', '');
 
+
+-- --------------------------------------------------------
+
+
+CREATE TABLE `sys_objects_player` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object` varchar(64) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `skin` varchar(255) NOT NULL,
+  `override_class_name` varchar(255) NOT NULL,
+  `override_class_file` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `object` (`object`)
+);
+
+
+INSERT INTO `sys_objects_player` (`object`, `title`, `skin`, `override_class_name`, `override_class_file`) VALUES
+('sys_html5', 'HTML5', '', 'BxTemplPlayerHtml5', '');
 
 
 -- --------------------------------------------------------
@@ -111,6 +129,7 @@ CREATE TABLE `sys_objects_auths` (
   `Link` varchar(255) NOT NULL,
   `OnClick` varchar(255) NOT NULL,
   `Icon` varchar(64) NOT NULL,
+  `Style` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`)
 );
 
@@ -291,6 +310,8 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 
 (@iCategoryId, 'sys_editor_default', '_adm_stg_cpt_option_sys_editor_default', 'sys_tinymce', 'digit', '', '', '', 50),
 (@iCategoryId, 'sys_captcha_default', '_adm_stg_cpt_option_sys_captcha_default', 'sys_recaptcha_new', 'digit', '', '', '', 51),
+(@iCategoryId, 'sys_player_default', '_adm_stg_cpt_option_sys_player_default', 'sys_html5', 'digit', '', '', '', 55),
+(@iCategoryId, 'sys_player_default_format', '_adm_stg_cpt_option_sys_player_default_format', 'sd', 'select', 'sd,hd', '', '', 56),
 
 (@iCategoryId, 'sys_live_updates_interval', '_adm_stg_cpt_option_sys_live_updates_interval', '10000', 'digit', '', '', '', 60),
 
@@ -322,7 +343,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_site_logo_width', '_adm_stg_cpt_option_sys_site_logo_width', '240', 'digit', '', '', '', 23),
 (@iCategoryId, 'sys_site_logo_height', '_adm_stg_cpt_option_sys_site_logo_height', '48', 'digit', '', '', '', 24),
 
-(@iCategoryId, 'sys_site_splash_code', '', '<style>\r\n    /*--- General ---*/\r\n  \r\n    @media (max-width:1024px) {\r\n        #bx-footer-wrapper,\r\n        #bx-menu-main-bar-wrapper,\r\n        #bx-toolbar {\r\n            display:none;\r\n        }\r\n        html #bx-content-wrapper {\r\n            border:none;\r\n            padding-bottom:0;\r\n        }\r\n    }\r\n\r\n    #bx-content-wrapper {\r\n        padding-top: 0px;\r\n        padding-bottom: 4rem;\r\n    }\r\n\r\n    .bx-page-wrapper,\r\n    #bx-content-container,\r\n    #bx-content-main {\r\n        width: 100%;\r\n        margin: 0px;\r\n        padding: 0px;\r\n    }\r\n\r\n    /*--- Splash ---*/\r\n\r\n    .bx-splash {\r\n        position: relative;\r\n    }\r\n\r\n    .bx-spl-preload {\r\n        position: absolute;\r\n\r\n        top: 0px;\r\n        left: 0px;\r\n        width: 1px;\r\n        height: 1px;\r\n\r\n        overflow: hidden;\r\n    }\r\n\r\n    .bx-spl-slide {\r\n        position: relative;\r\n        display: block;\r\n\r\n        overflow: hidden;\r\n    }\r\n\r\n    .bx-spl-bg {\r\n        position: relative;\r\n\r\n        width: 100%;\r\n        height: 100%;\r\n    }\r\n\r\n    .bx-spl-container {\r\n        position: relative;\r\n\r\n        top: 0px;\r\n        left: 0px;\r\n        width: 100%;\r\n        height: 100%;\r\n    }\r\n\r\n    .bx-spl-content {\r\n        position: relative;\r\n        width:100%;\r\n    }\r\n\r\n    .bx-spl-slide .bx-spl-content h1 {\r\n        font-size: 2.25rem;\r\n    }\r\n\r\n    .bx-spl-slide .bx-spl-content h3 {\r\n        font-size: 1.5rem;\r\n    }\r\n\r\n    .bx-spl-white-text-all * {\r\n        color: #fff;\r\n    }\r\n\r\n    /*--- Join button ---*/\r\n\r\n    .bx-spl-join,\r\n    .bx-spl-join {\r\n        display: inline-block;\r\n        border-color: #fff;\r\n    }\r\n    .bx-spl-join a,\r\n    .bx-spl-join a {\r\n        display: block;\r\n        padding-left: 3.75rem;\r\n        padding-right: 3.75rem;\r\n        text-decoration: none;\r\n    }\r\n\r\n    /*--- Slides ---*/\r\n\r\n    #bx-spl-slide01 .bx-spl-container,\r\n    #bx-spl-slide03 .bx-spl-container {\r\n        position: absolute;\r\n        display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: center;\r\n        align-items: center;\r\n    }\r\n    #bx-spl-slide01 .bx-spl-content,\r\n    #bx-spl-slide03 .bx-spl-content {\r\n        text-align: center;\r\n        text-shadow: 0px 0px 0.25rem #000;\r\n    }\r\n    #bx-spl-slide02 .bx-spl-content h3,\r\n    #bx-spl-slide04 .bx-spl-content h3 {\r\n        text-align: center;\r\n    }\r\n\r\n    /*--- Slide 1 ---*/\r\n\r\n    #bx-spl-slide01 {\r\n        width:100%;\r\n        height:100vh;\r\n    }\r\n    #bx-spl-slide01 .bx-spl-bg {\r\n        background-position: center center;\r\n        background-repeat: no-repeat;\r\n        background-size: cover;\r\n    }\r\n    #bx-spl-slide01 .bx-spl-slide-video {\r\n        object-fit: cover;\r\n\r\n        width: 100%;\r\n        height: 100vh;\r\n    }\r\n\r\n    /*--- Slide 2 ---*/\r\n\r\n    #bx-spl-slide02 .bx-spl-bg {\r\n        background-color: #fff;\r\n        height: 35vw;\r\n        max-height:400px;\r\n    }\r\n    #bx-spl-slide02 .bx-spl-image {\r\n        position: absolute;\r\n        width: 60%;\r\n        height: 100%;\r\n        background-position: center bottom;\r\n        background-repeat: no-repeat;\r\n        background-size: contain;\r\n    }\r\n    #bx-spl-slide02 .bx-spl-content {\r\n        position: absolute;\r\n        display: -webkit-flex;\r\n        -webkit-align-items: center;\r\n        -webkit-justify-content: center;\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: center;\r\n\r\n        top: 0px;\r\n        right: 0px;\r\n        width: 40%;\r\n        height: 100%;\r\n    }\r\n    @media (max-width:720px) {\r\n        #bx-spl-slide02.bx-spl-slide .bx-spl-content h3 {\r\n            font-size: 0.8rem;\r\n        }\r\n    }\r\n\r\n    /*--- Slide 3 ---*/\r\n\r\n    #bx-spl-slide03 {\r\n        width:100%;\r\n        height:150vh;\r\n    }\r\n    #bx-spl-slide03 .bx-spl-bg {\r\n        background-position: center center;\r\n        background-repeat: repeat;\r\n        background-attachment: fixed;\r\n        background-size:100%;\r\n    }\r\n\r\n    /*--- Slide 4 ---*/\r\n\r\n    #bx-spl-slide04 {\r\n        width:100%;\r\n        height:100vh;\r\n    }\r\n    #bx-spl-slide04 .bx-spl-bg {\r\n        background-color:#fff;\r\n    }\r\n    #bx-spl-slide04 .bx-spl-container {\r\n        display: -webkit-flex;\r\n        -webkit-align-items: center;\r\n        -webkit-justify-content: center;\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: center;\r\n    }\r\n    #bx-spl-slide04 .bx-spl-content {\r\n        width: 50%;\r\n    }\r\n    @media (max-width:720px) {\r\n        #bx-spl-slide04 .bx-spl-content {\r\n            width: 90%;\r\n        }\r\n    }\r\n    #bx-spl-slide04 .bx-spl-content h3 {\r\n        margin-top: 0px;\r\n        margin-bottom: 2rem;\r\n    }\r\n</style>\r\n<div id="skrollr-body" class="bx-splash bx-def-color-bg-page">\r\n	<div id="bx-spl-preload" class="bx-spl-preload">\r\n		<img src="<bx_image_url:cover01.jpg />">\r\n		<img src="<bx_image_url:cover02.jpg />">\r\n		<img src="<bx_image_url:cover03.jpg />">\r\n	</div>\r\n\r\n	<div id="bx-spl-slide01" class="bx-spl-slide">\r\n		<div class="bx-spl-bg" style="background-image:url(<bx_image_url:cover01.jpg />);">\r\n			<video class="bx-spl-slide-video bx-def-media-phone-hide bx-def-media-tablet-hide" poster="<bx_image_url:cover01.jpg />" loop autoplay muted>\r\n				<source src="<bx_image_url:cover01.mp4 />" type="video/mp4">\r\n				<source src="<bx_image_url:cover01.webm />" type="video/webm">\r\n			</video>\r\n		</div>\r\n		<div class="bx-spl-container">\r\n			<div class="bx-spl-content bx-spl-white-text-all" data-anchor-target="#bx-spl-slide01 .bx-spl-bg" data-top="opacity:1" data-top-center="opacity:0">\r\n				<h1 class="bx-def-font-semibold"><bx_text:_sys_txt_splash_slide01_title /></h1>\r\n				<h3 class="bx-def-font-normal"><bx_text:_sys_txt_splash_slide01_desc /></h3>\r\n				<div class="bx-spl-join bx-def-margin-topbottom bx-def-border bx-def-round-corners">\r\n					<a class="bx-def-padding-sec-topbottom bx-def-font-h3 bx-def-font-normal" href="__join_link__"><bx_text:_sys_txt_splash_btn_join /></a>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div id="bx-spl-slide02" class="bx-spl-slide">\r\n		<div class="bx-spl-bg">\r\n			<div class="bx-spl-container">\r\n				<div class="bx-spl-image" style="background-image:url(<bx_image_url:cover02.jpg />);" data-bottom-top="bottom:-100%;" data-100-center-center="bottom:0%;"></div>\r\n				<div class="bx-spl-content" data-bottom-top="right:-50%;" data-100-center-center="right:0%;">\r\n					<h3 class="bx-def-font-normal"><bx_text:_sys_txt_splash_slide02_txt /></h3>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div id="bx-spl-slide03" class="bx-spl-slide">\r\n		<div class="bx-spl-bg" style="background-image:url(<bx_image_url:cover03.jpg />)"></div>\r\n		<div class="bx-spl-container">\r\n			<div class="bx-spl-content bx-spl-white-text-all">\r\n				<h3 class="bx-def-font-normal"><bx_text:_sys_txt_splash_slide03_txt /></h3>\r\n				<div class="bx-spl-join bx-def-margin-topbottom bx-def-border bx-def-round-corners">\r\n					<a class="bx-def-padding-sec-topbottom bx-def-font-h3 bx-def-font-normal" href="__join_link__"><bx_text:_sys_txt_splash_btn_join /></a>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n	<div id="bx-spl-slide04" class="bx-spl-slide">\r\n		<div class="bx-spl-bg">\r\n            <div class="bx-spl-container" data-anchor-target="#bx-spl-slide03 .bx-spl-bg" data-100-center-bottom="opacity:0; transform:scale(0.7,0.7);" data-200-end="opacity:1; transform:scale(1,1);">\r\n                <div class="bx-spl-content">\r\n                    <h3 class="bx-def-font-normal"><bx_text:_sys_txt_splash_slide04_txt /></h3>\r\n                    <div class="bx-spl-login">__login_form__</div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n	</div>\r\n	<script type="text/javascript">\r\n		$(document).ready(function () {\r\n\r\n            // workaround for iOS 7 \r\n            if (!!navigator.userAgent.match(/i(Pad|Phone|Pod).+(Version\\/7\\.\\d+ Mobile)/i)) {\r\n                var aSelVh = {\r\n                    ''1'': ''#bx-spl-slide01, #bx-spl-slide01 .bx-spl-slide-video, #bx-spl-slide04'',\r\n                    ''1.5'': ''#bx-spl-slide03''\r\n                };\r\n                var aSelVw = {\r\n                    ''0.35'': ''#bx-spl-slide02 .bx-spl-bg''\r\n                };\r\n                function fixMobileSafariViewport() {\r\n                    $.each(aSelVh, function (sVal, sSel) {\r\n                        $(sSel).css(''height'', window.innerHeight * parseFloat(sVal));\r\n                    });\r\n                    $.each(aSelVw, function (sVal, sSel) {\r\n                        $(sSel).css(''height'', window.innerWidth * parseFloat(sVal));\r\n                    });                \r\n                }\r\n                // listen to portrait/landscape changes\r\n                window.addEventListener(''orientationchange'', fixMobileSafariViewport, true);\r\n                fixMobileSafariViewport();\r\n            }\r\n\r\n			skrollr.init();\r\n		});\r\n	</script>\r\n</div>', 'text', '', '', '', 25),
+(@iCategoryId, 'sys_site_splash_code', '', '<style>\r\n    /*--- Splash ---*/\r\n  	.bx-page {\r\n        position: relative;\r\n  	}\r\n	.bx-header {\r\n        position: relative;\r\n      	display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: center;\r\n        align-items: center;\r\n      	justify-content: center;\r\n      	-webkit-justify-content: center;\r\n        height: 4rem;\r\n        border-bottom: 1px solid rgba(0, 0, 0, 0.1);\r\n      	font-weight: 700;\r\n      	font-size: 2rem;\r\n    }\r\n    .bx-splash {\r\n        position: relative;\r\n        display: -webkit-flex;\r\n        display: flex;\r\n      	-webkit-align-items: center;\r\n        align-items: center;\r\n      	min-height: 100vh;\r\n    }\r\n    .bx-spl-preload {\r\n        position: absolute;\r\n\r\n        top: 0px;\r\n        left: 0px;\r\n        width: 1px;\r\n        height: 1px;\r\n\r\n        overflow: hidden;\r\n    }\r\n    .bx-spl-line {\r\n      	position: relative;\r\n        display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: stretch;\r\n        align-items: stretch;\r\n    }\r\n  	.bx-media-phone .bx-spl-line {\r\n      	-webkit-flex-direction: column;\r\n      	flex-direction: column;\r\n    }\r\n  	.bx-spl-cell {\r\n      	position: relative;\r\n  	}\r\n  	.bx-media-phone .bx-spl-cell {\r\n      	-webkit-basis: 100% !important; \r\n      	flex-basis: 100% !important;\r\n      	width: 100% !important;\r\n  	}\r\n    .bx-spl-line.bx-spl-l1 .bx-spl-cell {\r\n      	display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: center;\r\n        align-items: center;\r\n    }\r\n  	.bx-spl-line.bx-spl-l1 .bx-spl-cell.bx-spl-c1 {\r\n        -webkit-flex: 1 1 70%; \r\n        flex:  1 1 70%;\r\n      	width: 70%;\r\n    }\r\n  	.bx-media-phone .bx-spl-line.bx-spl-l1 .bx-spl-cell.bx-spl-c1 {\r\n      	text-align: center;\r\n  	}\r\n  	.bx-spl-line.bx-spl-l1 .bx-spl-cell.bx-spl-c2 {\r\n        -webkit-flex: 0 0 30%; \r\n        flex:  0 1 30%;\r\n      	-webkit-justify-content: center;\r\n        justify-content: center;\r\n      	width: 30%;\r\n    }\r\n    .bx-spl-line.bx-spl-l1 .bx-spl-image {\r\n      	max-width: 100%;\r\n    }\r\n    .bx-spl-line.bx-spl-l2 .bx-spl-cell {\r\n        -webkit-flex: 1 1 33%; \r\n        flex:  1 1 33%;\r\n      	width: 33%;\r\n    }\r\n  	.bx-media-phone .bx-spl-line.bx-spl-l2 .bx-spl-cell {\r\n      	text-align: center;\r\n  	}\r\n    .bx-spl-line.bx-spl-l2 .bx-spl-cicon {\r\n		position: relative;\r\n      	display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: flex-start;\r\n        align-items: flex-start;\r\n      	justify-content: flex-start;\r\n      	-webkit-justify-content: flex-start;\r\n    }\r\n    .bx-media-phone .bx-spl-line.bx-spl-l2 .bx-spl-cicon {\r\n      	justify-content: center;\r\n      	-webkit-justify-content: center;\r\n    }\r\n    .bx-spl-line.bx-spl-l2 .bx-spl-cicon .animation {\r\n        width: 4.25rem;\r\n        height: 4.25rem;\r\n    }\r\n</style>\r\n<div class=\"bx-page bx-def-color-bg-page\">\r\n  <div class=\"bx-header\">__logo__</div>\r\n  <div class=\"bx-splash\">\r\n      <div class=\"bx-splash-cnt bx-def-page-width bx-def-centered bx-def-padding-leftright\">\r\n          <div class=\"bx-spl-preload\">\r\n            <img src=\"<bx_image_url:spl-image-main.svg />\">\r\n          </div>\r\n          <div class=\"bx-spl-line bx-spl-l1\">\r\n            <div class=\"bx-spl-cell bx-spl-c1\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-title bx-def-font-h1 bx-def-font-semibold\"><bx_text:_sys_txt_splash_title /></div>\r\n                <div class=\"bx-spl-slogan bx-def-padding-sec-top bx-def-padding-bottom bx-def-font-grayed\"><bx_text:_sys_txt_splash_slogan /></div>\r\n                <div class=\"bx-spl-image bx-def-padding-top\">\r\n                  <img class=\"bx-spl-image\" src=\"<bx_image_url:spl-image-main.svg />\" />\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"bx-spl-cell bx-spl-c2\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">__join_form_in_box__</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"bx-spl-line bx-spl-l2 bx-def-padding\">\r\n            <div class=\"bx-spl-cell bx-spl-c1\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-cicon connect\"><div class=\"animation\"></div></div>\r\n                <div class=\"bx-spl-ctitle bx-def-padding-sec-topbottom bx-def-font-h2\"><bx_text:_sys_txt_splash_connect /></div>\r\n                <div class=\"bx-spl-ctext bx-def-font-grayed\"><bx_text:_sys_txt_splash_connect_text /></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"bx-spl-cell bx-spl-c2\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-cicon share\"><div class=\"animation\"></div></div>\r\n                <div class=\"bx-spl-ctitle bx-def-padding-sec-topbottom bx-def-font-h2\"><bx_text:_sys_txt_splash_share /></div>\r\n                <div class=\"bx-spl-ctext bx-def-font-grayed\"><bx_text:_sys_txt_splash_share_text /></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"bx-spl-cell bx-spl-c3\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-cicon create\"><div class=\"animation\"></div></div>\r\n                <div class=\"bx-spl-ctitle bx-def-padding-sec-topbottom bx-def-font-h2\"><bx_text:_sys_txt_splash_create /></div>\r\n                <div class=\"bx-spl-ctext bx-def-font-grayed\"><bx_text:_sys_txt_splash_create_text /></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n      </div>\r\n  </div>\r\n</div>\r\n<script>\r\n  var animConnect = bodymovin.loadAnimation({\r\n    container: $(\'.bx-spl-cicon.connect .animation\').get(0),\r\n    path: \'<bx_image_url:spl-icon-connect.json />\',\r\n    renderer: \'svg\',\r\n    loop: true,\r\n    autoplay: true,\r\n  });\r\n  var animShare = bodymovin.loadAnimation({\r\n    container: $(\'.bx-spl-cicon.share .animation\').get(0),\r\n    path: \'<bx_image_url:spl-icon-share.json />\',\r\n    renderer: \'svg\',\r\n    loop: true,\r\n    autoplay: true,\r\n  });\r\n  var animCreate = bodymovin.loadAnimation({\r\n    container: $(\'.bx-spl-cicon.create .animation\').get(0),\r\n    path: \'<bx_image_url:spl-icon-create.json />\',\r\n    renderer: \'svg\',\r\n    loop: true,\r\n    autoplay: true,\r\n  });\r\n</script>', 'text', '', '', '', 25),
 (@iCategoryId, 'sys_site_splash_enabled', '', '', 'checkbox', '', '', '', 26),
 
 (@iCategoryId, 'sys_site_cover_common', '', '0', 'digit', '', '', '', 27),
@@ -551,6 +572,7 @@ CREATE TABLE `sys_options_mixes` (
   `name` varchar(64) NOT NULL default '',
   `title` varchar(64) NOT NULL default '',
   `active` tinyint(1) NOT NULL default '0',
+  `published` tinyint(1) NOT NULL default '0',
   `editable` tinyint(1) NOT NULL default '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name`(`name`)
@@ -636,6 +658,14 @@ INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`,
 SET @iIdActionVote = LAST_INSERT_ID();
 
 INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
+('system', 'vote_view', NULL, '_sys_acl_action_vote_view', '', 1, 0);
+SET @iIdActionVoteView = LAST_INSERT_ID();
+
+INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
+('system', 'vote_view_voters', NULL, '_sys_acl_action_vote_view_voters', '', 1, 0);
+SET @iIdActionVoteViewVoters = LAST_INSERT_ID();
+
+INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
 ('system', 'report', NULL, '_sys_acl_action_report', '', 1, 0);
 SET @iIdActionReport = LAST_INSERT_ID();
 
@@ -696,6 +726,10 @@ INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`,
 SET @iIdActionSetAclLevel = LAST_INSERT_ID();
 
 INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
+('system', 'set acl as privacy', NULL, '_sys_acl_action_set_acl_as_privacy', '_sys_acl_action_set_acl_as_privacy_desc', 0, 3);
+SET @iIdActionSetAclAsPrivacy = LAST_INSERT_ID();
+
+INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
 ('system', 'chart view', NULL, '_sys_acl_action_chart_view', '_sys_acl_action_chart_view_desc', 0, 3);
 SET @iIdActionChartView = LAST_INSERT_ID();
 
@@ -747,6 +781,18 @@ INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES
 (@iModerator, @iIdActionVote),
 (@iAdministrator, @iIdActionVote),
 (@iPremium, @iIdActionVote),
+
+-- vote view
+(@iStandard, @iIdActionVoteView),
+(@iModerator, @iIdActionVoteView),
+(@iAdministrator, @iIdActionVoteView),
+(@iPremium, @iIdActionVoteView),
+
+-- vote view voters
+(@iStandard, @iIdActionVoteViewVoters),
+(@iModerator, @iIdActionVoteViewVoters),
+(@iAdministrator, @iIdActionVoteViewVoters),
+(@iPremium, @iIdActionVoteViewVoters),
 
 -- report 
 (@iStandard, @iIdActionReport),
@@ -832,6 +878,9 @@ INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES
 
 -- set acl level
 (@iAdministrator, @iIdActionSetAclLevel),
+
+-- set acl as privacy
+(@iAdministrator, @iIdActionSetAclAsPrivacy),
 
 -- view charts
 (@iAdministrator, @iIdActionChartView),
@@ -2796,7 +2845,7 @@ CREATE TABLE IF NOT EXISTS `sys_objects_uploader` (
   `override_class_file` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `object` (`object`)
-) ENGINE=MyISAM;
+);
 
 INSERT INTO `sys_objects_uploader` (`object`, `active`, `override_class_name`, `override_class_file`) VALUES
 ('sys_simple', 1, 'BxTemplUploaderSimple', ''),
@@ -3474,7 +3523,8 @@ INSERT INTO `sys_menu_templates` (`id`, `template`, `title`, `visible`) VALUES
 (20, 'menu_custom_ver.html', '_sys_menu_template_title_custom_ver', 0),
 (21, 'menu_profile_stats.html', '_sys_menu_template_title_profile_stats', 0),
 (22, 'menu_interactive.html', '_sys_menu_template_title_interactive', 1),
-(23, 'menu_buttons_icon_hor.html', '_sys_menu_template_title_buttons_icon_hor', 1);
+(23, 'menu_buttons_icon_hor.html', '_sys_menu_template_title_buttons_icon_hor', 1),
+(24, 'menu_floating_blocks_dash.html', '_sys_menu_template_title_floating_blocks_dash', 0);
 
 CREATE TABLE IF NOT EXISTS `sys_objects_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3494,6 +3544,7 @@ CREATE TABLE IF NOT EXISTS `sys_objects_menu` (
 INSERT INTO `sys_objects_menu` (`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES
 ('sys_site', '_sys_menu_title_main', 'sys_site', 'system', 14, 0, 1, 'BxTemplMenuSite', ''),
 ('sys_homepage', '_sys_menu_title_homepage', 'sys_homepage', 'system', 14, 0, 1, 'BxTemplMenuHomepage', ''),
+('sys_homepage_submenu', '_sys_menu_title_homepage_submenu', 'sys_homepage_submenu', 'system', 8, 0, 1, '', ''),
 ('sys_site_submenu', '_sys_menu_title_submenu', 'sys_site', 'system', 1, 0, 1, 'BxTemplMenuSubmenu', ''),
 ('sys_footer', '_sys_menu_title_footer', 'sys_footer', 'system', 2, 0, 1, 'BxTemplMenuFooter', ''),
 ('sys_toolbar_site', '_sys_menu_title_toolbar_site', 'sys_toolbar_site', 'system', 5, 0, 1, 'BxTemplMenuToolbar', ''),
@@ -3502,7 +3553,7 @@ INSERT INTO `sys_objects_menu` (`object`, `title`, `set_name`, `module`, `templa
 ('sys_add_profile', '_sys_menu_title_add_profile', 'sys_add_profile_links', 'system', 14, 0, 1, 'BxTemplMenuProfileAdd', ''),
 ('sys_add_profile_vertical', '_sys_menu_title_add_profile_vertical', 'sys_add_profile_links', 'system', 6, 0, 1, 'BxTemplMenuProfileAdd', ''),
 ('sys_account_dashboard', '_sys_menu_title_account_dashboard', 'sys_account_dashboard', 'system', 8, 0, 1, 'BxTemplMenuAccountDashboard', ''),
-('sys_account_dashboard_manage_tools', '_sys_menu_title_account_dashboard_manage_tools', 'sys_account_dashboard_manage_tools', 'system', 4, 0, 1, '', ''),
+('sys_account_dashboard_manage_tools', '_sys_menu_title_account_dashboard_manage_tools', 'sys_account_dashboard_manage_tools', 'system', 24, 0, 1, 'BxTemplMenuDashboardManageTools', ''),
 ('sys_account_settings_submenu', '_sys_menu_title_account_settings', 'sys_account_settings', 'system', 8, 0, 1, '', ''),
 ('sys_account_settings_more', '_sys_menu_title_account_settings_more', 'sys_account_settings_more', 'system', 4, 0, 1, '', ''),
 ('sys_profiles_create', '_sys_menu_title_profiles_create', 'sys_profiles_create', 'system', 4, 0, 1, '', ''),
@@ -3531,6 +3582,7 @@ CREATE TABLE IF NOT EXISTS `sys_menu_sets` (
 INSERT INTO `sys_menu_sets` (`set_name`, `module`, `title`, `deletable`) VALUES
 ('sys_site', 'system', '_sys_menu_set_title_site', 0),
 ('sys_homepage', 'system', '_sys_menu_set_title_homepage', 0),
+('sys_homepage_submenu', 'system', '_sys_menu_set_title_homepage_submenu', 0),
 ('sys_footer', 'system', '_sys_menu_set_title_footer', 0),
 ('sys_toolbar_site', 'system', '_sys_menu_set_title_toolbar_site', 0),
 ('sys_toolbar_member', 'system', '_sys_menu_set_title_toolbar_member', 0),
@@ -3580,23 +3632,31 @@ INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `tit
 ('sys_site', 'system', 'about', '_sys_menu_item_title_system_about', '_sys_menu_item_title_about', 'page.php?i=about', '', '', 'info-circle col-blue3-dark', '', 2147483647, 1, 1, 2),
 ('sys_site', 'system', 'search', '_sys_menu_item_title_system_search', '_sys_menu_item_title_search', 'javascript:void(0);', 'bx_menu_slide_inline(\'#bx-sliding-menu-search\', this, \'site\');', '', 'search', '', 2147483647, 1, 1, 3);
 
+-- homepage submenu
+INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES
+('sys_homepage_submenu', 'system', 'home', '_sys_menu_item_title_system_home', '_sys_menu_item_title_home', 'index.php', '', '', 'bolt', '', '', 2147483647, '', 1, 1, 1),
+('sys_homepage_submenu', 'system', 'explore', '_sys_menu_item_title_system_explore', '_sys_menu_item_title_explore', 'page.php?i=explore', '', '', 'compass ', '', '', 2147483647, '', 0, 1, 2),
+('sys_homepage_submenu', 'system', 'updates', '_sys_menu_item_title_system_updates', '_sys_menu_item_title_updates', 'page.php?i=updates', '', '', 'fire', '', '', 2147483647, '', 0, 1, 3),
+('sys_homepage_submenu', 'system', 'trends', '_sys_menu_item_title_system_trends', '_sys_menu_item_title_trends', 'page.php?i=trends', '', '', 'hashtag', '', '', 2147483647, '', 0, 1, 4);
+
 -- footer menu
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
 ('sys_footer', 'system', 'about', '_sys_menu_item_title_system_about', '_sys_menu_item_title_about', 'page.php?i=about', '', '', '', '', 2147483647, 1, 1, 1),
 ('sys_footer', 'system', 'terms', '_sys_menu_item_title_system_terms', '_sys_menu_item_title_terms', 'page.php?i=terms', '', '', '', '', 2147483647, 1, 1, 2),
 ('sys_footer', 'system', 'privacy', '_sys_menu_item_title_system_privacy', '_sys_menu_item_title_privacy', 'page.php?i=privacy', '', '', '', '', 2147483647, 1, 1, 3),
-('sys_footer', 'system', 'switch_language', '_sys_menu_item_title_system_switch_language', '_sys_menu_item_title_switch_language', 'javascript:void(0);', 'bx_menu_popup(''sys_switch_language_popup'', window);', '', '', '', 2147483647, 0, 1, 4),
+('sys_footer', 'system', 'switch_language', '_sys_menu_item_title_system_switch_language', '_sys_menu_item_title_switch_language', 'javascript:void(0);', 'bx_menu_popup(''sys_switch_language_popup'', window);', '', '', '', 2147483647, 1, 1, 4),
 ('sys_footer', 'system', 'switch_template', '_sys_menu_item_title_system_switch_template', '_sys_menu_item_title_switch_template', 'javascript:void(0);', 'bx_menu_popup(''sys_switch_template'', window);', '', '', '', 2147483647, 1, 1, 5),
+('sys_footer', 'system', 'copyright', '_sys_menu_item_title_system_copyright', '_sys_menu_item_title_copyright', 'javascript:void(0)', 'on_copyright_click()', '', '', '', 2147483647, 1, 1, 6),
 ('sys_footer', 'system', 'powered_by', '_sys_menu_item_title_system_powered_by', '', 'https://una.io', '', '_blank', 'una.png', '', 2147483647, 1, 1, 9999);
 
 -- site toolbar menu
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_toolbar_site', 'system', 'main-menu', '_sys_menu_item_title_system_main_menu', '', 'javascript:void(0);', 'bx_menu_slide_inline(\'#bx-sliding-menu-sys_site\', this, \'site\');', '', 'a:bars', '', 2147483647, 1, 1, 1),
+('sys_toolbar_site', 'system', 'main-menu', '_sys_menu_item_title_system_main_menu', '', 'javascript:void(0);', 'bx_menu_slide_inline(\'#bx-sliding-menu-sys_site\', this, \'site\');', '', 'bars', '', 2147483647, 1, 1, 1),
 ('sys_toolbar_site', 'system', 'search', '_sys_menu_item_title_system_search', '', 'javascript:void(0);', 'bx_menu_slide_inline(''#bx-sliding-menu-search'', this, ''site'');', '', 'search', '', 2147483647, 1, 1, 2);
 
 -- member toolbar menu
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_toolbar_member', 'system', 'add-content', '_sys_menu_item_title_system_add_content', '', 'javascript:void(0);', 'bx_menu_slide_inline(\'#bx-sliding-menu-sys_add_content\', this, \'site\');', '', 'a:plus', '', '', 0, 510, 1, 1, 0),
+('sys_toolbar_member', 'system', 'add-content', '_sys_menu_item_title_system_add_content', '', 'javascript:void(0);', 'bx_menu_slide_inline(\'#bx-sliding-menu-sys_add_content\', this, \'site\');', '', 'plus', '', '', 0, 510, 1, 1, 0),
 ('sys_toolbar_member', 'system', 'account', '_sys_menu_item_title_system_account_menu', '_sys_menu_item_title_account_menu', 'javascript:void(0);', 'bx_menu_slide_inline(''#bx-sliding-menu-account'', this, ''site'');', '', 'user',  'a:3:{s:6:"module";s:6:"system";s:6:"method";s:21:"profile_notifications";s:5:"class";s:20:"TemplServiceProfiles";}', 'sys_account_popup', 1, 510, 1, 0, 1),
 ('sys_toolbar_member', 'system', 'login', '_sys_menu_item_title_system_login', '', 'page.php?i=login', '', '', 'user',  '', '', 0, 1, 1, 0, 2);
 
@@ -3656,7 +3716,7 @@ INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `tit
 
 -- dashboard manage tools
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
-('sys_account_dashboard_manage_tools', 'system', 'cmts-administration', '_sys_menu_item_title_system_cmts_administration', '_sys_menu_item_title_cmts_administration', 'page.php?i=cmts-administration', '', '', '', 'a:2:{s:6:"module";s:6:"system";s:6:"method";s:27:"get_menu_addon_manage_tools";}', '', 192, 1, 0, 1);
+('sys_account_dashboard_manage_tools', 'system', 'cmts-administration', '_sys_menu_item_title_system_cmts_administration', '_sys_menu_item_title_cmts_administration', 'page.php?i=cmts-administration', '', '', 'comments', 'a:2:{s:6:"module";s:6:"system";s:6:"method";s:27:"get_menu_addon_manage_tools";}', '', 192, 1, 0, 1);
 
 -- profile stats
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES
@@ -3715,7 +3775,9 @@ INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `fie
 ('sys_studio_forms_pre_values', 'Sql', 'SELECT * FROM `sys_form_pre_values` WHERE 1 ', 'sys_form_pre_values', 'id', 'Order', '', '', 1000, NULL, 'start', '', 'Key,Value', 'LKey,LKey2', 'auto', '', '', 'BxTemplStudioFormsPreValues', ''),
 
 ('sys_studio_search_forms', 'Sql', 'SELECT * FROM `sys_objects_search_extended` WHERE 1 ', 'sys_objects_search_extended', 'id', 'module,title', 'active', '', 100, NULL, 'start', '', 'module', 'title', 'like', 'module', 'title', 'BxTemplStudioFormsSearchForms', ''),
-('sys_studio_search_forms_fields', 'Sql', 'SELECT * FROM `sys_search_extended_fields` WHERE 1 AND `object`=?', 'sys_search_extended_fields', 'id', 'order', 'active', '', 100, NULL, 'start', '', 'type', 'caption', 'like', '', '', 'BxTemplStudioFormsSearchFields', '');
+('sys_studio_search_forms_fields', 'Sql', 'SELECT * FROM `sys_search_extended_fields` WHERE 1 AND `object`=?', 'sys_search_extended_fields', 'id', 'order', 'active', '', 100, NULL, 'start', '', 'type', 'caption', 'like', '', '', 'BxTemplStudioFormsSearchFields', ''),
+
+('sys_studio_labels', 'Sql', 'SELECT * FROM `sys_labels` WHERE 1 ', 'sys_labels', 'id', 'order', '', '', 100, NULL, 'start', '', 'value', '', 'like', 'value', '', 'BxTemplStudioFormsLabels', '');
 
 CREATE TABLE IF NOT EXISTS `sys_grid_fields` (
   `object` varchar(64) NOT NULL,
@@ -3826,7 +3888,12 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 ('sys_studio_search_forms_fields', 'type', '_adm_form_txt_search_forms_fields_type', '15%', 0, '', '', 3),
 ('sys_studio_search_forms_fields', 'caption', '_adm_form_txt_search_forms_fields_caption', '40%', 1, '38', '', 4),
 ('sys_studio_search_forms_fields', 'search_type', '_adm_form_txt_search_forms_fields_search_type', '15%', 0, '', '', 5),
-('sys_studio_search_forms_fields', 'actions', '', '20%', 0, '', '', 6);
+('sys_studio_search_forms_fields', 'actions', '', '20%', 0, '', '', 6),
+
+('sys_studio_labels', 'order', '', '1%', 0, 0, '', 1),
+('sys_studio_labels', 'value', '_adm_form_txt_labels_value', '70%', 0, 38, '', 2),
+('sys_studio_labels', 'items', '_adm_form_txt_labels_items', '10%', 0, 0, '', 3),
+('sys_studio_labels', 'actions', '', '19%', 0, 0, '', 4);
 
 
 CREATE TABLE IF NOT EXISTS `sys_grid_actions` (
@@ -3893,7 +3960,12 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `conf
 ('sys_studio_search_forms', 'single', 'edit', '', 'pencil-alt', 0, 1),
 
 ('sys_studio_search_forms_fields', 'single', 'edit', '', 'pencil-alt', 0, 1),
-('sys_studio_search_forms_fields', 'independent', 'reset', '_adm_form_btn_search_forms_fields_reset', '', 0, 1);
+('sys_studio_search_forms_fields', 'independent', 'reset', '_adm_form_btn_search_forms_fields_reset', '', 0, 1),
+
+('sys_studio_labels', 'independent', 'back', '_adm_form_btn_labels_back', '', 0, 1),
+('sys_studio_labels', 'independent', 'add', '_adm_form_btn_labels_add', '', 0, 2),
+('sys_studio_labels', 'single', 'edit', '', 'pencil-alt', 0, 1),
+('sys_studio_labels', 'single', 'delete', '', 'remove', 1, 2);
 
 -- GRIDS: moderation tools
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
@@ -4214,28 +4286,31 @@ CREATE TABLE IF NOT EXISTS `sys_objects_page` (
   UNIQUE KEY `uri` (`uri`(191))
 );
 
-INSERT INTO `sys_objects_page` (`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES
-('sys_home', 'home', '_sys_page_title_system_home', '_sys_page_title_home', 'system', 5, 2147483647, 1, '', '', '', '', 0, 1, 0, 'BxTemplPageHome', ''),
-('sys_about', 'about', '_sys_page_title_system_about', '_sys_page_title_about', 'system', 5, 2147483647, 1, 'page.php?i=about', '', '', '', 0, 1, 0, '', ''),
-('sys_terms', 'terms', '_sys_page_title_system_terms', '_sys_page_title_terms', 'system', 5, 2147483647, 1, 'page.php?i=terms', '', '', '', 0, 1, 0, '', ''),
-('sys_privacy', 'privacy', '_sys_page_title_system_privacy', '_sys_page_title_privacy', 'system', 5, 2147483647, 1, 'page.php?i=privacy', '', '', '', 0, 1, 0, '', ''),
-('sys_dashboard', 'dashboard', '_sys_page_title_system_dashboard', '_sys_page_title_dashboard', 'system', 12, 2147483646, 1, 'page.php?i=dashboard', '', '', '', 0, 1, 0, 'BxTemplPageDashboard', ''),
-('sys_create_account', 'create-account', '_sys_page_title_system_create_account', '_sys_page_title_create_account', 'system', 5, 2147483647, 1, 'page.php?i=create-account', '', '', '', 0, 1, 0, '', ''),
-('sys_login', 'login', '_sys_page_title_system_login', '_sys_page_title_login', 'system', 5, 2147483647, 1, 'page.php?i=login', '', '', '', 0, 1, 0, '', ''),
-('sys_login_step2', 'login-step2', '_sys_page_title_system_login_step2', '_sys_page_title_login_step2', 'system', 5, 2147483647, 1, 'page.php?i=login-step2', '', '', '', 0, 1, 0, '', ''),
-('sys_login_step3', 'login-step3', '_sys_page_title_system_login_step3', '_sys_page_title_login_step3', 'system', 5, 2147483647, 1, 'page.php?i=login-step3', '', '', '', 0, 1, 0, '', ''),
-('sys_forgot_password', 'forgot-password', '_sys_page_title_system_forgot_password', '_sys_page_title_forgot_password', 'system', 5, 2147483647, 1, 'page.php?i=forgot-password', '', '', '', 0, 1, 0, '', ''),
-('sys_confirm_email', 'confirm-email', '_sys_page_title_system_confirm_email', '_sys_page_title_confirm_email', 'system', 5, 2147483647, 1, 'page.php?i=confirm-email', '', '', '', 0, 1, 0, '', ''),
-('sys_confirm_phone', 'confirm-phone', '_sys_page_title_system_confirm_phone', '_sys_page_title_confirm_phone', 'system', 5, 2147483647, 1, 'page.php?i=confirm-phone', '', '', '', 0, 1, 0, '', ''),
-('sys_account_settings_email', 'account-settings-email', '_sys_page_title_system_account_settings_email', '_sys_page_title_account_settings_email', 'system', 5, 2147483647, 1, 'member.php', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
-('sys_account_settings_pwd', 'account-settings-password', '_sys_page_title_system_account_settings_pwd', '_sys_page_title_account_settings_pwd', 'system', 5, 2147483647, 1, 'page.php?i=account-settings-pwd', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
-('sys_account_settings_info', 'account-settings-info', '_sys_page_title_system_account_settings_info', '_sys_page_title_account_settings_info', 'system', 5, 2147483647, 1, 'page.php?i=account-settings-info', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
-('sys_account_settings_delete', 'account-settings-delete', '_sys_page_title_system_account_settings_delete', '_sys_page_title_account_settings_delete', 'system', 5, 2147483647, 1, 'page.php?i=account-settings-delete', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
-('sys_account_profile_switcher', 'account-profile-switcher', '_sys_page_title_system_account_profile_switcher', '_sys_page_title_account_profile_switcher', 'system', 5, 2147483647, 1, 'page.php?i=account-profile-switcher', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
-('sys_unsubscribe_notifications', 'unsubscribe-notifications', '_sys_page_title_system_unsubscribe_notifications', '_sys_page_title_unsubscribe_notifications', 'system', 5, 2147483647, 1, 'page.php?i=unsubscribe-notifications', '', '', '', 0, 1, 0, '', ''),
-('sys_unsubscribe_news', 'unsubscribe-news', '_sys_page_title_system_unsubscribe_news', '_sys_page_title_unsubscribe_news', 'system', 5, 2147483647, 1, 'page.php?i=unsubscribe-news', '', '', '', 0, 1, 0, '', ''),
-('sys_std_dashboard', '', '_sys_page_title_system_studio_dashboard', '_sys_page_title_studio_dashboard', 'system', 4, 2147483647, 1, '', '', '', '', 0, 1, 0, '', ''),
-('sys_cmts_administration' ,'cmts-administration', '_sys_page_title_system_cmts_administration', '_sys_page_title_cmts_administration', 'system', 5, 192, 1, 'page.php?i=cmts-administration', '', '', '', 0, 1, 0, '', '');
+INSERT INTO `sys_objects_page` (`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `submenu`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES
+('sys_home', 'home', '_sys_page_title_system_home', '_sys_page_title_home', 'system', 5, 'sys_homepage_submenu', 2147483647, 1, '', '', '', '', 0, 1, 0, 'BxTemplPageHome', ''),
+('sys_about', 'about', '_sys_page_title_system_about', '_sys_page_title_about', 'system', 5, '', 2147483647, 1, 'page.php?i=about', '', '', '', 0, 1, 0, '', ''),
+('sys_terms', 'terms', '_sys_page_title_system_terms', '_sys_page_title_terms', 'system', 5, '', 2147483647, 1, 'page.php?i=terms', '', '', '', 0, 1, 0, '', ''),
+('sys_privacy', 'privacy', '_sys_page_title_system_privacy', '_sys_page_title_privacy', 'system', 5, '', 2147483647, 1, 'page.php?i=privacy', '', '', '', 0, 1, 0, '', ''),
+('sys_explore', 'explore', '_sys_page_title_sys_explore', '_sys_page_title_explore', 'system', 5, 'sys_homepage_submenu', 2147483647, 1, 'page.php?i=explore', '', '', '', 0, 1, 0, 'BxTemplPageHome', ''),
+('sys_updates', 'updates', '_sys_page_title_sys_updates', '_sys_page_title_updates', 'system', 5, 'sys_homepage_submenu', 2147483647, 1, 'page.php?i=updates', '', '', '', 0, 1, 0, 'BxTemplPageHome', ''),
+('sys_trends', 'trends', '_sys_page_title_sys_trends', '_sys_page_title_trends', 'system', 5, 'sys_homepage_submenu', 2147483647, 1, 'page.php?i=trends', '', '', '', 0, 1, 0, 'BxTemplPageHome', ''),
+('sys_dashboard', 'dashboard', '_sys_page_title_system_dashboard', '_sys_page_title_dashboard', 'system', 12, '', 2147483646, 1, 'page.php?i=dashboard', '', '', '', 0, 1, 0, 'BxTemplPageDashboard', ''),
+('sys_create_account', 'create-account', '_sys_page_title_system_create_account', '_sys_page_title_create_account', 'system', 5, '', 2147483647, 1, 'page.php?i=create-account', '', '', '', 0, 1, 0, '', ''),
+('sys_login', 'login', '_sys_page_title_system_login', '_sys_page_title_login', 'system', 5, '', 2147483647, 1, 'page.php?i=login', '', '', '', 0, 1, 0, '', ''),
+('sys_login_step2', 'login-step2', '_sys_page_title_system_login_step2', '_sys_page_title_login_step2', 'system', 5, '', 2147483647, 1, 'page.php?i=login-step2', '', '', '', 0, 1, 0, '', ''),
+('sys_login_step3', 'login-step3', '_sys_page_title_system_login_step3', '_sys_page_title_login_step3', 'system', 5, '', 2147483647, 1, 'page.php?i=login-step3', '', '', '', 0, 1, 0, '', ''),
+('sys_forgot_password', 'forgot-password', '_sys_page_title_system_forgot_password', '_sys_page_title_forgot_password', 'system', 5, '', 2147483647, 1, 'page.php?i=forgot-password', '', '', '', 0, 1, 0, '', ''),
+('sys_confirm_email', 'confirm-email', '_sys_page_title_system_confirm_email', '_sys_page_title_confirm_email', 'system', 5, '', 2147483647, 1, 'page.php?i=confirm-email', '', '', '', 0, 1, 0, '', ''),
+('sys_confirm_phone', 'confirm-phone', '_sys_page_title_system_confirm_phone', '_sys_page_title_confirm_phone', 'system', 5, '', 2147483647, 1, 'page.php?i=confirm-phone', '', '', '', 0, 1, 0, '', ''),
+('sys_account_settings_email', 'account-settings-email', '_sys_page_title_system_account_settings_email', '_sys_page_title_account_settings_email', 'system', 5, '', 2147483647, 1, 'member.php', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
+('sys_account_settings_pwd', 'account-settings-password', '_sys_page_title_system_account_settings_pwd', '_sys_page_title_account_settings_pwd', 'system', 5, '', 2147483647, 1, 'page.php?i=account-settings-pwd', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
+('sys_account_settings_info', 'account-settings-info', '_sys_page_title_system_account_settings_info', '_sys_page_title_account_settings_info', 'system', 5, '', 2147483647, 1, 'page.php?i=account-settings-info', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
+('sys_account_settings_delete', 'account-settings-delete', '_sys_page_title_system_account_settings_delete', '_sys_page_title_account_settings_delete', 'system', 5, '', 2147483647, 1, 'page.php?i=account-settings-delete', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
+('sys_account_profile_switcher', 'account-profile-switcher', '_sys_page_title_system_account_profile_switcher', '_sys_page_title_account_profile_switcher', 'system', 5, '', 2147483647, 1, 'page.php?i=account-profile-switcher', '', '', '', 0, 1, 0, 'BxTemplPageAccount', ''),
+('sys_unsubscribe_notifications', 'unsubscribe-notifications', '_sys_page_title_system_unsubscribe_notifications', '_sys_page_title_unsubscribe_notifications', 'system', 5, '', 2147483647, 1, 'page.php?i=unsubscribe-notifications', '', '', '', 0, 1, 0, '', ''),
+('sys_unsubscribe_news', 'unsubscribe-news', '_sys_page_title_system_unsubscribe_news', '_sys_page_title_unsubscribe_news', 'system', 5, '', 2147483647, 1, 'page.php?i=unsubscribe-news', '', '', '', 0, 1, 0, '', ''),
+('sys_std_dashboard', '', '_sys_page_title_system_studio_dashboard', '_sys_page_title_studio_dashboard', 'system', 4, '', 2147483647, 1, '', '', '', '', 0, 1, 0, '', ''),
+('sys_cmts_administration' ,'cmts-administration', '_sys_page_title_system_cmts_administration', '_sys_page_title_cmts_administration', 'system', 5, '', 192, 1, 'page.php?i=cmts-administration', '', '', '', 0, 1, 0, '', '');
 
 
 CREATE TABLE IF NOT EXISTS `sys_pages_types` (
@@ -4338,6 +4413,8 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 -- content blocks
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES
 
+('sys_home', 1, 'system', '', '_sys_page_block_title_homepage_splash', 0, 2147483647, 'raw', '<style>\r\n    /*--- Splash ---*/\r\n  	.bx-page {\r\n        position: relative;\r\n  	}\r\n    .bx-splash {\r\n        position: relative;\r\n        display: -webkit-flex;\r\n        display: flex;\r\n      	-webkit-align-items: center;\r\n        align-items: center;\r\n      	min-height: 100vh;\r\n    }\r\n    .bx-spl-preload {\r\n        position: absolute;\r\n\r\n        top: 0px;\r\n        left: 0px;\r\n        width: 1px;\r\n        height: 1px;\r\n\r\n        overflow: hidden;\r\n    }\r\n    .bx-spl-line {\r\n      	position: relative;\r\n        display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: stretch;\r\n        align-items: stretch;\r\n    }\r\n  	.bx-media-phone .bx-spl-line {\r\n      	-webkit-flex-direction: column;\r\n      	flex-direction: column;\r\n    }\r\n  	.bx-spl-cell {\r\n      	position: relative;\r\n  	}\r\n  	.bx-media-phone .bx-spl-cell {\r\n      	-webkit-basis: 100% !important; \r\n      	flex-basis: 100% !important;\r\n      	width: 100% !important;\r\n  	}\r\n    .bx-spl-line.bx-spl-l1 .bx-spl-cell {\r\n      	display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: center;\r\n        align-items: center;\r\n    }\r\n  	.bx-spl-line.bx-spl-l1 .bx-spl-cell.bx-spl-c1 {\r\n        -webkit-flex: 1 1 70%; \r\n        flex:  1 1 70%;\r\n      	width: 70%;\r\n    }\r\n  	.bx-media-phone .bx-spl-line.bx-spl-l1 .bx-spl-cell.bx-spl-c1 {\r\n      	text-align: center;\r\n  	}\r\n  	.bx-spl-line.bx-spl-l1 .bx-spl-cell.bx-spl-c2 {\r\n        -webkit-flex: 0 0 30%; \r\n        flex:  0 1 30%;\r\n      	-webkit-justify-content: center;\r\n        justify-content: center;\r\n      	width: 30%;\r\n    }\r\n    .bx-spl-line.bx-spl-l1 .bx-spl-image {\r\n      	max-width: 100%;\r\n    }\r\n    .bx-spl-line.bx-spl-l2 .bx-spl-cell {\r\n        -webkit-flex: 1 1 33%; \r\n        flex:  1 1 33%;\r\n      	width: 33%;\r\n    }\r\n  	.bx-media-phone .bx-spl-line.bx-spl-l2 .bx-spl-cell {\r\n      	text-align: center;\r\n  	}\r\n    .bx-spl-line.bx-spl-l2 .bx-spl-cicon {\r\n		position: relative;\r\n      	display: -webkit-flex;\r\n        display: flex;\r\n        -webkit-align-items: flex-start;\r\n        align-items: flex-start;\r\n      	justify-content: flex-start;\r\n      	-webkit-justify-content: flex-start;\r\n    }\r\n    .bx-media-phone .bx-spl-line.bx-spl-l2 .bx-spl-cicon {\r\n      	justify-content: center;\r\n      	-webkit-justify-content: center;\r\n    }\r\n    .bx-spl-line.bx-spl-l2 .bx-spl-cicon .animation {\r\n        width: 4.25rem;\r\n        height: 4.25rem;\r\n    }\r\n</style>\r\n<div class=\"bx-page bx-def-color-bg-page\">\r\n  <div class=\"bx-splash\">\r\n      <div class=\"bx-splash-cnt bx-def-page-width bx-def-centered bx-def-padding-leftright\">\r\n          <div class=\"bx-spl-preload\">\r\n            <img src=\"<bx_image_url:spl-image-main.svg />\">\r\n          </div>\r\n          <div class=\"bx-spl-line bx-spl-l1\">\r\n            <div class=\"bx-spl-cell bx-spl-c1\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-title bx-def-font-h1 bx-def-font-semibold\"><bx_text:_sys_txt_splash_title /></div>\r\n                <div class=\"bx-spl-slogan bx-def-padding-sec-top bx-def-padding-bottom bx-def-font-grayed\"><bx_text:_sys_txt_splash_slogan /></div>\r\n                <div class=\"bx-spl-image bx-def-padding-top\">\r\n                  <img class=\"bx-spl-image\" src=\"<bx_image_url:spl-image-main.svg />\" />\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"bx-spl-cell bx-spl-c2\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">__join_form_in_box__</div>\r\n            </div>\r\n          </div>\r\n          <div class=\"bx-spl-line bx-spl-l2 bx-def-padding\">\r\n            <div class=\"bx-spl-cell bx-spl-c1\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-cicon connect\"><div class=\"animation\"></div></div>\r\n                <div class=\"bx-spl-ctitle bx-def-padding-sec-topbottom bx-def-font-h2\"><bx_text:_sys_txt_splash_connect /></div>\r\n                <div class=\"bx-spl-ctext bx-def-font-grayed\"><bx_text:_sys_txt_splash_connect_text /></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"bx-spl-cell bx-spl-c2\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-cicon share\"><div class=\"animation\"></div></div>\r\n                <div class=\"bx-spl-ctitle bx-def-padding-sec-topbottom bx-def-font-h2\"><bx_text:_sys_txt_splash_share /></div>\r\n                <div class=\"bx-spl-ctext bx-def-font-grayed\"><bx_text:_sys_txt_splash_share_text /></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"bx-spl-cell bx-spl-c3\">\r\n              <div class=\"bx-spl-ccnt bx-def-padding\">\r\n                <div class=\"bx-spl-cicon create\"><div class=\"animation\"></div></div>\r\n                <div class=\"bx-spl-ctitle bx-def-padding-sec-topbottom bx-def-font-h2\"><bx_text:_sys_txt_splash_create /></div>\r\n                <div class=\"bx-spl-ctext bx-def-font-grayed\"><bx_text:_sys_txt_splash_create_text /></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n      </div>\r\n  </div>\r\n</div>\r\n<script>\r\n  var animConnect = bodymovin.loadAnimation({\r\n    container: $(\'.bx-spl-cicon.connect .animation\').get(0),\r\n    path: \'<bx_image_url:spl-icon-connect.json />\',\r\n    renderer: \'svg\',\r\n    loop: true,\r\n    autoplay: true,\r\n  });\r\n  var animShare = bodymovin.loadAnimation({\r\n    container: $(\'.bx-spl-cicon.share .animation\').get(0),\r\n    path: \'<bx_image_url:spl-icon-share.json />\',\r\n    renderer: \'svg\',\r\n    loop: true,\r\n    autoplay: true,\r\n  });\r\n  var animCreate = bodymovin.loadAnimation({\r\n    container: $(\'.bx-spl-cicon.create .animation\').get(0),\r\n    path: \'<bx_image_url:spl-icon-create.json />\',\r\n    renderer: \'svg\',\r\n    loop: true,\r\n    autoplay: true,\r\n  });\r\n</script>', 0, 1, 0, 0),
+
 ('sys_home', 1, 'system', '', '_sys_page_block_title_homepage_menu', 3, 2147483647, 'menu', 'sys_homepage', 0, 1, 1, 0),
 
 ('sys_about', 1, 'system', '', '_sys_page_block_title_about', 11, 2147483647, 'lang', '_sys_page_lang_block_about', 0, 1, 1, 1),
@@ -4346,13 +4423,13 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 
 ('sys_privacy', 1, 'system', '', '_sys_page_block_title_privacy', 11, 2147483647, 'lang', '_sys_page_lang_block_privacy', 0, 1, 1, 1),
 
-('sys_dashboard', 3, 'system', '', '_sys_page_block_title_profile_stats', 3, 2147483644, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:13:"profile_stats";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', 0, 1, 1, 1),
+('sys_dashboard', 3, 'system', '', '_sys_page_block_title_profile_stats', 3, 2147483644, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:13:"profile_stats";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', 0, 1, 0, 1),
 
 ('sys_dashboard', 3, 'system', '', '_sys_page_block_title_profile_membership', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:18:"profile_membership";s:6:"params";a:0:{}s:5:"class";s:20:"TemplServiceProfiles";}', 0, 1, 0, 0),
 
-('sys_dashboard', 3, 'system', '', '_sys_page_block_title_manage_tools', 11, 192, 'menu', 'sys_account_dashboard_manage_tools', 0, 1, 1, 3),
+('sys_dashboard', 1, 'system', '', '_sys_page_block_title_manage_tools', 11, 192, 'menu', 'sys_account_dashboard_manage_tools', 0, 1, 1, 3),
 
-('sys_dashboard', 2, 'system', '', '_sys_page_block_title_chart_growth', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:16:"get_chart_growth";s:6:"params";a:0:{}s:5:"class";s:18:"TemplChartServices";}', 0, 1, 1, 4),
+('sys_dashboard', 3, 'system', '', '_sys_page_block_title_chart_growth', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:16:"get_chart_growth";s:6:"params";a:0:{}s:5:"class";s:18:"TemplChartServices";}', 0, 1, 1, 0),
 
 ('sys_dashboard', 2, 'system', '', '_sys_page_block_title_chart_stats', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:15:"get_chart_stats";s:6:"params";a:0:{}s:5:"class";s:18:"TemplChartServices";}', 0, 1, 1, 3),
 
@@ -4398,6 +4475,19 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 ('sys_std_dashboard', 2, 'system', '', '_sys_page_block_title_std_dash_host_tools', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:20:"get_block_host_tools";s:6:"params";a:0:{}s:5:"class";s:20:"TemplStudioDashboard";}', 0, 0, 1, 1),
 
 ('sys_std_dashboard', 2, 'system', '', '_sys_page_block_title_std_dash_cache', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:15:"get_block_cache";s:6:"params";a:0:{}s:5:"class";s:20:"TemplStudioDashboard";}', 0, 0, 1, 2);
+
+-- --------------------------------------------------------
+
+CREATE TABLE `sys_labels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `module` varchar(32) NOT NULL,
+  `parent` int(11) NOT NULL DEFAULT 0,
+  `level` int(11) NOT NULL DEFAULT 0,
+  `order` int(11) NOT NULL DEFAULT 0,
+  `value` varchar(128) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY `value` (`value`)
+);
 
 -- --------------------------------------------------------
 
