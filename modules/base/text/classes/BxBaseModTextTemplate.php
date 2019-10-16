@@ -25,8 +25,11 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
 
     public function getJsCode($sType, $aParams = array(), $bWrap = true)
     {
+        $CNF = &$this->getModule()->_oConfig->CNF;
+
         $aParams = array_merge(array(
-            'aHtmlIds' => $this->_oConfig->getHtmlIds()
+            'aHtmlIds' => $this->_oConfig->getHtmlIds(),
+            'sEditorId' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : ''
         ), $aParams);
 
         return parent::getJsCode($sType, $aParams, $bWrap);
@@ -52,7 +55,10 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             if(!empty($CNF[$sKey]))
                 $aStorages[] = $CNF[$sKey];
 
-        return $this->entryAttachmentsByStorage($aStorages, $aData, $aParams);
+        if(!empty($aStorages))
+            return $this->entryAttachmentsByStorage($aStorages, $aData, array_merge($aParams, array('filter_field' => '')));
+
+        return parent::entryAttachments($aData, $aParams);
     }
 
     function entryAuthor ($aData, $iProfileId = false, $sFuncAuthorDesc = 'getAuthorDesc', $sTemplateName = 'author.html', $sFuncAuthorAddon = 'getAuthorAddon')
@@ -72,7 +78,8 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             'author_unit' => $oProfile->getUnit(0, array('template' => 'unit_wo_info')),
             'author_title' => $sName,
             'author_title_attr' => bx_html_attribute($sName),
-            'author_desc' => $sFuncAuthorDesc ? $this->$sFuncAuthorDesc($aData) : '',
+            'author_desc' => $sFuncAuthorDesc ? $this->$sFuncAuthorDesc($aData, $oProfile) : '',
+            'author_profile_desc' => $this->getAuthorProfileDesc($aData, $oProfile),
             'bx_if:addon' => array (
                 'condition' => (bool)$sAddon,
                 'content' => array (
@@ -81,6 +88,31 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             ),
         );
         return $this->parseHtmlByName($sTemplateName, $aVars);
+    }
+
+    public function entryBreadcrumb($aContentInfo, $aTmplVarsItems = array())
+    {
+        if(!empty($aTmplVarsItems) && is_array($aTmplVarsItems))
+            return parent::entryBreadcrumb($aContentInfo, $aTmplVarsItems);
+
+    	$CNF = &$this->getModule()->_oConfig->CNF;
+
+        $aTmplVarsItems = array();
+        if(!empty($CNF['OBJECT_CATEGORY']) && !empty($CNF['FIELD_CATEGORY'])) {
+            $oCategory = BxDolCategory::getObjectInstance($CNF['OBJECT_CATEGORY']);
+
+            $aTmplVarsItems[] = array(
+                'url' => $oCategory->getCategoryUrl($aContentInfo[$CNF['FIELD_CATEGORY']]),
+                'title' => $oCategory->getCategoryTitle($aContentInfo[$CNF['FIELD_CATEGORY']])
+            );
+        }
+
+    	$aTmplVarsItems[] = array(
+            'url' => BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]),
+            'title' => bx_process_output($aContentInfo[$CNF['FIELD_TITLE']])
+        );
+
+    	return parent::entryBreadcrumb($aContentInfo, $aTmplVarsItems);
     }
 
     function entryContext ($aData, $iProfileId = false, $sFuncContextDesc = 'getContextDesc', $sTemplateName = 'context.html', $sFuncContextAddon = 'getContextAddon')
@@ -214,7 +246,8 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
 
     public function getPollItem($mixedPoll, $iProfileId = 0, $aParams = array())
     {
-        $CNF = &$this->getModule()->_oConfig->CNF;
+        $oModule = $this->getModule();
+        $CNF = &$oModule->_oConfig->CNF;
 
         $aPoll = is_array($mixedPoll) ? $mixedPoll : $this->_oDb->getPolls(array('type' => 'id', 'id' => (int)$mixedPoll));
         if(empty($aPoll) || !is_array($aPoll))
@@ -228,7 +261,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         $bForceDisplayAnswers = isset($aParams['force_display_answers']) && (bool)$aParams['force_display_answers'] === true;
 
         $iPollId = (int)$aPoll[$CNF['FIELD_POLL_ID']];
-        $sPollView = !$bForceDisplayAnswers && $this->_oDb->isPollPerformed($iPollId, $iProfileId) ? 'results' : 'answers';
+        $sPollView = !$bForceDisplayAnswers && $oModule->isPollPerformed($iPollId, $iProfileId) ? 'results' : 'answers';
         
         $sMethod = '_getPoll' . ucfirst($sPollView);
         if(!method_exists($this, $sMethod))
@@ -248,6 +281,13 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
                 )
             ),
             'action_menu' => !empty($mixedMenu) ? $mixedMenu->getCode() : '',
+            'bx_if:show_action_embed' => array(
+                'condition' => $bManage,
+                'content' => array(
+                    'js_object' => $sJsObject,
+                    'id' => $iPollId
+                )
+            ),
             'bx_if:show_action_delete' => array(
                 'condition' => $bManage,
                 'content' => array(
@@ -259,7 +299,87 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             'content' => $this->$sMethod($aPoll, $bDynamic)
         ));
     }
-    
+
+    public function embedPollItem($mixedPoll, $aParams = array())
+    {
+        $CNF = &$this->getModule()->_oConfig->CNF;
+
+        $sHeader = '';
+        $sContent = $this->getPollItem($mixedPoll, 0, $aParams);
+        if(!empty($sContent)) {
+            $aPoll = is_array($mixedPoll) ? $mixedPoll : $this->_oDb->getPolls(array('type' => 'id', 'id' => (int)$mixedPoll));
+
+            $sHeader = strmaxtextlen($aPoll[$CNF['FIELD_POLL_TEXT']], 32, '...');
+            $sContent = $this->getJsCode('poll') . $sContent;
+        }
+
+        $this->addJs(array('polls.js'));
+        $this->addCss(array('polls.css'));
+
+        $oTemplate = BxDolTemplate::getInstance();
+        $oTemplate->addCssStyle($CNF['STYLES_POLLS_EMBED_CLASS'], $CNF['STYLES_POLLS_EMBED_CONTENT']);
+        $oTemplate->setPageNameIndex(BX_PAGE_EMBED);
+        $oTemplate->setPageHeader($sHeader);
+        $oTemplate->setPageContent('page_main_code', $sContent);
+        $oTemplate->getPageCode();
+        exit;
+    }
+
+    public function embedPollItems($mixedContentInfo, $aParams = array())
+    {
+        $CNF = &$this->getModule()->_oConfig->CNF;
+
+        $aContentInfo = is_array($mixedContentInfo) ? $mixedContentInfo : $this->_oDb->getContentInfoById((int)$mixedContentInfo);
+        if(empty($aContentInfo) || !is_array($aContentInfo))
+            return;
+
+        $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
+
+        $aPolls = $this->_oDb->getPolls(array('type' => 'content_id', 'content_id' => $iContentId));
+        if(empty($aPolls) || !is_array($aPolls))
+            return;
+
+        $iPolls = 0;
+        $sContent = '';
+        foreach($aPolls as $aPoll) {
+            $sPoll = $this->getPollItem($aPoll, 0, $aParams);
+            if(empty($sPoll))
+                continue;
+
+            $sContent .= $sPoll;
+            $iPolls += 1;
+        }
+
+        if(!empty($sContent) && isset($aParams['showcase']) && (bool)$aParams['showcase'] === true) {
+            $this->addJs(array('flickity/flickity.pkgd.min.js'));
+            $this->addCss(BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'flickity/|flickity.css');
+
+            $sContent = $this->parseHtmlByName('poll_items_showcase.html', array(
+                'js_object' => $this->_oConfig->getJsObject('poll'),
+                'html_id' => $this->_oConfig->getHtmlIds('polls_showcase') . $iContentId,
+                'type' => $iPolls == 1 ? 'single' : 'multiple',
+                'polls' => $sContent
+            ));
+        }
+
+        $sHeader = '';
+        if(!empty($sContent)) {
+            $sHeader = strmaxtextlen($aContentInfo[$CNF['FIELD_TITLE']], 32, '...');
+            $sContent = $this->getJsCode('poll') . $sContent;
+        }
+
+        $this->addJs(array('polls.js'));
+        $this->addCss(array('polls.css'));
+
+        $oTemplate = BxDolTemplate::getInstance();
+        $oTemplate->addCssStyle($CNF['STYLES_POLLS_EMBED_CLASS'], $CNF['STYLES_POLLS_EMBED_CONTENT']);
+        $oTemplate->setPageNameIndex(BX_PAGE_EMBED);
+        $oTemplate->setPageHeader($sHeader);
+        $oTemplate->setPageContent('page_main_code', $sContent);
+        $oTemplate->getPageCode();
+        exit;
+    }
+
     protected function _getPollAnswers($aPoll, $bDynamic = false)
     {
         $CNF = &$this->getModule()->_oConfig->CNF;
@@ -319,7 +439,8 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
 
     protected function _getPollBlockMenu($aPoll, $sSelected = '', $aParams = array())
     {
-        $CNF = &$this->getModule()->_oConfig->CNF;
+        $oModule = $this->getModule();
+        $CNF = &$oModule->_oConfig->CNF;
 
         $sPostfix = '-' . time() . rand(0, PHP_INT_MAX);
         $sJsObject = $this->_oConfig->getJsObject('poll');
@@ -327,7 +448,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
 
         $aViews = array(
             'answers' => true, 
-            'results' => $CNF['PARAM_POLL_HIDDEN_RESULTS'] === false || $this->_oDb->isPollPerformed($iPollId, bx_get_logged_profile_id())
+            'results' => $CNF['PARAM_POLL_HIDDEN_RESULTS'] === false || $oModule->isPollPerformed($iPollId)
         );
 
         $aMenu = array();
@@ -339,7 +460,16 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             if(!empty($sSelected) && $sSelected == $sView)
                 $sSelected = $sId;
 
-            $aMenu[] = array('id' => $sId, 'name' => $sId, 'class' => '', 'link' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePollView(this, \'' . $sView . '\', ' . $iPollId . ')', 'target' => '_self', 'title' => _t('_bx_posts_txt_poll_view_' . $sView));
+            $aMenu[] = array(
+                'id' => $sId, 
+                'name' => $sId, 
+                'class' => '', 
+                'link' => 'javascript:void(0)', 
+                'onclick' => 'javascript:' . $sJsObject . '.changePollView(this, \'' . $sView . '\', ' . $iPollId . ')', 
+                'target' => '_self', 
+                'title_attr' => _t($CNF['T']['txt_poll_menu_view_' . $sView]), 
+                'title' => $this->parseIcon($CNF['ICON_POLLS_' . strtoupper($sView)])
+            );
         }
 
         if(count($aMenu) <= 1)
@@ -395,34 +525,77 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         return $aVars;
     }
 
-    function getAuthorDesc ($aData)
+    function getAuthorDesc($aData, $oProfile)
     {
-        if (!($a = $this->getAuthorSnippetMenu($aData)) || !isset($a['meta']))
-            return '';
-        return $a['meta'];
+        $CNF = &$this->getModule()->_oConfig->CNF;
+
+        $aItem = array(
+            'bx_if:text' => array(
+                'condition' => false,
+                'content' => array(
+                    'content' => ''
+                )
+            ),
+            'bx_if:link' => array(
+                'condition' => false,
+                'content' => array(
+                    'link' => '',
+                    'content' => ''
+                )
+            )
+        );
+
+        $aTmplVarsItems = array();
+        if(!empty($CNF['FIELD_ADDED']) && !empty($aData[$CNF['FIELD_ADDED']]))
+            $aTmplVarsItems[] = array_merge($aItem, array('bx_if:text' => array(
+                'condition' => true,
+                'content' => array(
+                    'content' => bx_time_js($aData[$CNF['FIELD_ADDED']], BX_FORMAT_DATE)
+                )
+            )));
+
+        if(!empty($CNF['URI_AUTHOR_ENTRIES']))
+            $aTmplVarsItems[] = array_merge($aItem, array('bx_if:link' => array(
+                'condition' => true,
+                'content' => array(
+                    'link' => BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_AUTHOR_ENTRIES'] . '&profile_id=' . $oProfile->id()),
+                    'content' => _t($CNF['T']['txt_all_entries_by'], $this->getModule()->_oDb->getEntriesNumByAuthor($oProfile->id()))
+                )
+            )));
+
+        return $this->parseHtmlByName('author_desc.html', array(
+            'bx_repeat:items' => $aTmplVarsItems
+        ));
     }
-    
+
+    function getAuthorProfileDesc ($aData, $oProfile)
+    {
+        $aSnippetMeta = $this->getProfileSnippetMenu($aData);
+        if(empty($aSnippetMeta) || !is_array($aSnippetMeta) || !isset($aSnippetMeta['meta']))
+            return '';
+
+        return $aSnippetMeta['meta'];
+    }
+
     function getContextDesc ($aData)
     {
         return '';
     }
 
-    function getAuthorSnippetMenu ($aData)
+    function getProfileSnippetMenu ($aData)
     {
         $CNF = &$this->getModule()->_oConfig->CNF;
         if (!($oProfile = BxDolProfile::getInstance($aData[$CNF['FIELD_AUTHOR']])))
             return array();
+
         return bx_srv($oProfile->getModule(), 'get_snippet_menu_vars', array($oProfile->id()));
     }
-    
+
     function getAuthorAddon ($aData, $oProfile)
     {
-        $CNF = &$this->getModule()->_oConfig->CNF;
-        $sUrl = 'page.php?i=' . $CNF['URI_AUTHOR_ENTRIES'] . '&profile_id=' . $oProfile->id();
-        $sUrl = BxDolPermalinks::getInstance()->permalink($sUrl);
-        return _t($CNF['T']['txt_all_entries_by'], $sUrl, $oProfile->getDisplayName(), $this->getModule()->_oDb->getEntriesNumByAuthor($oProfile->id()));
+        return '';
     }
-    
+
     function getContextAddon ($aData, $oProfile)
     {
         $CNF = &$this->getModule()->_oConfig->CNF;
@@ -487,8 +660,6 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             $sText = $oMetatags->metaParse($aData[$CNF['FIELD_ID']], $sText);
         }
 
-        $sTitle = bx_process_output($sTitle);
-
         $aTmplVarsMeta = array();
         if(!empty($CNF['OBJECT_MENU_SNIPPET_META'])) {
             $oMenuMeta = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_SNIPPET_META'], $this);
@@ -535,26 +706,13 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             'bx_if:no_thumb' => array (
                 'condition' => !$sPhotoThumb,
                 'content' => array (
+                    'module_icon' => $CNF['ICON'],
                     'content_url' => $sUrl,
                     'summary_plain' => $sSummaryPlain,
                     'strecher' => mb_strlen($sSummaryPlain) > 240 ? '' : str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ', round((240 - mb_strlen($sSummaryPlain)) / 6)),
                 ),
             ),
         );
-    }
-
-    protected function getTitle($aData)
-    {
-        $CNF = &$this->getModule()->_oConfig->CNF;
-
-        return isset($aData[$CNF['FIELD_TITLE']]) ? $aData[$CNF['FIELD_TITLE']] : '';
-    }
-
-    protected function getText($aData)
-    {
-        $CNF = &$this->getModule()->_oConfig->CNF;
-
-        return isset($aData[$CNF['FIELD_TEXT']]) ? $aData[$CNF['FIELD_TEXT']] : '';
     }
 
     protected function getSummary($aData, $sTitle = '', $sText = '', $sUrl = '')
@@ -574,21 +732,21 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
 
         $oTranscoder = null;
         $oTranscoderView = null;
-        switch($sStorage) {
-            case $CNF['OBJECT_STORAGE_PHOTOS']:
-                if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_PHOTOS']))
-                    $oTranscoder = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_PHOTOS']);
-                if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_PHOTOS']))
-                    $oTranscoderView = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_PHOTOS']);
-                break;
 
-            case $CNF['OBJECT_STORAGE_FILES']:
-                if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES']))
-                    $oTranscoder = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES']);
-                if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_FILES']))
-                    $oTranscoderView = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_FILES']);
-                break;
+        if(isset($CNF['OBJECT_STORAGE_PHOTOS']) && $CNF['OBJECT_STORAGE_PHOTOS'] == $sStorage) {
+            if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_PHOTOS']))
+                $oTranscoder = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_PHOTOS']);
+            if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_PHOTOS']))
+                $oTranscoderView = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_PHOTOS']);
         }
+        else if(isset($CNF['OBJECT_STORAGE_FILES']) && $CNF['OBJECT_STORAGE_FILES'] == $sStorage) {
+            if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES']))
+                $oTranscoder = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES']);
+            if(!empty($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_FILES']))
+                $oTranscoderView = BxDolTranscoderImage::getObjectInstance($CNF['OBJECT_IMAGES_TRANSCODER_GALLERY_FILES']);
+        }
+        else
+            list($oTranscoder, $oTranscoderView) = parent::getAttachmentsImagesTranscoders($sStorage);
 
         return array($oTranscoder, $oTranscoderView);
     }

@@ -81,31 +81,52 @@
     div.cmt-info {
     	position: realtive;
     	overflow: hidden;
-	}
-	div.cmt-blink-plate {
-		position: absolute;
-		display: none;
-		top: -10px;
-		left: -10px;
-		width: 100%;
-		height: 100%;
-		padding: 10px;
-    	background-color: rgb(255, 244, 213);
-    	background-color: rgba(255, 234, 193, 0.5);
     }
-	div.cmt-head {
-		text-align: left;
-    	text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
+    div.cmt-blink-plate {
+        position: absolute;
+        display: none;
+        top: -10px;
+        left: -10px;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        background-color: rgb(255, 244, 213);
+        background-color: rgba(255, 234, 193, 0.5);
+    }
+    div.cmt-head {
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
     span.cmt-reply-to a {
-		text-decoration: none;
+        text-decoration: none;
+    }
+    span.cmt-reply-to a > i,
+    span.cmt-reply-to a > span,
+    span.cmt-reply-to a > div {
+        vertical-align: middle;
+    }
+    span.cmt-reply-to a .bx-base-pofile-unit-wo-info {
+        display: inline-block;
+    }
+    span.cmt-reply-to a .bx-base-pofile-unit-wo-info .bx-def-unit-img .bx-base-pofile-unit-thumb {
+        display: block;
+        border-width: 1px;
+    }
+    span.cmt-reply-to a .bx-base-pofile-unit-wo-info .bx-base-pofile-unit-online {
+        display: none;
+    }
+    span.cmt-reply-to a .bx-def-icon-size {
+        width: 1.0rem;
+        height: 1.0rem;
+        line-height: 0.875rem;
+        font-size: 0.6rem;
     }
     span.cmt-posted-ago {
         text-transform: lovercase;
     }
-	span.cmt-points {
+    span.cmt-points {
         text-transform: lovercase;
     }
 
@@ -141,26 +162,34 @@
         position: relative;
     	text-align: left;
     }
-	div.cmt-cont .bullet {
-		padding: 0px 5px;
-		padding: 0px 0.3rem;
+    div.cmt-cont .bullet {
+        padding: 0px 5px;
+        padding: 0px 0.3rem;
+    }
+    div.cmt-cont .cmt-body > p:first-child {
+        margin-top: 0;
+        margin-bottom: 0;
     }
     div.cmt-cont .cmt-body img {
         max-width: 100%;
     	height: auto;
     }
     div.cmt-cont .cmt-post-reply .bx-form-element-wrapper {
-		margin-top: 10px;
+        margin-top: 10px;
     	margin-top: 0.5rem;
     }
-	div.cmt-cont .cmt-post-reply .bx-form-element-wrapper:first-child {
-		margin-top: 0px;
+    div.cmt-cont .cmt-post-reply .bx-form-element-wrapper:first-child {
+        margin-top: 0px;
     }
     span.cmt-body-see-more a {
-		font-weight: bold;
+        font-weight: bold;
+    }
+    div.cmt-reactions .bx-vote-counter-wrapper {
+        line-height: 2.0rem;
+        font-size: 1.2rem;
     }
     div.cmt-attached-preview {
-		overflow:hidden;
+        overflow:hidden;
     }
     div.cmt-attached-preview,
     div.cmt-attached-preview img {
@@ -173,27 +202,27 @@
     	position: relative;
     	float: left;
 	}
-	div.cmt-attached-preview img {
-		background-position: center center;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
-	
+    div.cmt-attached-preview img {
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
     /*--- Comment Actions ---*/
-	div.cmt-actions {
-		position: relative;
-		text-align: left;
-	}
-	div.cmt-meta-ago,
-	div.cmt-comment-manage-link, 
-	div.cmt-actions ul.bx-menu-hor,
-	div.cmt-points-wrp {
-		position: relative;
-		float: left;
-	}
-	div.cmt-actions li .bx-vote {
-	   margin-right: 1.25rem;
-	}
+    div.cmt-actions {
+        position: relative;
+        text-align: left;
+    }
+    div.cmt-meta-ago,
+    div.cmt-comment-manage-link, 
+    div.cmt-actions ul.bx-menu-hor,
+    div.cmt-points-wrp {
+        position: relative;
+        float: left;
+    }
+    div.cmt-actions li .bx-vote {
+       margin-right: 1.25rem;
+    }
     div.cmt-comment-manage .bx-menu-ver li {
 		white-space: nowrap;
     }
@@ -359,4 +388,64 @@ div.cmt div.cmt-counter-holder {
 
 .cmt-link .cmt-counter-holder.bx-btn-border {
 	border-width: 0px;
+}
+
+
+/*----------------------*/
+/*--- Reviews Styles ---*/
+/*----------------------*/
+
+/*--- Mood Element Styles ---*/
+div.cmt-mood {
+    position: relative;
+    display: inline-block;
+}
+div.cmt-mood-underlay {}
+div.cmt-mood-slider {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+div.cmt-mood a.cmt-mood-button,
+div.cmt-mood i.cmt-mood-star {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    height: 16px;
+    width: 16px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+div.cmt-mood-underlay i.cmt-mood-star {
+    color: rgba(255, 204, 102, 1);
+}
+div.cmt-mood-slider i.cmt-mood-star,
+div.cmt-mood-buttons a:hover i.cmt-mood-star {
+    color: rgba(255, 100, 0, 1);
+}
+
+div.cmt-mood-buttons {
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: 0px;
+}
+div.cmt-mood-buttons a:hover {
+	text-decoration: none;
+}
+div.cmt-mood-buttons i.cmt-mood-star {
+    color: transparent;
+}
+
+/*--- Rating Block Styles ---*/
+.cmts-box-rating div.cmt-mood i.cmt-mood-star,
+.cmt-rating-element div.cmt-mood i.cmt-mood-star,
+.cmt-rating-element div.cmt-mood a.cmt-mood-button {
+    height: 24px;
+    width: 24px;
+    font-size: 20px;
 }

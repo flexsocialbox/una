@@ -45,18 +45,12 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $aContentInfo = array();
-        $oProfile = false;
-
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
-        if (!$aContentInfo)
-            return array (false, false);
+        if(!$aContentInfo)
+            return array(false, false);
 
-        $oProfile = BxDolProfile::getInstance($aContentInfo[$CNF['FIELD_AUTHOR']]);
-        if (!$oProfile) 
-            $oProfile = BxDolProfileUndefined::getInstance();
-
-        return array ($oProfile, $aContentInfo);
+        $oProfile = BxDolProfile::getInstanceMagic($aContentInfo[$CNF['FIELD_AUTHOR']]);
+        return array($oProfile, $aContentInfo);
     }
 
     public function onDataEditAfter ($iContentId, $aContentInfo, $aTrackTextFieldsChanges, $oProfile, $oForm)
@@ -82,9 +76,6 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
         if ($oProfile->isActive() && !empty($aTrackTextFieldsChanges['changed_fields']))
             $oProfile->disapprove(BX_PROFILE_ACTION_AUTO);
 
-        // alert
-        $this->_alertAfterEdit($aContentInfo);
-
         return '';
     }
 
@@ -109,9 +100,6 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
                 $oForm->processPolls($CNF['FIELD_POLL'], $iContentId);
         }
 
-        // alert
-        $this->_alertAfterAdd($aContentInfo);
-
         return '';
     }
 
@@ -122,42 +110,9 @@ class BxBaseModTextFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
             return $sResult;
 
         $this->_oModule->_oDb->deletePolls(array('content_id' => $iContentId));
+        BxDolCategories::getInstance()->delete($this->_oModule->getName(), $iContentId);
 
         return '';
-    }
-
-    protected function _alertAfterAdd($aContentInfo)
-    {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        $iId = (int)$aContentInfo[$CNF['FIELD_ID']];
-        $iAuthorId = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
-
-        $aParams = array('object_author_id' => $iAuthorId);
-        if(isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
-            $aParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
-        if(!empty($CNF['OBJECT_METATAGS']))
-            $aParams['timeline_group'] = array(
-                'by' => $this->_oModule->_oConfig->getName() . '_' . $iAuthorId . '_' . $iId,
-                'field' => 'owner_id'
-            );
-
-        $sAction = 'added';
-        if(isset($CNF['FIELD_STATUS']) && isset($aContentInfo[$CNF['FIELD_STATUS']]) && $aContentInfo[$CNF['FIELD_STATUS']] == 'awaiting')
-            $sAction = 'deferred';
-
-        bx_alert($this->_oModule->getName(), $sAction, $iId, $iAuthorId, $aParams);
-    }
-
-    protected function _alertAfterEdit($aContentInfo)
-    {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        $aParams = array('object_author_id' => $aContentInfo[$CNF['FIELD_AUTHOR']]);
-        if(isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
-        	$aParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
-
-        bx_alert($this->_oModule->getName(), 'edited', $aContentInfo[$CNF['FIELD_ID']], false, $aParams);
     }
 }
 

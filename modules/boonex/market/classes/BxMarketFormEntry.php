@@ -110,26 +110,15 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
         return $sCode;
     }
 
-	function initChecker ($aValues = array (), $aSpecificValues = array())
+    function initChecker ($aValues = array (), $aSpecificValues = array())
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-
-        if (isset($this->aInputs[$CNF['FIELD_FILE']])) {
-
-            $aContentInfo = false;
-            if ($aValues && !empty($aValues['id'])) {
-                $aContentInfo = $this->_oModule->_oDb->getContentInfoById ($aValues['id']);
-                $this->aInputs[$CNF['FIELD_FILE']]['content_id'] = $aValues['id'];
-            }
-
-            $this->aInputs[$CNF['FIELD_FILE']]['ghost_template'] = $this->_oModule->_oTemplate->getGhostTemplateFile($this, $aContentInfo);
-        }
 
         if(isset($this->aInputs[$CNF['FIELD_SUBENTRIES']]) && !empty($aValues[$CNF['FIELD_ID']])) {
             $oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION_SUBENTRIES']);
             if($oConnection)
-		        $this->aInputs[$CNF['FIELD_SUBENTRIES']]['value'] = $oConnection->getConnectedContent((int)$aValues[$CNF['FIELD_ID']]);
-		}
+                $this->aInputs[$CNF['FIELD_SUBENTRIES']]['value'] = $oConnection->getConnectedContent((int)$aValues[$CNF['FIELD_ID']]);
+        }
 
         return parent::initChecker($aValues, $aSpecificValues);
     }
@@ -259,38 +248,50 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
 
     protected function _getPhotoGhostTmplVars($aContentInfo = array())
     {
-    	$CNF = &$this->_oModule->_oConfig->CNF;
-
-    	$aResult = parent::_getPhotoGhostTmplVars($aContentInfo);
-    	$aResult = array_merge($aResult, array(
-    		'cover_id' => isset($aContentInfo[$CNF['FIELD_COVER']]) ? $aContentInfo[$CNF['FIELD_COVER']] : 0,
-    		'bx_if:set_cover' => array (
-				'condition' => CHECK_ACTION_RESULT_ALLOWED === $this->_oModule->checkAllowedSetCover(),
-				'content' => array (
-					'name_cover' => $CNF['FIELD_COVER'],
-				),
-			),
-    	));
-
-    	return $aResult;
-	}
-
-    protected function genCustomInputSubentries($aInput)
-    {
-        $this->addCssJsUi();
-
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $sGetSubentriesUrl = BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'get_subentries';
-        $sPlaceholder = bx_html_attribute(_t('_bx_market_form_entry_input_subentries_placeholder'), BX_ESCAPE_STR_QUOTE);
-
-        $this->oTemplate->addJs(array(
-            'jquery.form.min.js',
+        $aResult = parent::_getPhotoGhostTmplVars($aContentInfo);
+        $aResult = array_merge($aResult, array(
+            'cover_id' => isset($aContentInfo[$CNF['FIELD_COVER']]) ? $aContentInfo[$CNF['FIELD_COVER']] : 0,
+            'bx_if:set_cover' => array (
+                'condition' => CHECK_ACTION_RESULT_ALLOWED === $this->_oModule->checkAllowedSetCover(),
+                'content' => array (
+                    'name_cover' => $CNF['FIELD_COVER'],
+                ),
+            ),
         ));
 
+        return $aResult;
+    }
+
+    protected function _getFileGhostTmplVars($aContentInfo = array())
+    {
+    	$CNF = &$this->_oModule->_oConfig->CNF;
+
+        $aResult = parent::_getFileGhostTmplVars($aContentInfo);
+        $aResult = array_merge($aResult, array(
+            'thumb_id' => isset($aContentInfo[$CNF['FIELD_PACKAGE']]) ? $aContentInfo[$CNF['FIELD_PACKAGE']] : 0,
+            'bx_if:set_thumb' => array (
+                'condition' => true,
+                'content' => array(
+                    'name_thumb' => $CNF['FIELD_PACKAGE'],
+                ),
+            ),
+        ));
+
+    	return $aResult;
+    }
+
+    protected function genCustomInputSubentries ($aInput)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $aInput['ajax_get_suggestions'] = BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'get_subentries';
+        $aInput['placeholder'] = _t('_bx_market_form_entry_input_subentries_placeholder');
+
         $sVals = '';
-        if (!empty($aInput['value']) && is_array($aInput['value'])) {
-            foreach ($aInput['value'] as $iValue) {
+        if(!empty($aInput['value']) && is_array($aInput['value'])) {
+            foreach($aInput['value'] as $iValue) {
                 $iValue = (int)$iValue;
                 if(!$iValue)
                     continue;
@@ -303,17 +304,9 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
             }
             $sVals = trim($sVals, ',');
         }
+        $aInput['value'] = $sVals;
 
-        return $this->oTemplate->parseHtmlByName('form_field_custom_suggestions.html', array(
-            'id' => $aInput['name'] . time(),
-            'url_get_recipients' => $sGetSubentriesUrl,
-            'name' => $aInput['name'],
-			'b_img' => 1,
-			'only_once' => 0,
-			'on_select' => 'null',
-		    'placeholder' => $sPlaceholder,
-            'vals' => $sVals,
-        ));
+        return $this->genCustomInputUsernamesSuggestions($aInput);
     }
 }
 

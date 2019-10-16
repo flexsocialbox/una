@@ -18,12 +18,12 @@ $aConfig = array(
     'name' => 'bx_persons',
     'title' => 'Persons',
     'note' => 'Basic person profiles functionality.',
-    'version' => '9.0.13.DEV',
+    'version' => '10.0.3.DEV',
     'vendor' => 'BoonEx',
-	'help_url' => 'http://feed.una.io/?section={module_name}',
+    'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
-        '9.0.x'
+        '10.0.x'
     ),
 
     /**
@@ -44,8 +44,9 @@ $aConfig = array(
      * Connections.
      */
     'connections' => array(
-		'sys_profiles_friends' => array ('type' => 'profiles'),
-		'sys_profiles_subscriptions' => array ('type' => 'profiles'),
+        'sys_profiles_friends' => array ('type' => 'profiles'),
+        'sys_profiles_subscriptions' => array ('type' => 'profiles'),
+        'sys_profiles_relations' => array ('type' => 'profiles'),
     ),
 
     /**

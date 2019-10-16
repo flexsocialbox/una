@@ -79,6 +79,7 @@ class BxForumConfig extends BxBaseModTextConfig
             'URL_NEW' => 'page.php?i=discussions-new',
             'URL_TOP' => 'page.php?i=discussions-top',
             'URL_POPULAR' => 'page.php?i=discussions-popular',
+            'URL_PARTAKEN' => 'page.php?i=discussions-partaken',
             'URL_MANAGE_COMMON' => 'page.php?i=discussions-manage',
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=discussions-administration',
 
@@ -126,6 +127,7 @@ class BxForumConfig extends BxBaseModTextConfig
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY_MORE' => 'bx_forum_view_more', // more actions menu on view entry page
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY_ALL' => 'bx_forum_view_actions', // all actions menu on view entry page
             'OBJECT_MENU_ACTIONS_MY_ENTRIES' => 'bx_forum_my', // actions menu on my entries page
+            'OBJECT_MENU_SNIPPET_META' => 'bx_forum_snippet_meta_main', // menu for 'main' snippet meta info
             'OBJECT_MENU_SNIPPET_META_MAIN' => 'bx_forum_snippet_meta_main', // menu for 'main' snippet meta info
             'OBJECT_MENU_SNIPPET_META_COUNTERS' => 'bx_forum_snippet_meta_counters', // menu for 'counters' snippet meta info
             'OBJECT_MENU_SNIPPET_META_REPLY' => 'bx_forum_snippet_meta_reply', // menu for 'reply' snippet meta info
@@ -148,6 +150,7 @@ class BxForumConfig extends BxBaseModTextConfig
             	'txt_sample_single_with_article' => '_bx_forum_txt_sample_single_with_article',
             	'txt_sample_comment_single' => '_bx_forum_txt_sample_comment_single',
             	'txt_sample_vote_single' => '_bx_forum_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_forum_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_forum_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_forum_txt_sample_score_down_single',
             	'form_field_author' => '_bx_forum_form_entry_input_author',

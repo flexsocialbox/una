@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `bx_forum_discussions` (
   `lr_timestamp` int(11) NOT NULL,
   `lr_profile_id` int(11) NOT NULL,
   `lr_comment_id` int(11) NOT NULL,
+  `labels` text NOT NULL,
   `views` int(11) NOT NULL default '0',
   `rate` float NOT NULL default '0',
   `votes` int(11) NOT NULL default '0',
@@ -30,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `bx_forum_discussions` (
   `stick` tinyint(4) NOT NULL DEFAULT '0',
   `lock` tinyint(4) NOT NULL DEFAULT '0',
   `allow_view_to` varchar(16) NOT NULL DEFAULT '3',
-  `status` enum('active','draft','hidden') NOT NULL DEFAULT 'active',
+  `status` enum('active','hidden') NOT NULL DEFAULT 'active',
   `status_admin` enum('active','hidden') NOT NULL DEFAULT 'active',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `title_text` (`title`,`text`,`text_comments`),
@@ -305,7 +306,7 @@ INSERT INTO `sys_form_pre_values`(`Key`, `Value`, `Order`, `LKey`, `LKey2`) VALU
 
 -- COMMENTS
 INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `CharsPostMax`, `CharsDisplayMax`, `Html`, `PerView`, `PerViewReplies`, `BrowseType`, `IsBrowseSwitch`, `PostFormPosition`, `NumberOfLevels`, `IsDisplaySwitch`, `IsRatable`, `ViewingThreshold`, `IsOn`, `RootStylePrefix`, `BaseUrl`, `ObjectVote`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldTitle`, `TriggerFieldComments`, `ClassName`, `ClassFile`) VALUES
-(@sName, @sName, 'bx_forum_cmts', 1, 5000, 1000, 2, 5, 3, 'tail', 1, 'bottom', 0, 0, 1, -3, 1, 'cmt', 'page.php?i=view-discussion&id={object_id}', '', 'bx_forum_discussions', 'id', 'author', 'title', 'comments', 'BxForumCmts', 'modules/boonex/forum/classes/BxForumCmts.php');
+(@sName, @sName, 'bx_forum_cmts', 1, 5000, 1000, 2, 50, 3, 'tail', 0, 'bottom', 1, 1, 1, -3, 1, 'cmt', 'page.php?i=view-discussion&id={object_id}', '', 'bx_forum_discussions', 'id', 'author', 'title', 'comments', 'BxForumCmts', 'modules/boonex/forum/classes/BxForumCmts.php');
 
 
 -- VIEWS

@@ -20,6 +20,7 @@ class BxAlbumsConfig extends BxBaseModTextConfig
         $aMenuItems2Methods = array (
             'add-images-to-album' => 'checkAllowedEdit',
             'edit-album' => 'checkAllowedEdit',
+            'edit-image' => 'checkAllowedEdit',
             'delete-album' => 'checkAllowedDelete',
         );
 
@@ -49,6 +50,7 @@ class BxAlbumsConfig extends BxBaseModTextConfig
             'FIELD_COMMENTS' => 'comments',
             'FIELD_STATUS' => 'status',
             'FIELD_STATUS_ADMIN' => 'status_admin',
+            'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELD_LABELS' => 'labels',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
@@ -60,16 +62,18 @@ class BxAlbumsConfig extends BxBaseModTextConfig
             'URI_AUTHOR_ENTRIES' => 'albums-author',
             'URI_ENTRIES_BY_CONTEXT' => 'albums-context',
             'URI_ADD_ENTRY' => 'create-album',
-        	'URI_EDIT_ENTRY' => 'edit-album',
-        	'URI_MANAGE_COMMON' => 'albums-manage',
+            'URI_EDIT_ENTRY' => 'edit-album',
+            'URI_MANAGE_COMMON' => 'albums-manage',
 
             'URL_HOME' => 'page.php?i=albums-home',
             'URL_POPULAR' => 'page.php?i=albums-popular',
+            'URL_TOP' => 'page.php?i=albums-top',
             'URL_UPDATED' => 'page.php?i=albums-home',
             'URL_POPULAR_MEDIA' => 'page.php?i=albums-popular-media',
+            'URL_TOP_MEDIA' => 'page.php?i=albums-top-media',
             'URL_RECENT_MEDIA' => 'page.php?i=albums-recent-media', // TODO: add page
-        	'URL_MANAGE_COMMON' => 'page.php?i=albums-manage',
-        	'URL_MANAGE_ADMINISTRATION' => 'page.php?i=albums-administration',
+            'URL_MANAGE_COMMON' => 'page.php?i=albums-manage',
+            'URL_MANAGE_ADMINISTRATION' => 'page.php?i=albums-administration',
 
             // some params
             'PARAM_CHARS_SUMMARY' => 'bx_albums_summary_chars',
@@ -137,6 +141,7 @@ class BxAlbumsConfig extends BxBaseModTextConfig
                     'create-album' => 'checkAllowedAdd',
                 ),
                 'bx_albums_view' => $aMenuItems2Methods,
+                'bx_albums_view_media' => $aMenuItems2Methods,
             ),
 
             // informer messages
@@ -156,6 +161,7 @@ class BxAlbumsConfig extends BxBaseModTextConfig
             	'txt_sample_single_with_article' => '_bx_albums_txt_sample_single_with_article',
             	'txt_sample_comment_single' => '_bx_albums_txt_sample_comment_single',
             	'txt_sample_vote_single' => '_bx_albums_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_albums_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_albums_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_albums_txt_sample_score_down_single',
                 'txt_sample_action_changed' => '_bx_albums_txt_sample_action_changed',

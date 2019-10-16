@@ -43,7 +43,7 @@ class BxDolSearch extends BxDol
 
     protected $_bLiveSearch = false;
     protected $_sMetaType = '';
-    protected $_sCategoryObject = '';
+    protected $_sCategoryObject = ''; ///< by default = object from sys_objects_category table, for multicategories set to 'multi' string 
     protected $_aCustomSearchCondition = array();
     protected $_aCustomCurrentCondition = array();
     protected $_sUnitTemplate = '';
@@ -302,6 +302,7 @@ class BxDolSearchResult implements iBxDolReplaceable
     protected $bDisplayEmptyMsg = false; ///< display empty message instead of nothing, when no results
     protected $sDisplayEmptyMsgKey = ''; ///< custom empty message language key, instead of default "empty" message
     protected $bProcessPrivateContent = true; ///< check each item for privacy, if view isn't allowed then display private view instead
+    protected $aPrivateConditionsIndexes = array('restriction' => array(), 'join' => array()); ///< conditions indexes for bProcessPrivateContent
     protected $bForceAjaxPaginate = false; ///< force ajax paginate
     protected $iPaginatePerPage = BX_DOL_SEARCH_RESULTS_PER_PAGE_DEFAULT; ///< default 'per page' value for paginate.
 
@@ -390,6 +391,26 @@ class BxDolSearchResult implements iBxDolReplaceable
         $this->_aCustomSearchCondition = $a;
     }
     
+    public function setCategoriesCondition($sKeyword)
+    {
+        $this->aCurrent['join']['multicat'] = array(
+            'type' => 'INNER',
+            'table' => 'sys_categories2objects',
+            'mainField' => 'id',
+            'onField' => 'object_id',
+            'joinFields' => array(),
+        );
+        $this->aCurrent['join']['multicat2'] = array(
+           'type' => 'INNER',
+           'table' => 'sys_categories',
+           'mainField' => 'category_id',
+           'mainTable' => 'sys_categories2objects',
+           'onField' => 'id',
+           'joinFields' => array(),
+       );
+       $this->aCurrent['restriction']['multicat'] = array('value' => $sKeyword, 'field' => 'value', 'operator' => '=', 'table' => 'sys_categories');
+    }
+    
     /**
      * Display empty message if there is no content, custom empty message can be used.
      * @param $b - boolan value to enable or disable 'empty' message
@@ -409,6 +430,13 @@ class BxDolSearchResult implements iBxDolReplaceable
     public function setProcessPrivateContent ($b)
     {
         $this->bProcessPrivateContent = $b;
+        if ($b) {
+            // unset condition which was set when 'bProcessPrivateContent' was set to 'false'
+            foreach ($this->aPrivateConditionsIndexes['restriction'] as $sKey) 
+                unset($this->aCurrent['restriction'][$sKey]);
+            foreach ($this->aPrivateConditionsIndexes['join'] as $sKey)
+                unset($this->aCurrent['join'][$sKey]);
+        }
     }
 
     /**
@@ -700,6 +728,8 @@ class BxDolSearchResult implements iBxDolReplaceable
                 'field' => '',
                 'operator' => 'against'
             );
+            // for search results we need to show all items, not only public content
+            $this->setProcessPrivateContent(true);
         }
 
         // owner
@@ -741,9 +771,15 @@ class BxDolSearchResult implements iBxDolReplaceable
         }
 
         // category
-        if ($this->_sCategoryObject && ($o = BxDolCategory::getObjectInstance($this->_sCategoryObject)) && $this->_bSingleSearch) {
-            unset($this->aCurrent['restriction']['keyword']);
-            $o->setSearchCondition($this, $sKeyword);
+        if ($this->_sCategoryObject){
+            if(($o = BxDolCategory::getObjectInstance($this->_sCategoryObject)) && $this->_bSingleSearch) {
+                unset($this->aCurrent['restriction']['keyword']);
+                $o->setSearchCondition($this, $sKeyword);
+            }
+            if ($this->_sCategoryObject == 'multi'){
+                unset($this->aCurrent['restriction']['keyword']);
+                $this->setCategoriesCondition($sKeyword);
+            }
         }
 
         $this->setPaginate();

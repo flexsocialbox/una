@@ -2,7 +2,8 @@
 <resources name="en" flag="gb" title="English">
 
 	<string name="_bx_glossary"><![CDATA[Glossary]]></string>
-	<string name="_bx_glossary_cmts"><![CDATA[Glossary' Comments]]></string>
+	<string name="_bx_glossary_cmts"><![CDATA[Glossary's Comments]]></string>
+        <string name="_bx_glossary_reactions"><![CDATA[Glossary's Reactions]]></string>
 
 	<string name="_bx_glossary_option_summary_chars"><![CDATA[Number of characters in auto-cropped term summary]]></string>
 	<string name="_bx_glossary_option_plain_summary_chars"><![CDATA[Number of characters in plain term description when term hasn't thumb]]></string>
@@ -73,6 +74,7 @@
 	<string name="_bx_glossary_page_title_browse_featured"><![CDATA[Featured Terms]]></string>
     <string name="_bx_glossary_page_title_browse_recent"><![CDATA[Latest Terms]]></string>
     <string name="_bx_glossary_page_title_browse_popular"><![CDATA[Popular Terms]]></string>
+    <string name="_bx_glossary_page_title_browse_top"><![CDATA[Top Terms]]></string>
     <string name="_bx_glossary_page_title_browse_alphabetical"><![CDATA[Alphabetical Index]]></string>
     <string name="_bx_glossary_page_title_browse_updated"><![CDATA[Updated Terms]]></string>
     <string name="_bx_glossary_page_title_sys_home"><![CDATA[Glossary Home]]></string>
@@ -91,6 +93,8 @@
     <string name="_bx_glossary_page_block_title_entry_all_actions"><![CDATA[All Actions]]></string>
     <string name="_bx_glossary_page_title_sys_entries_popular"><![CDATA[Popular Terms]]></string>
     <string name="_bx_glossary_page_title_entries_popular"><![CDATA[Popular Terms]]></string>
+    <string name="_bx_glossary_page_title_sys_entries_top"><![CDATA[Top Terms]]></string>
+    <string name="_bx_glossary_page_title_entries_top"><![CDATA[Top Terms]]></string>
     <string name="_bx_glossary_page_title_sys_entries_updated"><![CDATA[Updated Terms]]></string>
     <string name="_bx_glossary_page_title_entries_updated"><![CDATA[Updated Terms]]></string>
     <string name="_bx_glossary_page_title_sys_entries_search"><![CDATA[Search]]></string>
@@ -102,6 +106,7 @@
     <string name="_bx_glossary_page_block_title_popular_entries"><![CDATA[Popular Terms]]></string>
     <string name="_bx_glossary_page_block_title_popular_entries_view_extended"><![CDATA[Popular Terms (Extended View)]]></string>
     <string name="_bx_glossary_page_block_title_popular_entries_view_full"><![CDATA[Popular Terms (Full View)]]></string>
+    <string name="_bx_glossary_page_block_title_top_entries"><![CDATA[Top Terms]]></string>
     <string name="_bx_glossary_page_block_title_updated_entries"><![CDATA[Updated Terms]]></string>
     <string name="_bx_glossary_page_title_sys_view_entry_comments"><![CDATA[Term Comments]]></string>
     <string name="_bx_glossary_page_title_view_entry_comments"><![CDATA[Comments to {title}]]></string>
@@ -155,6 +160,8 @@
     <string name="_bx_glossary_menu_item_title_entries_manage"><![CDATA[Manage]]></string>
     <string name="_bx_glossary_menu_item_title_system_entries_popular"><![CDATA[Popular]]></string>
     <string name="_bx_glossary_menu_item_title_entries_popular"><![CDATA[Popular]]></string>
+    <string name="_bx_glossary_menu_item_title_system_entries_top"><![CDATA[Top]]></string>
+    <string name="_bx_glossary_menu_item_title_entries_top"><![CDATA[Top]]></string>
     <string name="_bx_glossary_menu_item_title_system_entries_search"><![CDATA[Search]]></string>
     <string name="_bx_glossary_menu_item_title_entries_search"><![CDATA[Search]]></string>
     <string name="_bx_glossary_menu_title_view_entry_submenu"><![CDATA[View Glossary Submenu]]></string>
@@ -214,12 +221,13 @@
     <string name="_bx_glossary_item_admin_status_hidden"><![CDATA[Hidden]]></string>
     <string name="_bx_glossary_item_admin_status_pending"><![CDATA[Pending]]></string>
 
-    <string name="_bx_glossary_txt_all_entries_by"><![CDATA[<a href="{0}">All Terms by {1} ({2})</a>]]></string>
+    <string name="_bx_glossary_txt_all_entries_by"><![CDATA[{0} terms]]></string>
     <string name="_bx_glossary_txt_all_entries_in"><![CDATA[<a href="{0}">All Terms in {1} ({2})</a>]]></string>
     <string name="_bx_glossary_txt_sample_single"><![CDATA[term]]></string>
     <string name="_bx_glossary_txt_sample_single_with_article"><![CDATA[a term]]></string>
     <string name="_bx_glossary_txt_sample_comment_single"><![CDATA[comment to term]]></string>
     <string name="_bx_glossary_txt_sample_vote_single"><![CDATA[vote to term]]></string>
+    <string name="_bx_glossary_txt_sample_reaction_single"><![CDATA['{0}' reaction to term]]></string>
     <string name="_bx_glossary_txt_sample_score_up_single"><![CDATA[score up vote to term]]></string>
     <string name="_bx_glossary_txt_sample_score_down_single"><![CDATA[score down vote to term]]></string>
     <string name="_bx_glossary_txt_term_in_pending_status"><![CDATA[This term is pending approval.]]></string>

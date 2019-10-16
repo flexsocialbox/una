@@ -48,6 +48,7 @@ class BxSnipcartConfig extends BxBaseModTextConfig
             'FIELD_COMMENTS' => 'comments',
             'FIELD_STATUS' => 'status',
             'FIELD_STATUS_ADMIN' => 'status_admin',
+            'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
 
@@ -123,6 +124,7 @@ class BxSnipcartConfig extends BxBaseModTextConfig
             	'txt_sample_single_with_article' => '_bx_snipcart_txt_sample_single_with_article',
             	'txt_sample_comment_single' => '_bx_snipcart_txt_sample_comment_single',
             	'txt_sample_vote_single' => '_bx_snipcart_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_snipcart_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_snipcart_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_snipcart_txt_sample_score_down_single',
             	'form_field_author' => '_bx_snipcart_form_entry_input_author',

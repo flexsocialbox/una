@@ -54,6 +54,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
     	$aParams = bx_process_input(array_intersect_key($_GET, $this->_aFormParams));
     	$aParams = array_merge($this->_aFormParams, $aParams);
+        $aParams['context_id'] = (bool)$aParams['context_id'] ? (int)$aParams['context_id'] : false;
 
     	$mixedResponse = $this->serviceGetCreatePostForm($aParams);
     	if(empty($mixedResponse))
@@ -85,6 +86,11 @@ class BxBaseModGeneralModule extends BxDolModule
     {
         $mixedResult = $this->_getFieldValue('FIELD_AUTHOR', $iContentId);
         return $mixedResult !== false ? (int)$mixedResult : 0; 
+    }
+
+    public function serviceGetPrivacyView ($iContentId)
+    {
+        return $this->_getFieldValue('FIELD_ALLOW_VIEW_TO', $iContentId);
     }
 
     public function serviceGetDateAdded ($iContentId)
@@ -216,7 +222,7 @@ class BxBaseModGeneralModule extends BxDolModule
         if(!empty($aInputsAdd) && is_array($aInputsAdd))
             $aInputs = array_merge($aInputs, $aInputsAdd);
 
-        foreach($aInputs as $aInput)
+        foreach($aInputs as $aInput){
             if(in_array($aInput['type'], BxDolSearchExtended::$SEARCHABLE_TYPES) && !in_array($aInput['name'], $this->_aSearchableNamesExcept)) {
                 $aField = array(
                     'type' => $aInput['type'], 
@@ -233,7 +239,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
                 $aResult[$aInput['name']] = $aField;
             }
-
+        }
         return $aResult;
     }
 
@@ -442,8 +448,15 @@ class BxBaseModGeneralModule extends BxDolModule
      */
     public function serviceGetObjectForm ($sType, $aParams = array())
     {
-        if (!in_array($sType, array('add', 'edit', 'view', 'delete')))
+        if(!in_array($sType, array('add', 'edit', 'view', 'delete')))
             return false;
+
+        $mixedContextId = isset($aParams['context_id']) ? $aParams['context_id'] : false;
+
+        $bContext = $mixedContextId !== false;
+        if($bContext && ($oContextProfile = BxDolProfile::getInstance(abs($mixedContextId))) !== false)
+            if($oContextProfile->checkAllowedPostInProfile() !== CHECK_ACTION_RESULT_ALLOWED)
+                return false;
 
         $CNF = &$this->_oConfig->CNF;
 
@@ -451,30 +464,63 @@ class BxBaseModGeneralModule extends BxDolModule
         $sClass = $this->_aModule['class_prefix'] . 'FormsEntryHelper';
         $oFormsHelper = new $sClass($this);
 
+        $sParamsKey = 'ajax_mode';
+        if(isset($aParams[$sParamsKey]) && (bool)$aParams[$sParamsKey] === true)
+            $oFormsHelper->setAjaxMode((bool)$aParams[$sParamsKey]);
+
+        $sParamsKey = 'absolute_action_url';
+        if(isset($aParams[$sParamsKey]) && (bool)$aParams[$sParamsKey] === true)
+            $oFormsHelper->setAbsoluteActionUrl((bool)$aParams[$sParamsKey]);
+
         $sDisplay = !empty($aParams['display']) ? $aParams['display'] : false;
 
         $sFunc = 'getObjectForm' . ucfirst($sType);
         $oForm = $oFormsHelper->$sFunc($sDisplay);
 
-        $sParamsKey = 'absolute_action_url';
-        if(isset($aParams[$sParamsKey]) && (bool)$aParams[$sParamsKey] === true) {
-            $sKeyUri = 'URI_' . strtoupper($sType) . '_ENTRY';
-            if(!empty($this->_oConfig->CNF[$sKeyUri]))
-                $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $this->_oConfig->CNF[$sKeyUri]);
-        }
-
-        $sParamsKey = 'ajax_mode';
-        if(isset($aParams[$sParamsKey]) && is_bool($aParams[$sParamsKey]))
-        	$oForm->setAjaxMode((bool)$aParams[$sParamsKey]);
-
         $sKey = 'FIELD_ALLOW_VIEW_TO';
-        if(!empty($aParams['context_id']) && !empty($CNF[$sKey]) && !empty($oForm->aInputs[$CNF[$sKey]])) {
-            foreach($oForm->aInputs[$CNF[$sKey]]['values'] as $aValue)
-                if(isset($aValue['key']) && (int)$aValue['key'] == -(int)$aParams['context_id']) {
-                    $oForm->aInputs[$CNF[$sKey]]['value'] = -(int)$aParams['context_id'];
-                    $oForm->aInputs[$CNF[$sKey]]['type'] = 'hidden';
-                    break;
+        if(!empty($CNF[$sKey]) && !empty($oForm->aInputs[$CNF[$sKey]]) && (!$bContext || $mixedContextId < 0)) {
+            $bContextOwner = $bContext && abs($mixedContextId) == (int)bx_get_logged_profile_id();
+
+            if(!$bContext || $bContextOwner) {
+                $iGc = 0;
+                $iKeyGh = false;
+                foreach($oForm->aInputs[$CNF[$sKey]]['values'] as $iKey => $aValue) {
+                    if(isset($aValue['type']) && in_array($aValue['type'], array('group_header', 'group_end'))) {
+                        if($iKeyGh !== false && $iGc == 0) {
+                            unset($oForm->aInputs[$CNF[$sKey]]['values'][$iKeyGh]);
+                            $iKeyGh = false;
+
+                            if($aValue['type'] == 'group_end')
+                                unset($oForm->aInputs[$CNF[$sKey]]['values'][$iKey]);
+                        }
+
+                        if($aValue['type'] == 'group_header') {
+                            $iGc = 0;
+                            $iKeyGh = $iKey;
+                        }
+
+                        continue;
+                    }
+
+                    //--- Show 'Public' privacy group only in Public post form. 
+                    if(!$bContext && $aValue['key'] == BX_DOL_PG_ALL) {
+                        $iGc += 1;
+                        continue;
+                    }
+
+                    //--- Show a default privacy groups in Profile (for Owner) post form.
+                    if($bContextOwner && (int)$aValue['key'] >= 0) {
+                        $iGc += 1;
+                        continue;
+                    }
+
+                    unset($oForm->aInputs[$CNF[$sKey]]['values'][$iKey]);
                 }
+            }
+            else {
+                $oForm->aInputs[$CNF[$sKey]]['value'] = $mixedContextId;
+                $oForm->aInputs[$CNF[$sKey]]['type'] = 'hidden';
+            }
         }
 
         bx_alert('system', 'get_object_form', 0, 0, array(
@@ -505,7 +551,13 @@ class BxBaseModGeneralModule extends BxDolModule
         if($bParamsArray && isset($sParams['dynamic_mode']))
             $oFormsHelper->setDynamicMode($sParams['dynamic_mode']);
 
-        return $oFormsHelper->addDataForm($sDisplay);
+        $mixedResult = $oFormsHelper->addDataForm($sDisplay);
+        if(isset($mixedResult['_dt']) && $mixedResult['_dt'] == 'json') {
+            echoJson($mixedResult);
+            exit;
+        }
+
+        return $mixedResult;
     }
 
     public function serviceEntityEdit ($iContentId = 0, $sDisplay = false)
@@ -750,8 +802,8 @@ class BxBaseModGeneralModule extends BxDolModule
     	$sModule = $this->_aModule['name'];
 
     	$sEventPrivacy = $sModule . '_allow_view_event_to';
-		if(BxDolPrivacy::getObjectInstance($sEventPrivacy) === false)
-			$sEventPrivacy = '';
+        if(BxDolPrivacy::getObjectInstance($sEventPrivacy) === false)
+            $sEventPrivacy = '';
 
         return array(
             'handlers' => array(
@@ -767,7 +819,10 @@ class BxBaseModGeneralModule extends BxDolModule
 
                 array('group' => $sModule . '_vote', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVote', 'module_name' => $sModule, 'module_method' => 'get_notifications_vote', 'module_class' => 'Module', 'module_event_privacy' => $sEventPrivacy),
                 array('group' => $sModule . '_vote', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'undoVote'),
-                
+
+                array('group' => $sModule . '_reaction', 'type' => 'insert', 'alert_unit' => $sModule . '_reactions', 'alert_action' => 'doVote', 'module_name' => $sModule, 'module_method' => 'get_notifications_reaction', 'module_class' => 'Module', 'module_event_privacy' => $sEventPrivacy),
+                array('group' => $sModule . '_reaction', 'type' => 'delete', 'alert_unit' => $sModule . '_reactions', 'alert_action' => 'undoVote'),
+
                 array('group' => $sModule . '_score_up', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVoteUp', 'module_name' => $sModule, 'module_method' => 'get_notifications_score_up', 'module_class' => 'Module', 'module_event_privacy' => $sEventPrivacy),
 
                 array('group' => $sModule . '_score_down', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVoteDown', 'module_name' => $sModule, 'module_method' => 'get_notifications_score_down', 'module_class' => 'Module', 'module_event_privacy' => $sEventPrivacy),
@@ -777,6 +832,7 @@ class BxBaseModGeneralModule extends BxDolModule
                 array('group' => 'comment', 'unit' => $sModule, 'action' => 'commentPost', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'reply', 'unit' => $sModule, 'action' => 'replyPost', 'types' => array('personal')),
                 array('group' => 'vote', 'unit' => $sModule, 'action' => 'doVote', 'types' => array('personal', 'follow_member', 'follow_context')),
+                array('group' => 'vote', 'unit' => $sModule . '_reactions', 'action' => 'doVote', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'score_up', 'unit' => $sModule, 'action' => 'doVoteUp', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'score_down', 'unit' => $sModule, 'action' => 'doVoteDown', 'types' => array('personal', 'follow_member', 'follow_context'))
             ),
@@ -793,6 +849,9 @@ class BxBaseModGeneralModule extends BxDolModule
 
                 array('unit' => $sModule, 'action' => 'doVote'),
                 array('unit' => $sModule, 'action' => 'undoVote'),
+
+                array('unit' => $sModule . '_reactions', 'action' => 'doVote'),
+                array('unit' => $sModule . '_reactions', 'action' => 'undoVote'),
 
                 array('unit' => $sModule, 'action' => 'doVoteUp'),
                 array('unit' => $sModule, 'action' => 'doVoteDown'),
@@ -905,6 +964,35 @@ class BxBaseModGeneralModule extends BxDolModule
      */
     public function serviceGetNotificationsVote($aEvent)
     {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iContentId = (int)$aEvent['object_id'];
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        if(empty($aContentInfo) || !is_array($aContentInfo))
+            return array();
+
+        $oVote = BxDolVote::getObjectInstance($CNF['OBJECT_VOTES'], $iContentId);
+        if(!$oVote || !$oVote->isEnabled())
+            return array();
+
+        $sEntryUrl = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]);
+        $sEntryCaption = isset($aContentInfo[$CNF['FIELD_TITLE']]) ? $aContentInfo[$CNF['FIELD_TITLE']] : strmaxtextlen($aContentInfo[$CNF['FIELD_TEXT']], 20, '...');
+
+        return array(
+            'entry_sample' => $CNF['T']['txt_sample_single'],
+            'entry_url' => $sEntryUrl,
+            'entry_caption' => $sEntryCaption,
+            'entry_author' => $aContentInfo[$CNF['FIELD_AUTHOR']],
+            'subentry_sample' => $CNF['T']['txt_sample_vote_single'],
+            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
+        );
+    }
+
+    /**
+     * Entry post vote for Notifications module
+     */
+    public function serviceGetNotificationsReaction($aEvent)
+    {
     	$CNF = &$this->_oConfig->CNF;
 
     	$iContentId = (int)$aEvent['object_id'];
@@ -912,21 +1000,33 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($aContentInfo) || !is_array($aContentInfo))
             return array();
 
-		$oVote = BxDolVote::getObjectInstance($CNF['OBJECT_VOTES'], $iContentId);
-        if(!$oVote || !$oVote->isEnabled())
+        $oReaction = BxDolVote::getObjectInstance($CNF['OBJECT_REACTIONS'], $iContentId);
+        if(!$oReaction || !$oReaction->isEnabled())
             return array();
+
+        $aSubentry = $oReaction->getTrackBy(array('type' => 'id', 'id' => (int)$aEvent['subobject_id']));
+        if(empty($aSubentry) || !is_array($aSubentry))
+            return array();
+
+        $aSubentrySampleParams = array();
+        $aReaction = $oReaction->getReaction($aSubentry['reaction']);
+        if(!empty($aReaction['title']))
+            $aSubentrySampleParams[] = $aReaction['title'];
+        else
+            $aSubentrySampleParams[] = '_undefined';
 
         $sEntryUrl = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]);
         $sEntryCaption = isset($aContentInfo[$CNF['FIELD_TITLE']]) ? $aContentInfo[$CNF['FIELD_TITLE']] : strmaxtextlen($aContentInfo[$CNF['FIELD_TEXT']], 20, '...');
 
-		return array(
-			'entry_sample' => $CNF['T']['txt_sample_single'],
-			'entry_url' => $sEntryUrl,
-			'entry_caption' => $sEntryCaption,
-			'entry_author' => $aContentInfo[$CNF['FIELD_AUTHOR']],
-			'subentry_sample' => $CNF['T']['txt_sample_vote_single'],
-			'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-		);
+        return array(
+            'entry_sample' => $CNF['T']['txt_sample_single'],
+            'entry_url' => $sEntryUrl,
+            'entry_caption' => $sEntryCaption,
+            'entry_author' => $aContentInfo[$CNF['FIELD_AUTHOR']],
+            'subentry_sample' => $CNF['T']['txt_sample_reaction_single'],
+            'subentry_sample_params' => $aSubentrySampleParams,
+            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
+        );
     }
 
     /**
@@ -1003,14 +1103,17 @@ class BxBaseModGeneralModule extends BxDolModule
 
         $CNF = &$this->_oConfig->CNF;
 
+        if((!empty($CNF['FIELD_STATUS']) && $aContentInfo[$CNF['FIELD_STATUS']] != 'active') || (!empty($CNF['FIELD_STATUS_ADMIN']) && $aContentInfo[$CNF['FIELD_STATUS_ADMIN']] != 'active'))
+            return false;
+
         $iUserId = $this->getUserId();
         $iAuthorId = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
         $iAuthorIdAbs = abs($iAuthorId);
-        if($iAuthorId < 0 && $iAuthorIdAbs == (int)$aEvent['owner_id'] && $iAuthorIdAbs != $iUserId)
+        if($iAuthorId < 0 && ((is_numeric($aEvent['owner_id']) && $iAuthorIdAbs == (int)$aEvent['owner_id']) || (is_array($aEvent['owner_id']) && in_array($iAuthorIdAbs, $aEvent['owner_id']))) && $iAuthorIdAbs != $iUserId)
             return false;
 
         //--- Views
-        $oViews = isset($CNF['OBJECT_VIEWS']) ? BxDolView::getObjectInstance($CNF['OBJECT_VIEWS'], $aEvent['object_id']) : null;
+        $oViews = isset($CNF['OBJECT_VIEWS']) ? BxDolView::getObjectInstance($CNF['OBJECT_VIEWS'], $aContentInfo[$CNF['FIELD_ID']]) : null;
 
         $aViews = array();
         if ($oViews && $oViews->isEnabled())
@@ -1021,7 +1124,7 @@ class BxBaseModGeneralModule extends BxDolModule
             );
 
         //--- Votes
-        $oVotes = isset($CNF['OBJECT_VOTES']) ? BxDolVote::getObjectInstance($CNF['OBJECT_VOTES'], $aEvent['object_id']) : null;
+        $oVotes = isset($CNF['OBJECT_VOTES']) ? BxDolVote::getObjectInstance($CNF['OBJECT_VOTES'], $aContentInfo[$CNF['FIELD_ID']]) : null;
 
         $aVotes = array();
         if ($oVotes && $oVotes->isEnabled())
@@ -1032,7 +1135,7 @@ class BxBaseModGeneralModule extends BxDolModule
             );
         
         //--- Reactions
-        $oReactions = isset($CNF['OBJECT_REACTIONS']) ? BxDolVote::getObjectInstance($CNF['OBJECT_REACTIONS'], $aEvent['object_id']) : null;
+        $oReactions = isset($CNF['OBJECT_REACTIONS']) ? BxDolVote::getObjectInstance($CNF['OBJECT_REACTIONS'], $aContentInfo[$CNF['FIELD_ID']]) : null;
 
         $aReactions = array();
         if ($oReactions && $oReactions->isEnabled())
@@ -1043,7 +1146,7 @@ class BxBaseModGeneralModule extends BxDolModule
             );
 
         //--- Scores
-        $oScores = isset($CNF['OBJECT_SCORES']) ? BxDolScore::getObjectInstance($CNF['OBJECT_SCORES'], $aEvent['object_id']) : null;
+        $oScores = isset($CNF['OBJECT_SCORES']) ? BxDolScore::getObjectInstance($CNF['OBJECT_SCORES'], $aContentInfo[$CNF['FIELD_ID']]) : null;
 
         $aScores = array();
         if ($oScores && $oScores->isEnabled())
@@ -1053,8 +1156,8 @@ class BxBaseModGeneralModule extends BxDolModule
                 'score' => $aContentInfo['score']
             );
 
-		//--- Reports
-        $oReports = isset($CNF['OBJECT_REPORTS']) ? BxDolReport::getObjectInstance($CNF['OBJECT_REPORTS'], $aEvent['object_id']) : null;
+        //--- Reports
+        $oReports = isset($CNF['OBJECT_REPORTS']) ? BxDolReport::getObjectInstance($CNF['OBJECT_REPORTS'], $aContentInfo[$CNF['FIELD_ID']]) : null;
 
         $aReports = array();
         if ($oReports && $oReports->isEnabled())
@@ -1065,7 +1168,7 @@ class BxBaseModGeneralModule extends BxDolModule
             );
 
         //--- Comments
-        $oCmts = isset($CNF['OBJECT_COMMENTS']) ? BxDolCmts::getObjectInstance($CNF['OBJECT_COMMENTS'], $aEvent['object_id']) : null;
+        $oCmts = isset($CNF['OBJECT_COMMENTS']) ? BxDolCmts::getObjectInstance($CNF['OBJECT_COMMENTS'], $aContentInfo[$CNF['FIELD_ID']]) : null;
 
         $aComments = array();
         if($oCmts && $oCmts->isEnabled())
@@ -1084,7 +1187,16 @@ class BxBaseModGeneralModule extends BxDolModule
         if(isset($aEvent['object_privacy_view']) && (int)$aEvent['object_privacy_view'] < 0)
             $iOwnerId = abs($aEvent['object_privacy_view']);
 
+        $bCache = true;
+        $aContent = $this->_getContentForTimelinePost($aEvent, $aContentInfo, $aBrowseParams);
+        if(isset($aContent['_cache'])) {
+            $bCache = (bool)$aContent['_cache'];
+
+            unset($aContent['_cache']);
+        }
+
         return array(
+            '_cache' => $bCache,
             'owner_id' => $iOwnerId,
             'object_owner_id' => $iAuthorId,
             'icon' => !empty($CNF['ICON']) ? $CNF['ICON'] : '',
@@ -1092,8 +1204,7 @@ class BxBaseModGeneralModule extends BxDolModule
             'sample_wo_article' => $CNF['T']['txt_sample_single'],
             'sample_action' => isset($CNF['T']['txt_sample_action']) ? $CNF['T']['txt_sample_action'] : '',
             'url' => BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]),
-            'content' => $this->_getContentForTimelinePost($aEvent, $aContentInfo, $aBrowseParams), //a string to display or array to parse default template before displaying.
-            'allowed_view' => method_exists($this, 'checkAllowedView') ? $this->checkAllowedView($aContentInfo) : CHECK_ACTION_RESULT_ALLOWED,
+            'content' => $aContent, //a string to display or array to parse default template before displaying.
             'date' => $aContentInfo[$CNF['FIELD_ADDED']],
             'views' => $aViews,
             'votes' => $aVotes,
@@ -1104,6 +1215,16 @@ class BxBaseModGeneralModule extends BxDolModule
             'title' => $sTitle, //may be empty.
             'description' => '' //may be empty.
         );
+    }
+
+    public function serviceGetTimelinePostAllowedView($aEvent)
+    {
+        $iContentId = (int)$aEvent['object_id'];
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        if(empty($aContentInfo) || !is_array($aContentInfo))
+            return _t('_sys_txt_access_denied');
+
+        return $this->serviceCheckAllowedViewForProfile($aContentInfo);
     }
 
     /**
@@ -1155,8 +1276,9 @@ class BxBaseModGeneralModule extends BxDolModule
 
         // file owner must be author of the content or profile itself in case of profile based module
         if ($iContentId) {
-            if ($this instanceof iBxDolProfileService) {
-                $oProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $this->getName());
+            $sModule = $this->getName();
+            if ($this instanceof iBxDolProfileService && BxDolService::call($sModule, 'act_as_profile')) {
+                $oProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $sModule);
             }
             else {
                 $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
@@ -1341,9 +1463,81 @@ class BxBaseModGeneralModule extends BxDolModule
     }
 
     // ====== COMMON METHODS
+    public function alertAfterAdd($aContentInfo) {}
+    
+    public function alertAfterEdit($aContentInfo) {}
+
     public function onPublished($iContentId) {}
 
     public function onFailed($iContentId) {}
+
+    public function processMetasAdd($iContentId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($CNF['OBJECT_METATAGS'])) 
+            return;
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+
+        $bFldStatus = isset($CNF['FIELD_STATUS']);
+        $bFldStatusAdmin = isset($CNF['FIELD_STATUS_ADMIN']);
+        $bContentInfo = $aContentInfo && (!$bFldStatus || ($bFldStatus && $aContentInfo[$CNF['FIELD_STATUS']] == 'active')) && (!$bFldStatusAdmin || ($bFldStatusAdmin && $aContentInfo[$CNF['FIELD_STATUS_ADMIN']] == 'active'));
+        if(!$bContentInfo)
+            return;
+
+        $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
+        $oMetatags->metaAddAuto($iContentId, $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
+
+        $sKey = 'FIELD_LOCATION';
+        if($oMetatags->locationsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
+            $aLocation = unserialize($aContentInfo[$CNF[$sKey]]);
+            if(!empty($aLocation) && is_array($aLocation))
+                call_user_func_array(array($oMetatags, 'locationsAdd'), array_merge(array($iContentId), array_values($aLocation)));
+        }
+
+        $sKey = 'FIELD_LABELS';
+        if($oMetatags->keywordsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
+            $aLabels = unserialize($aContentInfo[$CNF[$sKey]]);
+            if(!empty($aLabels) && is_array($aLabels))
+                foreach ($aLabels as $sLabel)
+                    $oMetatags->keywordsAddOne($iContentId, $sLabel, false);
+        }
+    }
+
+    public function processMetasEdit($iContentId, $oForm)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(empty($CNF['OBJECT_METATAGS']))
+            return;
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+
+        $bFldStatus = isset($CNF['FIELD_STATUS']);
+        $bFldStatusAdmin = isset($CNF['FIELD_STATUS_ADMIN']);
+        $bContentInfo = $aContentInfo && (!$bFldStatus || ($bFldStatus && $aContentInfo[$CNF['FIELD_STATUS']] == 'active')) && (!$bFldStatusAdmin || ($bFldStatusAdmin && $aContentInfo[$CNF['FIELD_STATUS_ADMIN']] == 'active'));
+        if(!$bContentInfo)
+            return;
+
+        $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
+        $oMetatags->metaAddAuto($iContentId, $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT']);
+
+        $sKey = 'FIELD_LOCATION';
+        if($oMetatags->locationsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
+            $aLocation = unserialize($aContentInfo[$CNF[$sKey]]);
+            if(!empty($aLocation) && is_array($aLocation))
+                call_user_func_array(array($oMetatags, 'locationsAdd'), array_merge(array($iContentId), array_values($aLocation)));
+        }
+
+        $sKey = 'FIELD_LABELS';
+        if($oMetatags->keywordsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
+            $aLabels = unserialize($aContentInfo[$CNF[$sKey]]);
+            if(!empty($aLabels) && is_array($aLabels))
+                foreach ($aLabels as $sLabel)
+                    $oMetatags->keywordsAddOne($iContentId, $sLabel, false);
+        }
+    }
 
     public function getEntryImageData($aContentInfo, $sField = 'FIELD_THUMB', $aTranscoders = array())
     {
@@ -1406,7 +1600,7 @@ class BxBaseModGeneralModule extends BxDolModule
             return false;
 
         $oFavorite = BxDolFavorite::getObjectInstance($sSystem, $iId, true, $this->_oTemplate);
-        if(!$oFavorite->isEnabled())
+        if(!$oFavorite || !$oFavorite->isEnabled())
             return false;
 
         return $oFavorite;

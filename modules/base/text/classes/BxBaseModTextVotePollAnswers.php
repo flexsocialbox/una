@@ -21,7 +21,6 @@ class BxBaseModTextVotePollAnswers extends BxTemplVoteLikes
     protected $_bAnonymousVoting;
 
     protected $_sTmplNameElementBlock;
-    protected $_sTmplNameCounterText;
 
     function __construct($sSystem, $iId, $iInit = 1)
     {
@@ -43,7 +42,6 @@ class BxBaseModTextVotePollAnswers extends BxTemplVoteLikes
         $this->_bAnonymousVoting = $CNF['PARAM_POLL_ANONYMOUS_VOTING'];
 
         $this->_sTmplNameElementBlock = 'poll_answer_ve_block.html';
-        $this->_sTmplNameCounterText = 'poll_answer_vc_text.html';
     }
 
     public function getJsClick($iValue = 0)
@@ -91,7 +89,7 @@ class BxBaseModTextVotePollAnswers extends BxTemplVoteLikes
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        return $this->_oModule->_oDb->isPollPerformed($this->_aPollInfo[$CNF['FIELD_POLL_ID']], $iAuthorId);
+        return $this->_oModule->isPollPerformed((int)$this->_aPollInfo[$CNF['FIELD_POLL_ID']], $iAuthorId, $iAuthorIp);
     }
 
     /**
@@ -110,6 +108,14 @@ class BxBaseModTextVotePollAnswers extends BxTemplVoteLikes
 
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
         return $this->_oModule->checkAllowedView($aContentInfo) === CHECK_ACTION_RESULT_ALLOWED;
+    }
+
+    public function isAllowedVoteViewVoters($isPerformAction = false)
+    {
+        if($this->_bAnonymousVoting)
+           return false;
+
+        return parent::isAllowedVoteViewVoters($isPerformAction);
     }
 
     /**
@@ -147,14 +153,6 @@ class BxBaseModTextVotePollAnswers extends BxTemplVoteLikes
     protected function _getTmplContentElementBlock()
     {
         return $this->_oTemplate->getHtml($this->_sTmplNameElementBlock);
-    }
-
-    protected function _getTmplContentCounter()
-    {
-        if($this->_bAnonymousVoting)
-            return $this->_oTemplate->getHtml($this->_sTmplNameCounterText);
-
-        return self::$_sTmplContentCounter;
     }
 }
 

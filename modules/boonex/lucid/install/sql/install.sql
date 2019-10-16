@@ -12,7 +12,8 @@ INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `order`) VALU
 SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-(@iCategoryId, CONCAT(@sName, '_switcher_title'), '_bx_lucid_stg_cpt_option_switcher_name', 'Lucid', 'digit', '', '', '', 1);
+(@iCategoryId, CONCAT(@sName, '_switcher_title'), '_bx_lucid_stg_cpt_option_switcher_name', 'Lucid', 'digit', '', '', '', 1),
+(@iCategoryId, CONCAT(@sName, '_default_mix'), '_bx_lucid_stg_cpt_option_default_mix', '', 'select', 'a:2:{s:6:"module";s:8:"bx_lucid";s:6:"method";s:23:"get_options_default_mix";}', '', '', 10);
 
 
 -- SETTINGS: Lucid template Styles General
@@ -495,7 +496,7 @@ INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `order`) VALU
 SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-(@iCategoryId, CONCAT(@sName, '_vpt_font_size_scale'), '_bx_lucid_stg_cpt_option_vpt_font_size_scale', '93.75%', 'digit', '', '', '', 1);
+(@iCategoryId, CONCAT(@sName, '_vpt_font_size_scale'), '_bx_lucid_stg_cpt_option_vpt_font_size_scale', '100%', 'digit', '', '', '', 1);
 
 -- SETTINGS: Lucid template Viewport Mobile
 INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `order`) VALUES 
@@ -503,13 +504,15 @@ INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `order`) VALU
 SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-(@iCategoryId, CONCAT(@sName, '_vpm_font_size_scale'), '_bx_lucid_stg_cpt_option_vpm_font_size_scale', '85%', 'digit', '', '', '', 1);
+(@iCategoryId, CONCAT(@sName, '_vpm_font_size_scale'), '_bx_lucid_stg_cpt_option_vpm_font_size_scale', '87.5%', 'digit', '', '', '', 1);
 
 
 -- MIXES
 INSERT INTO `sys_options_mixes` (`type`, `category`, `name`, `title`, `active`, `editable`) VALUES
 (@sName, '', 'Light-Mix', 'Light Mix', 1, 0);
 SET @iMixId = LAST_INSERT_ID();
+
+UPDATE `sys_options` SET `value`=@iMixId WHERE `name`=CONCAT(@sName, '_default_mix');
 
 INSERT INTO `sys_options_mixes2options` (`option`, `mix_id`, `value`) VALUES
 ('bx_lucid_button_nlp_bg_color_hover', @iMixId, 'rgba(50, 100, 180, 1)'),
@@ -653,7 +656,7 @@ INSERT INTO `sys_options_mixes2options` (`option`, `mix_id`, `value`) VALUES
 ('bx_lucid_menu_account_font_color_active', @iMixId, 'rgba(20, 80, 100, 1)'),
 ('bx_lucid_menu_add_bg_color', @iMixId, 'rgba(255, 255, 255, 1)'),
 ('bx_lucid_menu_account_font_family', @iMixId, 'Nunito, Lato, Arial, sans-serif'),
-('bx_lucid_menu_account_font_weight', @iMixId, '600'),
+('bx_lucid_menu_account_font_weight', @iMixId, '400'),
 ('bx_lucid_menu_account_font_color_hover', @iMixId, 'rgba(50, 100, 180, 1)'),
 ('bx_lucid_menu_account_border_color', @iMixId, 'rgba(20, 80, 100, 0.2)'),
 ('bx_lucid_menu_account_font_shadow', @iMixId, 'none'),
@@ -694,9 +697,9 @@ INSERT INTO `sys_options_mixes2options` (`option`, `mix_id`, `value`) VALUES
 ('bx_lucid_card_content_padding', @iMixId, '1rem'),
 ('bx_lucid_popup_bg_color', @iMixId, 'rgba(255, 255, 255, 1)'),
 ('bx_lucid_card_shadow', @iMixId, '0px 2px 6px 0px rgba(0, 0, 0, 0.05)'),
-('bx_lucid_vpt_font_size_scale', @iMixId, '93.75%'),
+('bx_lucid_vpt_font_size_scale', @iMixId, '100%'),
 ('bx_lucid_card_border_radius', @iMixId, '8px'),
-('bx_lucid_vpm_font_size_scale', @iMixId, '85%'),
+('bx_lucid_vpm_font_size_scale', @iMixId, '87.5%'),
 ('bx_lucid_card_border_size', @iMixId, '1px'),
 ('bx_lucid_card_border_color', @iMixId, 'rgba(20, 80, 100, 0.1)'),
 ('bx_lucid_styles_custom', @iMixId, 'div.bx-market-unit-cover div.bx-base-text-unit-no-thumb {\r\n border-width: 0px;\r\n}'),
@@ -729,14 +732,14 @@ INSERT INTO `sys_options_mixes2options` (`option`, `mix_id`, `value`) VALUES
 ('bx_lucid_block_bg_image_repeat', @iMixId, 'no-repeat'),
 ('bx_lucid_cover_icon_shadow', @iMixId, 'none'),
 ('bx_lucid_cover_text_shadow', @iMixId, '0px 1px 3px rgba(0, 0, 0, .3)'),
-('bx_lucid_cover_border_radius', @iMixId, '0px'),
+('bx_lucid_cover_border_radius', @iMixId, '8px'),
 ('bx_lucid_cover_icon_border_color', @iMixId, 'rgba(208, 208, 208, 1)'),
 ('bx_lucid_cover_icon_border_size', @iMixId, '1px'),
 ('bx_lucid_cover_icon_border_radius', @iMixId, '3px'),
 ('bx_lucid_cover_text_align', @iMixId, 'center'),
-('bx_lucid_cover_border_size', @iMixId, '0px'),
-('bx_lucid_cover_border_color', @iMixId, 'rgba(208, 208, 208, 0)'),
-('bx_lucid_cover_shadow', @iMixId, 'none'),
+('bx_lucid_cover_border_size', @iMixId, '1px'),
+('bx_lucid_cover_border_color', @iMixId, 'rgba(20, 80, 100, 0.1)'),
+('bx_lucid_cover_shadow', @iMixId, '0px 2px 6px 0px rgba(0, 0, 0, 0.05)'),
 ('bx_lucid_cover_content_padding', @iMixId, '2rem 3rem 2rem 3rem'),
 ('bx_lucid_cover_height', @iMixId, '8rem'),
 ('bx_lucid_body_icon_color_hover', @iMixId, 'rgba(20, 80, 160, 1)'),

@@ -285,19 +285,28 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
 
                     case 'checker_func':
                         $sCfValue = strtolower($this->aField[$sKey]);
-
                         $aForm['inputs'][$sKey]['value'] = $sCfValue;
+
+                        $bHidden = isset($aForm['inputs'][$sKey]['attrs']['disabled']) && !empty($sCfValue);
+                        if($bHidden) {
+                            unset($aForm['inputs'][$sKey]['attrs']['disabled']);
+                            unset($aForm['inputs']['checker_error']['attrs']['disabled']);
+                        }
+                        
                         switch($sCfValue) {
                             case 'length':
-                                unset($aForm['inputs']['checker_params_length_min']['tr_attrs']['style'], $aForm['inputs']['checker_params_length_max']['tr_attrs']['style']);
+                                if(!$bHidden)
+                                    unset($aForm['inputs']['checker_params_length_min']['tr_attrs']['style'], $aForm['inputs']['checker_params_length_max']['tr_attrs']['style']);
                                 unset($aForm['inputs']['checker_params_length_min']['attrs']['disabled'], $aForm['inputs']['checker_params_length_max']['attrs']['disabled']);
                                 break;
                             case 'date_range':
-                                unset($aForm['inputs']['checker_params_length_min']['tr_attrs']['style'], $aForm['inputs']['checker_params_length_max']['tr_attrs']['style'], $aForm['inputs']['checker_params_required']['tr_attrs']['style']);
+                                if(!$bHidden)
+                                    unset($aForm['inputs']['checker_params_length_min']['tr_attrs']['style'], $aForm['inputs']['checker_params_length_max']['tr_attrs']['style'], $aForm['inputs']['checker_params_required']['tr_attrs']['style']);
                                 unset($aForm['inputs']['checker_params_length_min']['attrs']['disabled'], $aForm['inputs']['checker_params_length_max']['attrs']['disabled'], $aForm['inputs']['checker_params_required']['attrs']['disabled']);
                                 break;
                             case 'preg':
-                                unset($aForm['inputs']['checker_params_preg']['tr_attrs']['style']);
+                                if(!$bHidden)
+                                    unset($aForm['inputs']['checker_params_preg']['tr_attrs']['style']);
                                 unset($aForm['inputs']['checker_params_preg']['attrs']['disabled']);
                                 break;
                         }
@@ -1475,6 +1484,22 @@ class BxBaseStudioFormsFieldNumber extends BxBaseStudioFormsFieldText
             'params' => array('/^\d*?$/'),
             'error' => _t('_adm_form_err_field_value_number'),
         );
+    }
+}
+
+class BxBaseStudioFormsFieldTime extends BxBaseStudioFormsFieldText
+{
+    protected $sType = 'time';
+    protected $aCheckFunctions = array('avail');
+    protected $sDbPass = 'Xss';
+    
+    public function init()
+	{
+		parent::init();
+
+        $this->aParams['table_field_type'] = 'time';
+
+        $this->aForm['inputs']['value']['db']['pass'] = 'Xss';
     }
 }
 

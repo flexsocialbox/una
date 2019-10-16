@@ -20,6 +20,33 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
     }
 
     // ====== ACTIONS METHODS
+    public function actionEmbedPoll($iPollId = 0)
+    {
+        if(empty($iPollId) && bx_get('poll_id') !== false)
+            $iPollId = (int)bx_get('poll_id');
+
+        $aParams = bx_get_with_prefix('param');
+        array_walk($aParams, function(&$sValue) {
+            $sValue = bx_process_input($sValue);
+        });
+
+        $this->_oTemplate->embedPollItem($iPollId, $aParams);
+    }
+
+    public function actionEmbedPolls($iId = 0)
+    {
+        list($iContentId, $aContentInfo) = $this->_getContent($iId);
+        if($iContentId === false)
+            return;
+
+        $aParams = bx_get_with_prefix('param');
+        array_walk($aParams, function(&$sValue) {
+            $sValue = bx_process_input($sValue);
+        });
+
+        $this->_oTemplate->embedPollItems($aContentInfo, $aParams);
+    }
+
     public function actionGetPoll()
     {
         $iPollId = (int)bx_get('poll_id');
@@ -75,7 +102,7 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
         if(!$iPollId)
             return false;
 
-        if(!$bForceDisplay && $this->_oDb->isPollPerformed($iPollId, bx_get_logged_profile_id()))
+        if(!$bForceDisplay && $this->isPollPerformed($iPollId))
             return $this->serviceGetBlockPollResults($iPollId);
 
         return $this->_serviceTemplateFunc('entryPollAnswers', $iPollId, 'getPollInfoById');
@@ -97,9 +124,9 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
         return $mixedResult !== false ? $mixedResult : '';
     }
 
-	public function serviceGetMenuAddonManageTools()
-	{
-		bx_import('SearchResult', $this->_aModule);
+    public function serviceGetMenuAddonManageTools()
+    {
+        bx_import('SearchResult', $this->_aModule);
         $sClass = $this->_aModule['class_prefix'] . 'SearchResult';
         $o = new $sClass();
         $o->unsetPaginate();
@@ -149,6 +176,15 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
     public function serviceBrowsePopular ($sUnitView = false, $bEmptyMessage = true, $bAjaxPaginate = true)
     {
         return $this->_serviceBrowse ('popular', $sUnitView ? array('unit_view' => $sUnitView) : false, BX_DB_PADDING_DEF, $bEmptyMessage, $bAjaxPaginate);
+    }
+
+    /**
+     * Display popular entries
+     * @return HTML string
+     */
+    public function serviceBrowseTop ($sUnitView = false, $bEmptyMessage = true, $bAjaxPaginate = true)
+    {
+        return $this->_serviceBrowse ('top', $sUnitView ? array('unit_view' => $sUnitView) : false, BX_DB_PADDING_DEF, $bEmptyMessage, $bAjaxPaginate);
     }
 
     /**
@@ -246,6 +282,32 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
 
         return $iCount;
     }
+    
+    /**
+     * Entry multicategiries block
+     */
+    public function serviceCategoriesMultiList($bDisplayEmptyCats = true)
+    {
+		$oCategories = BxDolCategories::getInstance();
+        $aCats = $oCategories->getData(array('type' => 'by_module_with_num', 'module' => $this->getName()));
+        $aVars = array('bx_repeat:cats' => array());
+        foreach ($aCats as $oCat) {
+            $sValue = $oCat['value'];
+            $iNum = $oCat['num'];
+            
+            $aVars['bx_repeat:cats'][] = array(
+                'url' => $oCategories->getUrl($this->getName(), $sValue),
+                'name' => _t($sValue),
+                'value' => $sValue,
+                'num' => $iNum,
+            );
+        }
+        
+        if (!$aVars['bx_repeat:cats'])
+            return '';
+
+        return $this->_oTemplate->parseHtmlByName('category_list.html', $aVars);
+    }
 
     // ====== PERMISSION METHODS
 
@@ -261,6 +323,16 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
         return CHECK_ACTION_RESULT_ALLOWED;
     }
 
+    public function isPollPerformed($iObjectId, $iAuthorId = 0, $iAuthorIp = 0)
+    {
+        if(empty($iAuthorId)) {
+            $iAuthorId = bx_get_logged_profile_id();
+            $iAuthorIp = ip2long(getVisitorIP());
+        }
+
+        return $this->_oDb->isPollPerformed($iObjectId, $iAuthorId, $iAuthorIp);
+    }
+
     // ====== COMMON METHODS
     public function onPublished($iContentId)
     {
@@ -272,10 +344,7 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
         if(!$aContentInfo)
             return;
 
-        $aParams = array('object_author_id' => $aContentInfo[$CNF['FIELD_AUTHOR']]);
-        if(isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
-            $aParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
-
+        $aParams = $this->_alertParams($aContentInfo);
         bx_alert($this->getName(), 'added', $iContentId, $aContentInfo[$CNF['FIELD_AUTHOR']], $aParams);
     }
 
@@ -292,6 +361,56 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
         $aParams = array('object_author_id' => $aContentInfo[$CNF['FIELD_AUTHOR']]);
 
         bx_alert($this->getName(), 'failed', $iContentId, $aContentInfo[$CNF['FIELD_AUTHOR']], $aParams);
+    }
+
+    public function alertAfterAdd($aContentInfo)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iId = (int)$aContentInfo[$CNF['FIELD_ID']];
+        $iAuthorId = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
+
+        $sAction = 'added';
+        if(isset($CNF['FIELD_STATUS']) && isset($aContentInfo[$CNF['FIELD_STATUS']]) && $aContentInfo[$CNF['FIELD_STATUS']] == 'awaiting')
+            $sAction = 'deferred';
+
+        $aParams = $this->_alertParams($aContentInfo);
+        bx_alert('system', 'prepare_alert_params', 0, 0, array('unit'=> $this->getName(), 'action' => $sAction, 'object_id' => $iId, 'sender_id' => $iAuthorId, 'extras' => &$aParams));
+        bx_alert($this->getName(), $sAction, $iId, $iAuthorId, $aParams);
+    }
+
+    public function alertAfterEdit($aContentInfo)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iId = (int)$aContentInfo[$CNF['FIELD_ID']];
+
+        $aParams = $this->_alertParams($aContentInfo);
+        bx_alert($this->getName(), 'edited', $iId, false, $aParams);
+    }
+
+    /**
+     * Get array of params to be passed in Add/Edit Alert.
+     */
+    protected function _alertParams($aContentInfo)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iId = (int)$aContentInfo[$CNF['FIELD_ID']];
+        $iAuthorId = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
+
+        $aParams = array(
+            'object_author_id' => $iAuthorId
+        );
+        if(isset($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]))
+            $aParams['privacy_view'] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
+        if(!empty($CNF['OBJECT_METATAGS']))
+            $aParams['timeline_group'] = array(
+                'by' => $this->getName() . '_' . $iAuthorId . '_' . $iId,
+                'field' => 'owner_id'
+            );
+
+        return $aParams;
     }
 
     public function isEntryActive($aContentInfo)
@@ -461,34 +580,23 @@ class BxBaseModTextModule extends BxBaseModGeneralModule implements iBxDolConten
 
         $CNF = &$this->_oConfig->CNF;
 
-        $iProfile = bx_get_logged_profile_id();
-        $bDynamic = isset($aBrowseParams['dynamic_mode']) && $aBrowseParams['dynamic_mode'] === true;
+        $bDynamic = isset($aBrowseParams['dynamic_mode']) && (bool)$aBrowseParams['dynamic_mode'] === true;
 
-        $sPolls = '';
         $aPolls = $this->_oDb->getPolls(array('type' => 'content_id', 'content_id' => (int)$aContentInfo[$CNF['FIELD_ID']]));
         if(!empty($aPolls) && is_array($aPolls)) {
-            foreach($aPolls as $aPoll) {
-                $sPoll = $this->_oTemplate->getPollItem($aPoll, $iProfile, array(
-                    'dynamic' => $bDynamic,
-                    'switch_menu' => false
-                ));
-                if(empty($sPoll))
-                    continue;
+            $sInclude = $this->_oTemplate->addCss(array('polls.css'), $bDynamic);
 
-                $sPolls .= $sPoll;
-            }
-
-            if(!empty($sPolls)) {
-                $sInclude = '';
-                $sInclude .= $this->_oTemplate->addJs(array('polls.js'), $bDynamic);
-                $sInclude .= $this->_oTemplate->addCss(array('polls.css'), $bDynamic);
-
-                $aResult['raw'] = ($bDynamic ? $sInclude : '') . $this->_oTemplate->getJsCode('poll') . $this->_oTemplate->parseHtmlByName('poll_items_showcase.html', array(
-                    'js_object' => $this->_oConfig->getJsObject('poll'),
-                    'html_id' => $this->_oConfig->getHtmlIds('polls_showcase') . $aEvent['id'],
-                    'polls' => $sPolls
-                ));
-            }
+            $aResult['raw'] = ($bDynamic ? $sInclude : '') . $this->_oTemplate->parseHtmlByName('poll_items_embed.html', array(
+                'embed_url' => BX_DOL_URL_ROOT . bx_append_url_params($this->_oConfig->getBaseUri() . 'embed_polls/', array(
+                    'id' => (int)$aContentInfo[$CNF['FIELD_ID']],
+                    'param_switch_menu' => 0,
+                    'param_showcase' => 1
+                ))
+            ));
+/*
+            if((!empty($aResult['videos']) && is_array($aResult['videos'])) || (!empty($aResult['videos_attach']) && is_array($aResult['videos_attach'])))
+                $aResult['_cache'] = false;
+ */
         }
 
         return $aResult;

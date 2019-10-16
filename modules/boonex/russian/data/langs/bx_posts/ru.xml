@@ -3,6 +3,7 @@
 
     <string name="_bx_posts"><![CDATA[Публикации]]></string>
     <string name="_bx_posts_cmts"><![CDATA[Публикации - Комментарии]]></string>
+    <string name="_bx_posts_reactions"><![CDATA[Публикации - Реакции]]></string>
 
     <string name="_bx_posts_option_summary_chars"><![CDATA[Количество символов в автогенерируемой сводке к публикациям]]></string>
     <string name="_bx_posts_option_plain_summary_chars"><![CDATA[Количество символов в описании публикации при отсутствующей картинке публикации]]></string>
@@ -51,8 +52,8 @@
     <string name="_bx_posts_form_entry_input_date_added"><![CDATA[Создано]]></string>
     <string name="_bx_posts_form_entry_input_sys_date_changed"><![CDATA[Обновлено]]></string>
     <string name="_bx_posts_form_entry_input_date_changed"><![CDATA[Обновлено]]></string>
-    <string name="_bx_posts_form_entry_input_sys_date_published"><![CDATA[Опубликовано]]></string>
-    <string name="_bx_posts_form_entry_input_date_published"><![CDATA[Опубликовано]]></string>
+    <string name="_bx_posts_form_entry_input_sys_date_published"><![CDATA[Время публикации]]></string>
+    <string name="_bx_posts_form_entry_input_date_published"><![CDATA[Время публикации]]></string>
     <string name="_bx_posts_form_entry_input_date_published_info"><![CDATA[Оставьте пустым, чтобы опубликовать немедленно.]]></string>
     <string name="_bx_posts_form_entry_input_sys_attachments"><![CDATA[Вложения]]></string>
     <string name="_bx_posts_form_entry_input_sys_disable_comments"><![CDATA[Запретить комментарии]]></string>
@@ -96,6 +97,7 @@
     <string name="_bx_posts_page_title_browse_featured"><![CDATA[Продвинутые публикации]]></string>
     <string name="_bx_posts_page_title_browse_recent"><![CDATA[Недавние публикации]]></string>
     <string name="_bx_posts_page_title_browse_popular"><![CDATA[Популярные публикации]]></string>
+    <string name="_bx_posts_page_title_browse_top"><![CDATA[Топ публикаций]]></string>
     <string name="_bx_posts_page_title_browse_updated"><![CDATA[Обновлённые публикации]]></string>
     <string name="_bx_posts_page_title_sys_home"><![CDATA[Публикации - Домой]]></string>
     <string name="_bx_posts_page_title_home"><![CDATA[Публикации]]></string>
@@ -114,6 +116,8 @@
     <string name="_bx_posts_page_block_title_entry_all_actions"><![CDATA[Все действия]]></string>
     <string name="_bx_posts_page_title_sys_entries_popular"><![CDATA[Популярные публикации]]></string>
     <string name="_bx_posts_page_title_entries_popular"><![CDATA[Популярные публикации]]></string>
+    <string name="_bx_posts_page_title_sys_entries_top"><![CDATA[Топ публикаций]]></string>
+    <string name="_bx_posts_page_title_entries_top"><![CDATA[Топ публикаций]]></string>
     <string name="_bx_posts_page_title_sys_entries_updated"><![CDATA[Обновленные публикации]]></string>
     <string name="_bx_posts_page_title_entries_updated"><![CDATA[Обновленные публикации]]></string>
     <string name="_bx_posts_page_title_sys_entries_search"><![CDATA[Поиск]]></string>
@@ -125,6 +129,7 @@
     <string name="_bx_posts_page_block_title_popular_entries"><![CDATA[Популярные публикации]]></string>
     <string name="_bx_posts_page_block_title_popular_entries_view_extended"><![CDATA[Популярные публикации (Расширенный просмотр)]]></string>
     <string name="_bx_posts_page_block_title_popular_entries_view_full"><![CDATA[Популярные публикации (Полный просмотр)]]></string>
+    <string name="_bx_posts_page_block_title_top_entries"><![CDATA[Топ публикаций]]></string>
     <string name="_bx_posts_page_block_title_updated_entries"><![CDATA[Обновленные публикации]]></string>
     <string name="_bx_posts_page_title_sys_view_entry_comments"><![CDATA[Комментарии к публикации]]></string>
     <string name="_bx_posts_page_title_view_entry_comments"><![CDATA[Комментарии к {title}]]></string>
@@ -195,6 +200,8 @@
     <string name="_bx_posts_menu_item_title_entries_manage"><![CDATA[Управление]]></string>
     <string name="_bx_posts_menu_item_title_system_entries_popular"><![CDATA[Популярные]]></string>
     <string name="_bx_posts_menu_item_title_entries_popular"><![CDATA[Популярные]]></string>
+    <string name="_bx_posts_menu_item_title_system_entries_top"><![CDATA[Топ]]></string>
+    <string name="_bx_posts_menu_item_title_entries_top"><![CDATA[Топ]]></string>
     <string name="_bx_posts_menu_item_title_system_entries_search"><![CDATA[Поиск]]></string>
     <string name="_bx_posts_menu_item_title_entries_search"><![CDATA[Поиск]]></string>
     <string name="_bx_posts_menu_title_view_entry_submenu"><![CDATA[Просмотреть публикацию - Подменю]]></string>
@@ -272,12 +279,13 @@
     <string name="_bx_posts_cat_Weddings"><![CDATA[Свадьба]]></string>
     <string name="_bx_posts_cat_Womens_Fashion"><![CDATA[Женская мода]]></string>
 
-    <string name="_bx_posts_txt_all_entries_by"><![CDATA[<a href="{0}">Все публикации от {1} ({2})</a>]]></string>
+    <string name="_bx_posts_txt_all_entries_by"><![CDATA[{0} публикаций]]></string>
     <string name="_bx_posts_txt_all_entries_in"><![CDATA[<a href="{0}">Все публикации в {1} ({2})</a>]]></string>
     <string name="_bx_posts_txt_sample_single"><![CDATA[публикация]]></string>
     <string name="_bx_posts_txt_sample_single_with_article"><![CDATA[публикация]]></string>
     <string name="_bx_posts_txt_sample_comment_single"><![CDATA[комментарий к публикации]]></string>
     <string name="_bx_posts_txt_sample_vote_single"><![CDATA[голос за публикацию]]></string>
+    <string name="_bx_posts_txt_sample_reaction_single"><![CDATA[реакция '{0}' к публикации]]></string>
     <string name="_bx_posts_txt_sample_score_up_single"><![CDATA[голос за публикацию]]></string>
     <string name="_bx_posts_txt_sample_score_down_single"><![CDATA[голос против публикации]]></string>
     <string name="_bx_posts_txt_processing_awaiting"><![CDATA[Публикация будет опубликована как только сконвертируется видео.]]></string>
@@ -286,8 +294,8 @@
 
     <string name="_bx_posts_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
 
-    <string name="_bx_posts_txt_poll_answers"><![CDATA[опрос]]></string>
-    <string name="_bx_posts_txt_poll_results"><![CDATA[результаты]]></string>
+    <string name="_bx_posts_txt_poll_view_answers"><![CDATA[опрос]]></string>
+    <string name="_bx_posts_txt_poll_view_results"><![CDATA[результаты]]></string>
     <string name="_bx_posts_txt_poll_answer_vote_do_by"><![CDATA[Проголосовали за]]></string>
     <string name="_bx_posts_txt_poll_answer_vote_counter"><![CDATA[{0} голосов]]></string>
     <string name="_bx_posts_txt_poll_answer_vote_percent"><![CDATA[({0}%)]]></string>

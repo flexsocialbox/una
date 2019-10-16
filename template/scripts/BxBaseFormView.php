@@ -58,6 +58,11 @@ class BxBaseFormView extends BxDolForm
      * Form is submitted dynamically (using Ajax Submit).
      */
     protected $_bAjaxMode = false;
+    
+    /**
+     * Use absolute Action URL which is needed in Ajax Mode.
+     */
+    protected $_bAbsoluteActionUrl = false;
 
     /**
      * Form is displayed in view mode.
@@ -99,29 +104,33 @@ class BxBaseFormView extends BxDolForm
     {
         parent::__construct($aInfo, $oTemplate);
 
-        if(isset($this->aParams['ajax_mode']))
-        	$this->setAjaxMode($this->aParams['ajax_mode']);
-
-        $mixedAjaxMode = bx_get('ajax_mode');
-        if($mixedAjaxMode !== false)
-        	$this->setAjaxMode($mixedAjaxMode);
-
+        $this->_bAjaxMode = isset($this->aParams['ajax_mode']) && $this->aParams['ajax_mode'];
         $this->_bViewMode = isset($this->aParams['view_mode']) && $this->aParams['view_mode'];
 
-        if ($this->_bViewMode) {
+        if($this->_bViewMode) {
             $this->_sSectionClose = 'getCloseSectionViewMode';
             $this->_sSectionOpen = 'getOpenSectionViewMode';
         }
     }
 
-	function setAjaxMode($bAjaxMode)
+    function setAjaxMode($bAjaxMode)
     {
-		$this->_bAjaxMode = (bool)$bAjaxMode;
+        $this->_bAjaxMode = (bool)$bAjaxMode;
     }
 
     function isAjaxMode()
     {
-    	return $this->_bAjaxMode;
+        return $this->_bAjaxMode;
+    }
+
+    function setAbsoluteActionUrl($sUrl)
+    {
+        if(empty($sUrl))
+            return;
+
+        $this->aFormAttrs['action'] = $sUrl;
+
+        $this->_bAbsoluteActionUrl = true;
     }
 
     /**
@@ -131,16 +140,27 @@ class BxBaseFormView extends BxDolForm
      */
     function getCode($bDynamicMode = false)
     {
-        if (!$bDynamicMode && bx_is_dynamic_request())
+        if(!$bDynamicMode && bx_is_dynamic_request())
             $bDynamicMode = true;
 
         $this->_bDynamicMode = $bDynamicMode;
         $this->aFormAttrs = $this->_replaceMarkers($this->aFormAttrs);
-        $this->sCode = $this->genForm();
 
-        $this->addCssJs ();
+        $sInclude = '';
+        $this->sCode = false;
+        bx_alert('system', 'form_output', 0, 0, array(
+            'dynamic' => $this->_bDynamicMode,
+            'object' => &$this,
+            'code' => &$this->sCode,
+            'include' => &$sInclude
+        ));
+
+        if($this->sCode === false)
+            $this->sCode = $this->genForm();
+
+        $this->addCssJs();
         $sDynamicCssJs = $this->_processCssJs();
-        return $sDynamicCssJs . $this->sCode;
+        return $sInclude . $sDynamicCssJs . $this->sCode;
     }
 
     /**
@@ -226,9 +246,19 @@ BLAH;
 
         // add 'Ajax Mode' flag
         if($this->_bAjaxMode)
-        	$this->aInputs['ajax_mode'] = array(
+            $this->aInputs['ajax_mode'] = array(
                 'type' => 'hidden',
                 'name' => 'ajax_mode',
+                'value' => 1,
+                'db' => array ('pass' => 'Int'),
+                'visible_for_levels' => PHP_INT_MAX,
+            );
+
+        // add 'Absolute Action Url' flag
+        if($this->_bAbsoluteActionUrl)
+            $this->aInputs['absolute_action_url'] = array(
+                'type' => 'hidden',
+                'name' => 'absolute_action_url',
                 'value' => 1,
                 'db' => array ('pass' => 'Int'),
                 'visible_for_levels' => PHP_INT_MAX,
@@ -549,14 +579,8 @@ EOS;
         if(isset($aInput['error_updated']) && $aInput['error_updated'] === true)
             $sErrorIcon = $this->genErrorIcon(empty($aInput['error']) ? '' : $aInput['error']);
 
-        $sCaptionCode = '';
-        if ($sCaption)
-            $sCaptionCode = '<div class="bx-form-caption' . $sClassOneLineCaption . '">' . $sCaption . $sRequired . '</div>';
-        else
-            $sInput .= $sRequired;
-
+        $sCaptionCode = $sCaption ? '<div class="bx-form-caption' . $sClassOneLineCaption . '">' . $sCaption . $sRequired . '</div>' : '';
         $sInputCode = $this->genWrapperInput($aInput, $sInput);
-
 
         if (empty($sInfoIcon)) $sInfoIcon = '';
         if (empty($sInputCode)) $sInputCode = '';
@@ -696,6 +720,7 @@ BLAH;
             case 'date_time':
             case 'datetime':
             case 'number':
+            case 'time':
             case 'checkbox':
             case 'radio':
             case 'image':
@@ -1092,24 +1117,58 @@ BLAH;
         $this->addCssJsUi();
 
         $sVals = '';
-        if (!empty($aInput['value']) && is_array($aInput['value'])) {
-            foreach ($aInput['value'] as $sVal) {
-                if (!$sVal || !($oProfile = BxDolProfile::getInstance($sVal)))
-                    continue;
-               $sVals .= '<b class="val bx-def-color-bg-hl bx-def-round-corners">' . $oProfile->getUnit(0, array('template' => 'unit_wo_info')) . $oProfile->getDisplayName() . '<input type="hidden" name="' . $aInput['name'] . '[]" value="' . $sVal . '" /></b>';
+        if(!empty($aInput['value'])) {
+            if(is_array($aInput['value'])) {
+                foreach($aInput['value'] as $sVal) {
+                    if(!$sVal || !($oProfile = BxDolProfile::getInstance($sVal)))
+                        continue;
+
+                   $sVals .= '<b class="val bx-def-color-bg-hl bx-def-round-corners">' . $oProfile->getUnit(0, array('template' => 'unit_wo_info')) . $oProfile->getDisplayName() . '<input type="hidden" name="' . $aInput['name'] . '[]" value="' . $sVal . '" /></b>';
+                }
+                $sVals = trim($sVals, ',');
             }
-            $sVals = trim($sVals, ',');
+            else if(is_string($aInput['value']))
+                $sVals = $aInput['value'];
         }
 
+        $bDisabled = isset($aInput['attrs']['disabled']) && $aInput['attrs']['disabled'] == 'disabled';
+
+        $sId = $aInput['name'] . time() . mt_rand(0, 100);
+        $sClass = 'bx-form-input-autotoken bx-def-font-inputs bx-form-input-text';
+        if($bDisabled)
+            $sClass .= ' bx-form-input-disabled';
+        if(!empty($aInput['attrs']['class'])) {
+            $sClass .= ' ' . $aInput['attrs']['class'];
+            unset($aInput['attrs']['class']);
+        }
+
+        $aAttrs = array('value' => '', 'autocomplete' => 'off', 'autocapitalize' => 'off', 'autocorrect' => 'off');
+        if(isset($aInput['attrs']) && is_array($aInput['attrs']))
+            $aAttrs = array_merge($aAttrs, $aInput['attrs']);
+
         return $this->oTemplate->parseHtmlByName('form_field_custom_suggestions.html', array(
-            'id' => $aInput['name'] . time() . mt_rand(0, 100),
-            'url_get_recipients' => $aInput['ajax_get_suggestions'],
+            'id' => $sId,
             'name' => $aInput['name'],
-			'b_img' => isset($aInput['custom']['b_img']) ? (int)$aInput['custom']['b_img'] : 1,
-			'only_once' => isset($aInput['custom']['only_once']) ? 1 : 0,
-			'on_select' => isset($aInput['custom']['on_select']) ? $aInput['custom']['on_select']: 'null',
-            'placeholder' => bx_html_attribute(isset($aInput['placeholder']) ? $aInput['placeholder'] : _t('_sys_form_paceholder_profiles_suggestions'), BX_ESCAPE_STR_QUOTE),
+            'class' => $sClass,
             'vals' => $sVals,
+            'bx_if:input' => array(
+                'condition' => !$bDisabled,
+                'content' => array(
+                    'attrs' => bx_convert_array2attrs($aAttrs),
+                )
+            ),
+            'bx_if:init' => array(
+                'condition' => !$bDisabled,
+                'content' => array(
+                    'id' => $sId,
+                    'name' => $aInput['name'],
+                    'url_get_recipients' => $aInput['ajax_get_suggestions'],
+                    'b_img' => isset($aInput['custom']['b_img']) ? (int)$aInput['custom']['b_img'] : 1,
+                    'only_once' => isset($aInput['custom']['only_once']) ? 1 : 0,
+                    'on_select' => isset($aInput['custom']['on_select']) ? $aInput['custom']['on_select']: 'null',
+                    'placeholder' => bx_html_attribute(isset($aInput['placeholder']) ? $aInput['placeholder'] : _t('_sys_form_paceholder_profiles_suggestions'), BX_ESCAPE_STR_QUOTE),
+                )
+            )
         ));
     }
 
@@ -1336,6 +1395,9 @@ BLAH;
                 $sOptions
             </select>
 BLAH;
+
+        if(!empty($aInput['content']))
+            $sCode .= $aInput['content'];
 
         return $sCode;
     }

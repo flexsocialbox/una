@@ -23,18 +23,8 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
 
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        if (isset($CNF['FIELD_ALLOW_POST_TO']) && isset($this->aInputs[$CNF['FIELD_ALLOW_POST_TO']]) && isset($CNF['OBJECT_PRIVACY_POST']) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_POST'])) !== false) {
-
-            $aSave = array('db' => array('pass' => 'Xss'));
-            array_walk($this->aInputs[$CNF['FIELD_ALLOW_POST_TO']], function ($a, $k, $aSave) {
-                if (in_array($k, array('info', 'caption', 'value')))
-                    $aSave[0][$k] = $a;
-            }, array(&$aSave));
-
-            $aGroupChooser = $oPrivacy->getGroupChooser($CNF['OBJECT_PRIVACY_POST']);
-
-            $this->aInputs[$CNF['FIELD_ALLOW_POST_TO']] = array_merge($this->aInputs[$CNF['FIELD_ALLOW_POST_TO']], $aGroupChooser, $aSave);
-        }
+        $this->_preparePrivacyField('POST');
+        $this->_preparePrivacyField('CONTACT');
 
         if (!empty($CNF['FIELD_PICTURE']) && isset($this->aInputs[$CNF['FIELD_PICTURE']])) {
             $this->_aImageFields[$CNF['FIELD_PICTURE']] = array (
@@ -80,6 +70,9 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
 
             $this->aInputs[$sField]['ghost_template'] = $this->_oModule->_oTemplate->parseHtmlByName('form_ghost_template.html', $this->_getProfilePhotoGhostTmplVars($sField, $aContentInfo));
         }
+
+        $this->_preloadPrivacyField('POST', $aValues);
+        $this->_preloadPrivacyField('CONTACT', $aValues);
 
         parent::initChecker($aValues, $aSpecificValues);
     }

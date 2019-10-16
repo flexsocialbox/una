@@ -3,6 +3,7 @@
 
 	<string name="_bx_videos"><![CDATA[Видео]]></string>
 	<string name="_bx_videos_cmts"><![CDATA[Видео - Комментарии]]></string>
+        <string name="_bx_videos_reactions"><![CDATA[Видео - Реакции]]></string>
 
 	<string name="_bx_videos_option_summary_chars"><![CDATA[Количество символов в автогенерируемой сводке к видео]]></string>
 	<string name="_bx_videos_option_plain_summary_chars"><![CDATA[Количество символов в описании видео при отсутствующей картинке видео]]></string>
@@ -76,6 +77,7 @@
 	<string name="_bx_videos_page_title_browse_featured"><![CDATA[Продвинутые видео]]></string>
     <string name="_bx_videos_page_title_browse_recent"><![CDATA[Недавние видео]]></string>
     <string name="_bx_videos_page_title_browse_popular"><![CDATA[Популярные видео]]></string>
+    <string name="_bx_videos_page_title_browse_top"><![CDATA[Топ видео]]></string>
     <string name="_bx_videos_page_title_browse_updated"><![CDATA[Обновлённые видео]]></string>
     <string name="_bx_videos_page_title_sys_home"><![CDATA[Видео - Домой]]></string>
     <string name="_bx_videos_page_title_home"><![CDATA[Видео]]></string>
@@ -96,6 +98,8 @@
     <string name="_bx_videos_page_block_title_entry_rating"><![CDATA[Рейтинг]]></string>
     <string name="_bx_videos_page_title_sys_entries_popular"><![CDATA[Популярные видео]]></string>
     <string name="_bx_videos_page_title_entries_popular"><![CDATA[Популярные видео]]></string>
+    <string name="_bx_videos_page_title_sys_entries_top"><![CDATA[Топ видео]]></string>
+    <string name="_bx_videos_page_title_entries_top"><![CDATA[Топ видео]]></string>
     <string name="_bx_videos_page_title_sys_entries_updated"><![CDATA[Обновленные видео]]></string>
     <string name="_bx_videos_page_title_entries_updated"><![CDATA[Обновленные видео]]></string>
     <string name="_bx_videos_page_title_sys_entries_search"><![CDATA[Поиск]]></string>
@@ -107,6 +111,7 @@
     <string name="_bx_videos_page_block_title_popular_entries"><![CDATA[Популярные видео]]></string>
     <string name="_bx_videos_page_block_title_popular_entries_view_extended"><![CDATA[Популярные видео (Расширенный просмотр)]]></string>
     <string name="_bx_videos_page_block_title_popular_entries_view_full"><![CDATA[Популярные видео (Полный просмотр)]]></string>
+    <string name="_bx_videos_page_block_title_top_entries"><![CDATA[Топ видео]]></string>
     <string name="_bx_videos_page_block_title_updated_entries"><![CDATA[Обновленные видео]]></string>
     <string name="_bx_videos_page_title_sys_view_entry_comments"><![CDATA[Комментарии к видео]]></string>
     <string name="_bx_videos_page_title_view_entry_comments"><![CDATA[Комментарии к {title}]]></string>
@@ -160,6 +165,8 @@
     <string name="_bx_videos_menu_item_title_entries_manage"><![CDATA[Управление]]></string>
     <string name="_bx_videos_menu_item_title_system_entries_popular"><![CDATA[Популярные]]></string>
     <string name="_bx_videos_menu_item_title_entries_popular"><![CDATA[Популярные]]></string>
+    <string name="_bx_videos_menu_item_title_system_entries_top"><![CDATA[Топ]]></string>
+    <string name="_bx_videos_menu_item_title_entries_top"><![CDATA[Топ]]></string>
     <string name="_bx_videos_menu_item_title_system_entries_search"><![CDATA[Поиск]]></string>
     <string name="_bx_videos_menu_item_title_entries_search"><![CDATA[Поиск]]></string>
     <string name="_bx_videos_menu_title_view_entry_submenu"><![CDATA[Просмотреть видео - Подменю]]></string>
@@ -214,12 +221,13 @@
     <string name="_bx_videos_cat_sports"><![CDATA[Спорт]]></string>
     <string name="_bx_videos_cat_travel"><![CDATA[Путешествия]]></string>
 
-    <string name="_bx_videos_txt_all_entries_by"><![CDATA[<a href="{0}">Все видео от {1} ({2})</a>]]></string>
+    <string name="_bx_videos_txt_all_entries_by"><![CDATA[{0} видео]]></string>
     <string name="_bx_videos_txt_all_entries_in"><![CDATA[<a href="{0}">Все видео в {1} ({2})</a>]]></string>
     <string name="_bx_videos_txt_sample_single"><![CDATA[видео]]></string>
     <string name="_bx_videos_txt_sample_single_with_article"><![CDATA[видео]]></string>
     <string name="_bx_videos_txt_sample_comment_single"><![CDATA[комментарий к видео]]></string>
     <string name="_bx_videos_txt_sample_vote_single"><![CDATA[голос за видео]]></string>
+    <string name="_bx_videos_txt_sample_reaction_single"><![CDATA[реакция '{0}' к видео]]></string>
     <string name="_bx_videos_txt_sample_score_up_single"><![CDATA[голос за видео]]></string>
     <string name="_bx_videos_txt_sample_score_down_single"><![CDATA[голос против видео]]></string>
     <string name="_bx_videos_txt_n_views"><![CDATA[{0} просмотров]]></string>

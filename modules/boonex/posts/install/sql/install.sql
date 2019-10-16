@@ -8,7 +8,10 @@ CREATE TABLE IF NOT EXISTS `bx_posts_posts` (
   `thumb` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `cat` int(11) NOT NULL,
+  `multicat` text NOT NULL,
   `text` mediumtext NOT NULL,
+  `labels` text NOT NULL,
+  `location` text NOT NULL,
   `views` int(11) NOT NULL default '0',
   `rate` float NOT NULL default '0',
   `votes` int(11) NOT NULL default '0',
@@ -275,6 +278,7 @@ CREATE TABLE IF NOT EXISTS `bx_posts_polls` (
   `content_id` int(11) NOT NULL default '0',
   `text` text NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `content_id` (`content_id`),
   FULLTEXT KEY `search_fields` (`text`)
 );
 
@@ -286,6 +290,7 @@ CREATE TABLE IF NOT EXISTS `bx_posts_polls_answers` (
   `votes` int(11) NOT NULL default '0',
   `order` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`),
+  KEY `poll_id` (`poll_id`),
   FULLTEXT KEY `title` (`title`)
 );
 
@@ -379,6 +384,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_posts', 'bx_posts', 'text', '', '', 0, 'textarea', '_bx_posts_form_entry_input_sys_text', '_bx_posts_form_entry_input_text', '', 1, 0, 2, '', '', '', 'Avail', '', '_bx_posts_form_entry_input_text_err', 'XssHtml', '', 1, 0),
 ('bx_posts', 'bx_posts', 'title', '', '', 0, 'text', '_bx_posts_form_entry_input_sys_title', '_bx_posts_form_entry_input_title', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_posts_form_entry_input_title_err', 'Xss', '', 1, 0),
 ('bx_posts', 'bx_posts', 'cat', '', '#!bx_posts_cats', 0, 'select', '_bx_posts_form_entry_input_sys_cat', '_bx_posts_form_entry_input_cat', '', 1, 0, 0, '', '', '', 'avail', '', '_bx_posts_form_entry_input_cat_err', 'Xss', '', 1, 0),
+('bx_posts', 'bx_posts', 'multicat', '', '', 0, 'custom', '_bx_posts_form_entry_input_sys_multicat', '_bx_posts_form_entry_input_multicat', '', 1, 0, 0, '', '', '', 'avail', '', '_bx_posts_form_entry_input_multicat_err', 'Xss', '', 1, 0),
 ('bx_posts', 'bx_posts', 'added', '', '', 0, 'datetime', '_bx_posts_form_entry_input_sys_date_added', '_bx_posts_form_entry_input_date_added', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_posts', 'bx_posts', 'changed', '', '', 0, 'datetime', '_bx_posts_form_entry_input_sys_date_changed', '_bx_posts_form_entry_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_posts', 'bx_posts', 'published', '', '', 0, 'datetime', '_bx_posts_form_entry_input_sys_date_published', '_bx_posts_form_entry_input_date_published', '_bx_posts_form_entry_input_date_published_info', 0, 0, 0, '', '', '', '', '', '', 'DateTimeUtc', '', 1, 0),
@@ -439,7 +445,7 @@ INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `v
 ('bx_posts_poll_add', 'bx_posts', 'bx_posts_poll', '_bx_posts_form_poll_display_add', 0);
 
 INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES
-('bx_posts_poll', 'bx_posts', 'text', '', '', 0, 'textarea', '_bx_posts_form_poll_input_sys_text', '_bx_posts_form_poll_input_text', '', 1, 0, 3, '', '', '', 'Avail', '', '_bx_posts_form_poll_input_text_err', 'Xss', '', 1, 0),
+('bx_posts_poll', 'bx_posts', 'text', '', '', 0, 'textarea', '_bx_posts_form_poll_input_sys_text', '_bx_posts_form_poll_input_text', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_posts_form_poll_input_text_err', 'Xss', '', 1, 0),
 ('bx_posts_poll', 'bx_posts', 'answers', '', '', 0, 'custom', '_bx_posts_form_poll_input_sys_answers', '_bx_posts_form_poll_input_answers', '', 1, 0, 0, '', '', '', 'AvailAnswers', '', '_bx_posts_form_poll_input_answers_err', '', '', 1, 0),
 ('bx_posts_poll', 'bx_posts', 'controls', '', 'do_submit,do_cancel', 0, 'input_set', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 ('bx_posts_poll', 'bx_posts', 'do_submit', '_bx_posts_form_poll_input_do_submit', '', 0, 'submit', '_bx_posts_form_poll_input_sys_do_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
@@ -451,7 +457,6 @@ INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_fo
 ('bx_posts_poll_add', 'controls', 2147483647, 1, 3),
 ('bx_posts_poll_add', 'do_submit', 2147483647, 1, 4),
 ('bx_posts_poll_add', 'do_cancel', 2147483647, 1, 5);
-
 
 -- PRE-VALUES
 INSERT INTO `sys_form_pre_lists`(`key`, `title`, `module`, `use_for_sets`) VALUES

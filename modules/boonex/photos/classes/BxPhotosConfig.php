@@ -51,6 +51,7 @@ class BxPhotosConfig extends BxBaseModTextConfig
             'FIELD_STATUS' => 'status',
             'FIELD_STATUS_ADMIN' => 'status_admin',
             'FIELD_LABELS' => 'labels',
+            'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
 			
@@ -64,6 +65,7 @@ class BxPhotosConfig extends BxBaseModTextConfig
 
             'URL_HOME' => 'page.php?i=photos-home',
             'URL_POPULAR' => 'page.php?i=photos-popular',
+            'URL_TOP' => 'page.php?i=photos-top',
             'URL_UPDATED' => 'page.php?i=photos-updated',
             'URL_MANAGE_COMMON' => 'page.php?i=photos-manage',
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=photos-administration',
@@ -123,6 +125,7 @@ class BxPhotosConfig extends BxBaseModTextConfig
             	'txt_sample_single_with_article' => '_bx_photos_txt_sample_single_with_article',
             	'txt_sample_comment_single' => '_bx_photos_txt_sample_comment_single',
             	'txt_sample_vote_single' => '_bx_photos_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_photos_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_photos_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_photos_txt_sample_score_down_single',
                 'form_field_author' => '_bx_photos_form_entry_input_author',

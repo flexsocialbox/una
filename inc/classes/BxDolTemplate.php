@@ -36,7 +36,7 @@ define('BX_DOL_PAGE_WIDTH', '1024px');
  */
 define('BX_PAGE_DEFAULT', 0); ///< default, regular page
 define('BX_PAGE_CLEAR', 2); ///< clear page, without any headers and footers
-define('BX_PAGE_EMBED', 2); ///< page used for embeds
+define('BX_PAGE_EMBED', 22); ///< page used for embeds
 define('BX_PAGE_POPUP', 44); ///< popup page, without any headers and footers
 define('BX_PAGE_TRANSITION', 150); ///< transition page with redirect to display some msg, like 'please wait', without headers footers
 
@@ -208,21 +208,18 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
     protected $_bImagesInline;
     protected $_iImagesMaxSize;
 
+    protected $_bCssLess;
     protected $_bCssCache;
     protected $_bCssMinify;
     protected $_bCssArchive;
+    protected $_sCssLessPrefix;
     protected $_sCssCachePrefix;
 
+    protected $_bJsLess;
     protected $_bJsCache;
     protected $_bJsMinify;
     protected $_bJsArchive;
     protected $_sJsCachePrefix;
-
-    /**
-     * Less related fields
-     */
-    protected $_bLessEnable;
-    protected $_sLessCachePrefix;
 
     protected $aPage;
     protected $aPageContent;
@@ -293,18 +290,19 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         $this->_iImagesMaxSize = (int)getParam('sys_template_cache_image_max_size') * 1024;
 
         $bArchive = getParam('sys_template_cache_compress_enable') == 'on';
+
+        $this->_bCssLess = true; //--- Less cannot be disabled for CSS.
         $this->_bCssCache = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_css_enable') == 'on';
         $this->_bCssMinify = $this->_bCssCache && getParam('sys_template_cache_minify_css_enable') == 'on';
         $this->_bCssArchive = $this->_bCssCache && $bArchive;
+        $this->_sCssLessPrefix = $this->_sCacheFilePrefix . 'less_';
         $this->_sCssCachePrefix = $this->_sCacheFilePrefix . 'css_';
 
+        $this->_bJsLess = false; //--- Less language isn't available for JS at all.
         $this->_bJsCache = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_js_enable') == 'on';
         $this->_bJsMinify = $this->_bJsCache && getParam('sys_template_cache_minify_js_enable') == 'on';
         $this->_bJsArchive = $this->_bJsCache && $bArchive;
         $this->_sJsCachePrefix = $this->_sCacheFilePrefix . 'js_';
-
-        $this->_bLessEnable = true;
-        $this->_sLessCachePrefix = $this->_sCacheFilePrefix . 'less_';
 
         $this->aPage = array();
         $this->aPageContent = array();
@@ -341,6 +339,8 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
      */
     public static function retrieveCode($sCodeKey = BX_DOL_TEMPLATE_CODE_KEY, $sMixKey = BX_DOL_TEMPLATE_MIX_KEY, $sRootPath = BX_DIRECTORY_PATH_ROOT)
     {
+        $oDb = BxDolDb::getInstance();
+
         $fCheckCode = function($sCode, $bSetCookie) use($sCodeKey, $sRootPath) {
             if(empty($sCode) || !preg_match('/^[A-Za-z0-9_-]+$/', $sCode))
                 return false;
@@ -368,12 +368,12 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             return $aResult;
         };
 
-        $fCheckMix = function($aResult, $iMix, $bSetCookie) use($sMixKey, $sRootPath) {
+        $fCheckMix = function($aResult, $iMix, $bSetCookie) use($sMixKey, $sRootPath, $oDb) {
             list($sCode, $sName) = $aResult;
-            if(empty($sName))
+            if(empty($sName) || empty($iMix))
                 return false;
 
-            $aMix = BxDolDb::getInstance()->getParamsMix($iMix);
+            $aMix = $oDb->getParamsMix($iMix);
             if(empty($aMix) || !is_array($aMix) || $aMix['type'] != $sName)
                 return false;
 
@@ -405,27 +405,45 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         if($aResultCheck !== false)
             $aResult = $aResultCheck;
 
-        if($aResult !== false) {
-            //--- Check selected mix in COOKIE(the lowest priority) ---//
-            $iMix = !empty($_COOKIE[$sMixKey]) ? (int)$_COOKIE[$sMixKey] : 0;
-            $iResultCheck = $fCheckMix($aResult, $iMix, false);
-            if($iResultCheck !== false) {
-                if(!is_array($aResult[0]))
-                    $aResult[0] = array($aResult[0]);
+        if($aResult === false) 
+            return $aResult;
 
-                $aResult[0][1] = $iResultCheck;
+        if(!is_array($aResult[0]))
+            $aResult[0] = array($aResult[0]);
+
+        $iMixDefault = !empty($aResult[1]) ? (int)getParam($aResult[1] . '_default_mix') : 0;
+
+        //--- Check selected mix in COOKIE(the lowest priority) ---//
+        $iMix = !empty($_COOKIE[$sMixKey]) ? (int)$_COOKIE[$sMixKey] : 0;
+        $iResultCheck = $fCheckMix($aResult, $iMix, false);
+        if($iResultCheck !== false) {
+            $aMix = $oDb->getParamsMix($iMix);
+            if((int)$aMix['published'] == 0 && $iMix != $iMixDefault) {
+                $aUrl = parse_url(BX_DOL_URL_ROOT);
+                $sPath = isset($aUrl['path']) && !empty($aUrl['path']) ? $aUrl['path'] : '/';
+
+                setcookie($sMixKey, '', time() - 96 * 3600, $sPath);
+                unset($_COOKIE[$sMixKey]);
             }
-
-            //--- Check selected mix in GET(the highest priority) ---//
-            $iMix = !empty($_GET[$sMixKey]) ? (int)$_GET[$sMixKey] : 0;
-            $iResultCheck = $fCheckMix($aResult, $iMix, true);
-            if($iResultCheck !== false) {
-                if(!is_array($aResult[0]))
-                    $aResult[0] = array($aResult[0]);
-
+            else
                 $aResult[0][1] = $iResultCheck;
-            }
         }
+
+        //--- Check selected mix in GET(the highest priority) ---//
+        $iMix = !empty($_GET[$sMixKey]) ? (int)$_GET[$sMixKey] : 0;
+        $iResultCheck = $fCheckMix($aResult, $iMix, true);
+        if($iResultCheck !== false)
+            $aResult[0][1] = $iResultCheck;
+
+        //--- Get default mix for currently selected template ---//
+        if(empty($aResult[0][1]) && !empty($iMixDefault)) {
+            $iResultCheck = $fCheckMix($aResult, $iMixDefault, false);
+            if($iResultCheck !== false)
+                $aResult[0][1] = $iResultCheck;
+        }
+
+        if(is_array($aResult[0]) && count($aResult[0]) == 1)
+           $aResult[0] = $aResult[0][0];
 
         return $aResult;
     }
@@ -962,6 +980,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
     {
         $sRet = '';
 
+        // general meta tags
         if (!empty($this->aPage['keywords']) && is_array($this->aPage['keywords']))
             $sRet .= '<meta name="keywords" content="' . bx_html_attribute(implode(',', $this->aPage['keywords'])) . '" />';
 
@@ -969,23 +988,24 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         if ($bDescription)
             $sRet .= '<meta name="description" content="' . bx_html_attribute($this->aPage['description']) . '" />';
 
+        // location
         if (!empty($this->aPage['location']) && isset($this->aPage['location']['lat']) && isset($this->aPage['location']['lng']) && isset($this->aPage['location']['country']))
             $sRet .= '
                 <meta name="ICBM" content="' . $this->aPage['location']['lat'] . ';' . $this->aPage['location']['lng'] . '" />
                 <meta name="geo.position" content="' . $this->aPage['location']['lat'] . ';' . $this->aPage['location']['lng'] . '" />
                 <meta name="geo.region" content="' . bx_html_attribute($this->aPage['location']['country']) . '" />';
 
-        $bPageImage = !empty($this->aPage['image']);
-        if ($bPageImage)
-            $sRet .= '<meta property="og:image" content="' . $this->aPage['image'] . '" />';
 
+        // facebook / twitter
+        $bPageImage = !empty($this->aPage['image']);
         $sRet .= '<meta name="twitter:card" content="' . ($bPageImage ? 'summary_large_image' : 'summary') . '" />';
         if ($bPageImage)
-            $sRet .= '<meta name="twitter:image" content="' . $this->aPage['image'] . '" />';
+            $sRet .= '<meta property="og:image" content="' . $this->aPage['image'] . '" />';
         $sRet .= '
-			<meta name="twitter:title" content="' . (isset($this->aPage['header']) ? bx_html_attribute(strip_tags($this->aPage['header'])) : '') . '" />
-			<meta name="twitter:description" content="' . ($bDescription ? bx_html_attribute($this->aPage['description']) : '') . '" />';
+			<meta property="og:title" content="' . (isset($this->aPage['header']) ? bx_html_attribute(strip_tags($this->aPage['header'])) : '') . '" />
+			<meta property="og:description" content="' . ($bDescription ? bx_html_attribute($this->aPage['description']) : '') . '" />';
 
+        // RSS
         $oFunctions = BxTemplFunctions::getInstance();
         $sRet .= $oFunctions->getManifests();
         $sRet .= $oFunctions->getMetaIcons();
@@ -1535,17 +1555,21 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
     {
     	$sResult = '';
     	switch($sType) {
-    		case 'template':
-				$sResult = $this->_sCacheFilePrefix;
-				break;
+            case 'template':
+                $sResult = $this->_sCacheFilePrefix;
+                break;
 
-    		case 'css':
-    			$sResult = $this->_sCssCachePrefix;
-    			break;
+            case 'less':
+                $sResult = $this->_sCssLessPrefix;
+                break;
 
-    		case 'js':
-    			$sResult = $this->_sJsCachePrefix;
-    			break;
+            case 'css':
+                $sResult = $this->_sCssCachePrefix;
+                break;
+
+            case 'js':
+                $sResult = $this->_sJsCachePrefix;
+                break;
     	}
 
     	return $sResult;
@@ -1644,6 +1668,14 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         return $this->_processFiles('js', 'add', $mixedFiles, $bDynamic);
     }
 
+    /**
+     * get added js files
+     */ 
+    function getJs()
+    {
+        return $this->aPage['js_compiled'];
+    }
+    
     /**
      * Add System JS file(s) to global output.
      * System JS files are the files which are attached to all pages. They will be cached separately from the others.
@@ -1773,6 +1805,14 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
     function addCss($mixedFiles, $bDynamic = false)
     {
         return $this->_processFiles('css', 'add', $mixedFiles, $bDynamic);
+    }
+
+    /**
+     * get added css files
+     */ 
+    function getCss()
+    {
+        return $this->aPage['css_compiled'];
     }
 
     /**
@@ -1967,7 +2007,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
 
             require_once(BX_DIRECTORY_PATH_PLUGINS . 'lessphp/Cache.php');
         	$aFiles = array($mixed['path'] => $mixed['url']);
-        	$aOptions = array('cache_dir' => $this->_sCachePublicFolderPath);
+        	$aOptions = array('cache_dir' => $this->_sCachePublicFolderPath, 'prefix' => $this->_sCssLessPrefix);
         	$sFile = Less_Cache::Get($aFiles, $aOptions, $this->_oTemplateConfig->aLessConfig);
 
             return array('url' => $this->_sCachePublicFolderUrl . $sFile, 'path' => $this->_sCachePublicFolderPath . $sFile);
@@ -2074,18 +2114,17 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         }
 
         //--- Collect all attached CSS/JS in one file ---//
-        $bLess = $this->_bLessEnable && method_exists($this, $sMethodLess);
 
         $sResult = "";
         $aIncluded = array();
         foreach($aFiles as $aFile) {
-        	if($bLess)
-				$aFile = $this->$sMethodLess($aFile);
+            if($this->{'_b' . $sUpcaseType . 'Less'})
+                $aFile = $this->$sMethodLess($aFile);
 
             if(($sContent = $this->$sMethodCompile($aFile['path'], $aIncluded)) === false)
                 continue;                
 
-            if (!preg_match('/[\.-]min.(js|css)$/i', $aFile['path']) && $this->{'_b' . $sUpcaseType . 'Minify'}) // don't minify minified files
+            if(!preg_match('/[\.-]min.(js|css)$/i', $aFile['path']) && $this->{'_b' . $sUpcaseType . 'Minify'}) // don't minify minified files
                 $sContent = $this->$sMethodMinify($sContent);
             
             $sResult .= $sContent;
@@ -2123,7 +2162,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
 
         $sResult = "";
         foreach($aFiles as $aFile) {
-            if($this->_bLessEnable && method_exists($this, $sMethodLess))
+            if($this->{'_b' . $sUpcaseType . 'Less'})
                 $aFile = $this->$sMethodLess($aFile);
 
             $sFileUrl = $aFile['url'];

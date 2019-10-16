@@ -24,6 +24,12 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
      */
     protected $_bAjaxMode;
 
+    /**
+     * Use absolute Action URL in generated form object. 
+     * It's needed in Ajax Mode.
+     */
+    protected $_bAbsoluteActionUrl;
+
     protected $_bDynamicMode;
 
     public function __construct($oModule)
@@ -36,14 +42,24 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         $this->_bAjaxMode = false;
         $mixedAjaxMode = bx_get('ajax_mode');
         if($mixedAjaxMode !== false)
-        	$this->setAjaxMode($mixedAjaxMode);
+            $this->setAjaxMode($mixedAjaxMode);
+
+        $this->_bAbsoluteActionUrl = false;
+        $mixedAbsoluteActionUrl = bx_get('absolute_action_url');
+        if($mixedAbsoluteActionUrl !== false)
+            $this->setAbsoluteActionUrl($mixedAbsoluteActionUrl);
     }
 
-	public function setAjaxMode($bAjaxMode)
+    public function setAjaxMode($bAjaxMode)
     {
         $this->_bAjaxMode = (bool)$bAjaxMode;
         if($this->_bAjaxMode)
-        	$this->setDynamicMode(true);
+            $this->setDynamicMode(true);
+    }
+
+    public function setAbsoluteActionUrl($bAbsoluteActionUrl)
+    {
+        $this->_bAbsoluteActionUrl = (bool)$bAbsoluteActionUrl;
     }
 
     public function setDynamicMode($bDynamicMode)
@@ -60,23 +76,37 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
-        if (false === $sDisplay)
+        if(false === $sDisplay)
             $sDisplay = $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD'];
-        
-        return BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sDisplay, $this->_oModule->_oTemplate);
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sDisplay, $this->_oModule->_oTemplate);
+        if($this->_bAjaxMode)
+            $oForm->setAjaxMode($this->_bAjaxMode);
+
+        if($this->_bAbsoluteActionUrl)
+            $this->_setAbsoluteActionUrl('add', $oForm);
+
+        return $oForm; 
     }
 
     public function getObjectFormEdit ($sDisplay = false)
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
-        if (false === $sDisplay)
+        if(false === $sDisplay)
             $sDisplay = $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT'];
 
-        return BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sDisplay, $this->_oModule->_oTemplate);
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sDisplay, $this->_oModule->_oTemplate);
+        if($this->_bAjaxMode)
+            $oForm->setAjaxMode($this->_bAjaxMode);
+
+        if($this->_bAbsoluteActionUrl)
+            $this->_setAbsoluteActionUrl('edit', $oForm);
+
+        return $oForm;
     }
 
-	public function getObjectFormView ($sDisplay = false)
+    public function getObjectFormView ($sDisplay = false)
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -93,7 +123,14 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         if (false === $sDisplay)
             $sDisplay = $CNF['OBJECT_FORM_ENTRY_DISPLAY_DELETE'];
 
-        return BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sDisplay, $this->_oModule->_oTemplate);
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sDisplay, $this->_oModule->_oTemplate);
+        if($this->_bAjaxMode)
+            $oForm->setAjaxMode($this->_bAjaxMode);
+
+        if($this->_bAbsoluteActionUrl)
+            $this->_setAbsoluteActionUrl('delete', $oForm);
+
+        return $oForm;
     }
 
     public function viewDataEntry ($iContentId)
@@ -159,7 +196,21 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         if($sResult)
             return array('code' => 4, 'message' => $sResult);
 
-        list ($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
+        list($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
+
+        /*
+         * Process metas.
+         * Note. It's essential to process metas a the very end, 
+         * because all data related to an entry should be already
+         * processed and are ready to be passed to alert. 
+         */
+        $this->_oModule->processMetasAdd($iContentId);
+
+        /*
+         * Create alert about the completed action.
+         */
+        $this->_oModule->alertAfterAdd($aContentInfo);
+
         return array('code' => 0, 'message' => '', 'content' => $aContentInfo);
     }
 
@@ -211,14 +262,26 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         if ($sResult)
             return $this->prepareResponse($sResult, $bAsJson, 'msg');
 
-        // perform action
+        list($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
+
+        /*
+         * Process metas.
+         * Note. It's essential to process metas a the very end, 
+         * because all data related to an entry should be already
+         * processed and are ready to be passed to alert. 
+         */
+        $this->_oModule->processMetasAdd($iContentId);
+
+        // Perform ACL action
         $this->_oModule->$sCheckFunction(true);
 
-        // redirect
-        list ($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
+        // Create alert about the completed action.
+        $this->_oModule->alertAfterAdd($aContentInfo);
+
+        // Redirect
         $this->redirectAfterAdd($aContentInfo);
     }
-    
+
     public function redirectAfterAdd($aContentInfo)
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
@@ -280,10 +343,21 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         if ($sResult)
             return $sResult;
 
-        // perform action
+        /*
+         * Process metas.
+         * Note. It's essential to process metas a the very end, 
+         * because all data related to an entry should be already
+         * processed and are ready to be passed to alert. 
+         */
+        $this->_oModule->processMetasEdit($iContentId, $oForm);
+
+        // Perform ACL action
         $this->_oModule->$sCheckFunction($aContentInfo, true);
+
+        // Create alert about the completed action.
+        $this->_oModule->alertAfterEdit($aContentInfo);
         
-        // redirect
+        // Redirect
         $this->redirectAfterEdit($aContentInfo);
     }
 
@@ -413,6 +487,11 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
 
     public function onDataDeleteAfter ($iContentId, $aContentInfo, $oProfile)
     {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW'])) !== false)
+            $oPrivacy->deleteGroupCustomByContentId($iContentId);
+
         return '';
     }
 
@@ -428,26 +507,20 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
+        /*
+         * Load update data.
+         */
         list($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
 
         if(isset($CNF['FIELD_PHOTO']))
             $oForm->processFiles ($CNF['FIELD_PHOTO'], $iContentId, false);
 
-        if(!empty($CNF['OBJECT_METATAGS'])) { // && isset($aTrackTextFieldsChanges['changed_fields'][$CNF['FIELD_TEXT']])) { // TODO: check if aTrackTextFieldsChanges works 
-            $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
-            $oMetatags->metaAddAuto($aContentInfo[$CNF['FIELD_ID']], $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT']);
-            if (isset($CNF['FIELD_LOCATION_PREFIX']) && isset($oForm->aInputs[$CNF['FIELD_LOCATION_PREFIX']]) && $oMetatags->locationsIsEnabled())
-                $oMetatags->locationsAddFromForm($aContentInfo[$CNF['FIELD_ID']], empty($CNF['FIELD_LOCATION_PREFIX']) ? '' : $CNF['FIELD_LOCATION_PREFIX']);
-
-            if (!empty($CNF['FIELD_LABELS']) && ($aLabels = bx_get($CNF['FIELD_LABELS'])) && $oMetatags->keywordsIsEnabled()) {
-                foreach ($aLabels as $sLabel)
-                    $oMetatags->keywordsAddOne($aContentInfo[$CNF['FIELD_ID']], $sLabel, false);
-            }
-        }
-
         if(isset($CNF['FIELD_STATUS']) && ($aTrackResult = $oForm->isTrackFieldChanged($CNF['FIELD_STATUS'], true)) !== false)
             if($aTrackResult['old'] == 'failed' && $aTrackResult['new'] == 'active')
-                $this->_alertAfterAdd($aContentInfo);
+                $this->_oModule->alertAfterAdd($aContentInfo);
+
+        if(isset($CNF['FIELD_ALLOW_VIEW_TO']) && !empty($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW'])) !== false)
+            $oPrivacy->reassociateGroupCustomWithContent($oProfile->id(), $iContentId, (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]);
 
         return '';
     }
@@ -456,33 +529,17 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
+        list($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
+
         if(($oForm = $this->getObjectFormAdd()) !== false) {
             if(isset($CNF['FIELD_PHOTO']))
                 $oForm->processFiles($CNF['FIELD_PHOTO'], $iContentId, true);
         }
 
-        $this->_processMetas($iAccountId, $iContentId);
+        if(isset($CNF['FIELD_ALLOW_VIEW_TO']) && !empty($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW'])) !== false)
+            $oPrivacy->associateGroupCustomWithContent($oProfile->id(), $iContentId, (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]);
 
         return '';
-    }
-
-    protected function _processMetas($iAccountId, $iContentId)
-    {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        if (!empty($CNF['OBJECT_METATAGS'])) {
-            list ($oProfile, $aContentInfo) = $this->_getProfileAndContentData($iContentId);
-            $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
-            if ($aContentInfo)
-                $oMetatags->metaAddAuto($aContentInfo[$CNF['FIELD_ID']], $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
-            if ($oMetatags->locationsIsEnabled() && $aContentInfo)
-                $oMetatags->locationsAddFromForm($aContentInfo[$CNF['FIELD_ID']], $CNF['FIELD_LOCATION_PREFIX']);
-
-            if ($aContentInfo && !empty($CNF['FIELD_LABELS']) && ($aLabels = bx_get($CNF['FIELD_LABELS'])) && $oMetatags->keywordsIsEnabled()) {
-                foreach ($aLabels as $sLabel)
-                    $oMetatags->keywordsAddOne($aContentInfo[$CNF['FIELD_ID']], $sLabel, false);
-            }
-        }
     }
 
     protected function prepareCustomRedirectUrl($s, $aContentInfo)
@@ -516,13 +573,25 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
             return $mixedResponse;
 
         $aResponse = array(
-            $sKey => $mixedResponse
+            $sKey => $mixedResponse,
+            '_dt' => 'json'
         );
 
         if(!empty($aAdditional) && is_array($aAdditional))
             $aResponse = array_merge($aResponse, $aAdditional);
 
         return $aResponse;
+    }
+    
+    protected function _setAbsoluteActionUrl($sType, &$oForm)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $sKeyUri = 'URI_' . strtoupper($sType) . '_ENTRY';
+        if(empty($CNF[$sKeyUri]))
+            return;
+
+        $oForm->setAbsoluteActionUrl(BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF[$sKeyUri]));
     }
 }
 

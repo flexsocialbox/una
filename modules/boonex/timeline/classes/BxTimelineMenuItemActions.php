@@ -52,12 +52,16 @@ class BxTimelineMenuItemActions extends BxTemplMenuCustom
             $sCommentsOnclick = bx_replace_markers("{js_object_view}.commentItem(this, '" . $sCommentsSystem . "', " . $iCommentsObject . ")", $this->_aMarkers);
         }
 
+        $bSystem = $this->_oModule->_oConfig->isSystem($this->_aEvent['type'], $this->_aEvent['action']);
+
         $this->addMarkers(array(
             'content_id' => $this->_iEvent,
 
             'comment_system' => $sCommentsSystem,
             'comment_object' => $iCommentsObject,
             'comment_onclick' => $sCommentsOnclick,
+
+            'delete_title' => _t('_bx_timeline_menu_item_title_item_delete_' . ($bSystem ? 'system' : 'common'))
         ));
     }
 
@@ -109,18 +113,6 @@ class BxTimelineMenuItemActions extends BxTemplMenuCustom
             $aViewsParams['show_do_view_label'] = true;
 
         return $this->_oModule->getViewObject($sViewsSystem, $iViewsObject)->getElementInline($aViewsParams);
-    }
-
-    protected function _getMenuItemItemComment($aItem)
-    {
-        if($this->_sView == BX_TIMELINE_VIEW_ITEM)
-            return false;
-
-        $aItem = BxTemplMenu::_getMenuItem($aItem);
-        if($aItem === false)
-            return false;
-
-        return $this->_getMenuItemDefault($aItem);
     }
 
     protected function _getMenuItemItemVote($aItem)
@@ -207,6 +199,9 @@ class BxTimelineMenuItemActions extends BxTemplMenuCustom
                 break;
 
             case 'item-comment':
+                if($this->_sView == BX_TIMELINE_VIEW_ITEM)
+                    return false;
+
                 $sCheckFuncName = 'isAllowedComment';
                 break;
 
@@ -256,7 +251,7 @@ class BxTimelineMenuItemActions extends BxTemplMenuCustom
                 $sCheckFuncName = 'isAllowedPromote';
                 break;
 
-			case 'item-unpromote':
+            case 'item-unpromote':
                 $sCheckFuncName = 'isAllowedUnpromote';
                 break;
 

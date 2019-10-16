@@ -53,7 +53,7 @@
 	<string name="_From"><![CDATA[От]]></string>
 	<string name="_Header"><![CDATA[Заголовок]]></string>
 	<string name="_Incorrect Captcha"><![CDATA[Неправильная капча]]></string>
-	<string name="_Incorrect Email"><![CDATA[Неправильный email]]></string>
+	<string name="_Incorrect Email"><![CDATA[Введите правильный адрес электронной почты]]></string>
 	<string name="_Info"><![CDATA[Инфо]]></string>
 	<string name="_Keyword"><![CDATA[Ключевое слово]]></string>
 	<string name="_LookinFemale"><![CDATA[Женщина]]></string>
@@ -592,6 +592,8 @@
 	<string name="_adm_dbd_txt_c_clear_template"><![CDATA[Очистить кэш темы]]></string>
 	<string name="_adm_dbd_txt_c_css"><![CDATA[CSS]]></string>
 	<string name="_adm_dbd_txt_c_clear_css"><![CDATA[Очистить кэш CSS]]></string>
+        <string name="_adm_dbd_txt_c_less"><![CDATA[LESS]]></string>
+        <string name="_adm_dbd_txt_c_clear_less"><![CDATA[Очистить кэш LESS]]></string>
 	<string name="_adm_dbd_txt_c_js"><![CDATA[JavaScript]]></string>
 	<string name="_adm_dbd_txt_c_clear_js"><![CDATA[Очистить кэш JavaScript]]></string>
         <string name="_adm_dbd_txt_c_clear_custom"><![CDATA[Очистить специальный кэш]]></string>
@@ -831,6 +833,7 @@
 	<string name="_adm_form_txt_field_type_image"><![CDATA[картинка]]></string>
 	<string name="_adm_form_txt_field_type_input_set"><![CDATA[набор полей ввода]]></string>
 	<string name="_adm_form_txt_field_type_location"><![CDATA[местонахождение]]></string>
+  <string name="_adm_form_txt_field_type_location_radius"><![CDATA[радиус местонахождения]]></string>
 	<string name="_adm_form_txt_field_type_number"><![CDATA[число]]></string>
 	<string name="_adm_form_txt_field_type_password"><![CDATA[пароль]]></string>
 	<string name="_adm_form_txt_field_type_radio_set"><![CDATA[набор переключателей]]></string>
@@ -843,6 +846,7 @@
 	<string name="_adm_form_txt_field_type_text"><![CDATA[текст]]></string>
 	<string name="_adm_form_txt_field_type_text_auto"><![CDATA[авто текст]]></string>
 	<string name="_adm_form_txt_field_type_textarea"><![CDATA[текстовое поле]]></string>
+        <string name="_adm_form_txt_field_type_time"><![CDATA[время]]></string>
 	<string name="_adm_form_txt_field_type_value"><![CDATA[инфо]]></string>
 	<string name="_adm_form_txt_field_unique"><![CDATA[Уникальное]]></string>
 	<string name="_adm_form_txt_field_value_button"><![CDATA[Заголовок]]></string>
@@ -1329,7 +1333,8 @@
 	<string name="_adm_stg_cpt_option_sys_ftp_login"><![CDATA[FTP-сервер - Логин]]></string>
 	<string name="_adm_stg_cpt_option_sys_ftp_password"><![CDATA[FTP-сервер - Пароль]]></string>
 	<string name="_adm_stg_cpt_option_sys_cron_time"><![CDATA[Дата последнего запуска планировщика]]></string>
-	<string name="_adm_stg_cpt_option_sys_install_time"><![CDATA[Дата установки]]></string>
+    <string name="_adm_stg_cpt_option_sys_install_time"><![CDATA[Дата установки]]></string>
+    <string name="_adm_stg_cpt_option_sys_upgrade_channel"><![CDATA[Канал обновлений]]></string>
     <string name="_adm_stg_cpt_option_sys_live_updates_interval"><![CDATA[Интервал обновлений (в миллисекундах)]]></string>
     <string name="_adm_stg_cpt_option_sys_maps_api_key"><![CDATA[Ключ Google Maps API]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_default"><![CDATA[Поставщик встраиваемого кода]]></string>
@@ -1483,6 +1488,7 @@
 	<string name="_adm_tmi_cpt_edit"><![CDATA[Управление загрузчиком]]></string>
 	<string name="_adm_tmi_cpt_extensions"><![CDATA[Добавить приложения]]></string>
 	<string name="_adm_tmi_cpt_favorite"><![CDATA[Показывать только Избранное]]></string>
+        <string name="_adm_tmi_cpt_language"><![CDATA[Язык]]></string>
 	<string name="_adm_tmi_cpt_logout"><![CDATA[Выйти]]></string>
 	<string name="_adm_tmi_cpt_site"><![CDATA[Перейти на сайт]]></string>
 	<string name="_adm_tmi_cpt_tour"><![CDATA[Инструкции]]></string>
@@ -1584,24 +1590,38 @@
 	<string name="_cmt_load_more_replies_head"><![CDATA[Увидеть новые ответы...]]></string>
 	<string name="_cmt_load_more_replies_tail"><![CDATA[Увидеть старые ответы...]]></string>
 	<string name="_cmt_load_more_replies_popular"><![CDATA[Увидеть ещё ответы...]]></string>
-        <string name="_cmt_txt_new_content"><![CDATA[Новый контент]]></string>
+        <string name="_cmt_txt_new_content"><![CDATA[Новое сообщение]]></string>
 	<string name="_cmt_txt_link_show"><![CDATA[Прочитать]]></string>
 	<string name="_cmt_txt_link_reply"><![CDATA[Ответить]]></string>
         <string name="_cmt_txt_added_sample"><![CDATA[добавил новый комментарий]]></string>
 	<string name="_cmt_txt_or"><![CDATA[или]]></string>
 	<string name="_cmt_txt_sample_comment_single"><![CDATA[комментарий]]></string>
+        <string name="_cmt_txt_sample_reaction_single"><![CDATA[реакция '{0}' к комментарию]]></string>
 	<string name="_cmt_txt_sample_reply_to"><![CDATA[ответ на комментарий]]></string>
+        <string name="_cmt_txt_sample_score_up_single"><![CDATA[голос за комментарий]]></string>
+        <string name="_cmt_txt_sample_score_down_single"><![CDATA[голос против комментария]]></string>
+        <string name="_cmt_txt_sample_vote_single"><![CDATA[голос за комментарий]]></string>
 	<string name="_cmt_txt_n_comments"><![CDATA[{0} комментариев]]></string>	
         <string name="_cmt_txt_do"><![CDATA[Комментировать]]></string>
         <string name="_cmt_txt_counter"><![CDATA[{0}]]></string>
 	<string name="_cmt_txt_counter_empty"><![CDATA[Комментировать]]></string>
         <string name="_cmt_txt_min_form_placeholder"><![CDATA[{0}, здесь Вы можете оставить комментарий.]]></string>
+        <string name="_cmt_rvw_block_rating_title"><![CDATA[Оценка по обзорам]]></string>
+        <string name="_cmt_rvw_block_reviews_title"><![CDATA[Обзоры ({0})]]></string>
+        <string name="_cmt_rvw_txt_min_form_placeholder"><![CDATA[{0}, здесь Вы можете написать обзор.]]></string>
+        <string name="_cmt_rvw_txt_sample_comment_single"><![CDATA[обзор]]></string>
+        <string name="_cmt_rvw_txt_sample_reaction_single"><![CDATA[реакция '{0}' к обзору]]></string>
+        <string name="_cmt_rvw_txt_sample_score_up_single"><![CDATA[голос за обзор]]></string>
+        <string name="_cmt_rvw_txt_sample_score_down_single"><![CDATA[голос против обзора]]></string>
+        <string name="_cmt_rvw_txt_sample_vote_single"><![CDATA[голос за обзор]]></string>
+        <string name="_cmt_rvw_txt_empty"><![CDATA[Нет обзоров]]></string>
 	<string name="_copyright"><![CDATA[&copy; {0} Компания]]></string>
 	<string name="_delete"><![CDATA[удалить]]></string>
 	<string name="_error occured"><![CDATA[Произошла ошибка]]></string>
 	<string name="_from"><![CDATA[от]]></string>
 	<string name="_hidden_comment"><![CDATA[Комментарий от <b>{0}</b> спрятан.]]></string>
-	<string name="_in_reply_to"><![CDATA[В ответе на {0}]]></string>
+	<string name="_in_reply_to"><![CDATA[В ответ на]]></string>
+        <string name="_in_reply_to_x"><![CDATA[В ответ на {0}]]></string>
 	<string name="_item"><![CDATA[элемент]]></string>
 	<string name="_items"><![CDATA[элементы]]></string>
 	<string name="_member_banned"><![CDATA[Извините, Вас забанили]]></string>
@@ -1671,7 +1691,7 @@
 	<string name="_sys_acl_start"><![CDATA[Начало: ]]></string>
 	<string name="_sys_acl_expire"><![CDATA[Окончание: ]]></string>
 	<string name="_sys_acl_expire_never"><![CDATA[никогда]]></string>
-	<string name="_sys_add_friend"><![CDATA[Добавить друга]]></string>
+	<string name="_sys_add_friend"><![CDATA[Добавить в друзья]]></string>
         <string name="_sys_add_relation"><![CDATA[Добавить связь]]></string>
 	<string name="_sys_adm_installed"><![CDATA[Установленные]]></string>
 	<string name="_sys_admin_apply"><![CDATA[Применить]]></string>
@@ -1958,7 +1978,7 @@
 	<string name="_sys_form_account_input_delete_confirm_error"><![CDATA[Пожалуйста, отметьте этот флажок, если Вы действительно хотите удалить свой аккаунт вместе с содержимым.]]></string>
 	<string name="_sys_form_account_input_delete_confirm_info"><![CDATA[Это действие не может быть отменено.]]></string>
 	<string name="_sys_form_account_input_email"><![CDATA[Email]]></string>
-	<string name="_sys_form_account_input_email_error"><![CDATA[Неправильный email]]></string>
+	<string name="_sys_form_account_input_email_error"><![CDATA[Введите правильный адрес электронной почты]]></string>
 	<string name="_sys_form_account_input_email_uniq_error"><![CDATA[Этот эл. адрес уже зарегистрирован. Пожалуйста, воспользуйтесь ссылкой <a href="{0}">Забыли пароль?</a>, чтобы восстановить доступ к своему аккаунту.]]></string>
 	<string name="_sys_form_account_input_email_uniq_error_loggedin"><![CDATA[Этот эл. адрес уже кем-то используется.]]></string>
 	<string name="_sys_form_account_input_name"><![CDATA[Имя аккаунта]]></string>
@@ -1968,7 +1988,7 @@
 	<string name="_sys_form_account_input_password_confirm_error"><![CDATA[Не удалось подтвердить пароль]]></string>
 	<string name="_sys_form_account_input_password_current"><![CDATA[Текущий пароль]]></string>
 	<string name="_sys_form_account_input_password_current_error"><![CDATA[Неправильный текущий пароль. Введите пароль, который Вы используете для доступа к этому сайту.]]></string>
-	<string name="_sys_form_account_input_password_error"><![CDATA[Пароль должен иметь как минимум 8 символов, и содержать по крайней мере 1 прописную латинскую букву, 1 строчную латинскую букву и 1 число.]]></string>
+	<string name="_sys_form_account_input_password_error"><![CDATA[Пароль должен иметь как минимум 8 символов, содержать 1 заглавную латинскую букву, 1 строчную букву и 1 число.]]></string>
 	<string name="_sys_form_account_input_phone_error"><![CDATA[Это обязательное поле.]]></string>
 	<string name="_sys_form_account_input_receive_news"><![CDATA[Получать новости]]></string>
 	<string name="_sys_form_account_input_receive_updates"><![CDATA[Получать обновления сайта]]></string>
@@ -1983,11 +2003,11 @@
 	<string name="_sys_form_comment_input_caption_system_cmt_id"><![CDATA[Комментировать ID]]></string>
 	<string name="_sys_form_comment_input_caption_system_cmt_image"><![CDATA[Изображение]]></string>
 	<string name="_sys_form_comment_input_caption_system_cmt_parent_id"><![CDATA[Родительский ID]]></string>
-	<string name="_sys_form_comment_input_caption_system_cmt_submit"><![CDATA[Сообщение]]></string>
+	<string name="_sys_form_comment_input_caption_system_cmt_submit"><![CDATA[Отправить]]></string>
 	<string name="_sys_form_comment_input_caption_system_cmt_text"><![CDATA[Текст]]></string>
 	<string name="_sys_form_comment_input_caption_system_id"><![CDATA[ID объекта]]></string>
 	<string name="_sys_form_comment_input_caption_system_sys"><![CDATA[Тип объекта]]></string>
-	<string name="_sys_form_comment_input_submit"><![CDATA[Сообщение]]></string>
+	<string name="_sys_form_comment_input_submit"><![CDATA[Отправить]]></string>
 	<string name="_sys_form_confirm_email"><![CDATA[Подтверждение email-а]]></string>
 	<string name="_sys_form_confirm_email_input_caption_system_code"><![CDATA[Код верификации]]></string>
 	<string name="_sys_form_confirm_email_input_caption_system_do_submit"><![CDATA[Выполнить]]></string>
@@ -2038,8 +2058,9 @@
 	<string name="_sys_form_forgot_password_input_submit"><![CDATA[Выполнить]]></string>
 	<string name="_sys_form_input_age"><![CDATA[Возраст]]></string>
 	<string name="_sys_form_input_sys_location"><![CDATA[Расположение]]></string>
-    <string name="_sys_form_input_location"><![CDATA[Расположение]]></string>
-	<string name="_sys_form_input_sys_labels"><![CDATA[Метки]]></string>
+  <string name="_sys_form_input_location"><![CDATA[Расположение по радиусу]]></string>
+  <string name="_sys_form_input_location_radius_label"><![CDATA[Радиус (в км)]]></string>
+  <string name="_sys_form_input_sys_labels"><![CDATA[Метки]]></string>
     <string name="_sys_form_input_labels"><![CDATA[Метки]]></string>
 	<string name="_sys_form_input_sys_anonymous"><![CDATA[Анонимная публикация]]></string>
 	<string name="_sys_form_input_anonymous"><![CDATA[Анонимная публикация]]></string>
@@ -2081,8 +2102,22 @@
 	<string name="_sys_form_login_input_phone_error_format"><![CDATA[Телефон должен содержать только цифры и начинаться с '+']]></string>
 	<string name="_sys_form_login_input_phone_error_not_unique"><![CDATA[Этот телефон уже кем-то используется]]></string>
 	<string name="_sys_form_login_input_code_error_invalid"><![CDATA[Неправильный код проверки. Пожалуйста, повторите код или  <a href="{0}">измените телефонный номер и начните сначала</a>.]]></string>
-	
 	<string name="_sys_form_paceholder_profiles_suggestions"><![CDATA[Введите имя...]]></string>
+        <string name="_sys_form_ps_group_custom"><![CDATA[Конфиденциальность: Пользовательские группы]]></string>
+        <string name="_sys_form_display_ps_gc_select"><![CDATA[Конфиденциальность: Выбрать пользовательскую группу]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_profile_id"><![CDATA[ID профиля]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_content_id"><![CDATA[ID контента]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_object"><![CDATA[Объект]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_action"><![CDATA[Действие]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_group_id"><![CDATA[ID группы]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_search"><![CDATA[Поиск]]></string>
+        <string name="_sys_form_ps_gc_input_caption_search"><![CDATA[Найти]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_list"><![CDATA[Список]]></string>
+        <string name="_sys_form_ps_gc_input_caption_list"><![CDATA[или выбрать]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_do_submit"><![CDATA[Отправить]]></string>
+        <string name="_sys_form_ps_gc_input_caption_do_submit"><![CDATA[Отправить]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_do_cancel"><![CDATA[Отменить]]></string>
+        <string name="_sys_form_ps_gc_input_caption_do_cancel"><![CDATA[Отменить]]></string>
 	<string name="_sys_form_report"><![CDATA[Пожаловаться]]></string>
 	<string name="_sys_form_report_input_caption_submit"><![CDATA[Пожаловаться]]></string>
 	<string name="_sys_form_report_input_caption_text"><![CDATA[Текст жалобы]]></string>
@@ -2094,6 +2129,22 @@
 	<string name="_sys_form_report_input_caption_system_text"><![CDATA[Текст жалобы]]></string>
 	<string name="_sys_form_report_input_caption_system_type"><![CDATA[Тип жалобы]]></string>
 	<string name="_sys_form_report_input_caption_system_sys"><![CDATA[Тип объекта]]></string>
+        <string name="_sys_form_review"><![CDATA[Обзор]]></string>
+        <string name="_sys_form_review_display_edit"><![CDATA[Редактировать обзор]]></string>
+	<string name="_sys_form_review_display_post"><![CDATA[Разместить обзор]]></string>
+	<string name="_sys_form_review_input_caption_cmt_author_id"><![CDATA[Автор]]></string>
+	<string name="_sys_form_review_input_caption_cmt_text"><![CDATA[Текст]]></string>
+	<string name="_sys_form_review_input_caption_system_action"><![CDATA[Действие]]></string>
+        <string name="_sys_form_review_input_caption_system_cmt_author_id"><![CDATA[Автор]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_id"><![CDATA[ID]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_image"><![CDATA[Изображение]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_parent_id"><![CDATA[Родительский ID]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_submit"><![CDATA[Отправить]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_text"><![CDATA[Текст]]></string>
+        <string name="_sys_form_review_input_caption_system_cmt_mood"><![CDATA[Оценка]]></string>
+	<string name="_sys_form_review_input_caption_system_id"><![CDATA[ID объекта]]></string>
+	<string name="_sys_form_review_input_caption_system_sys"><![CDATA[Тип объекта]]></string>
+	<string name="_sys_form_review_input_submit"><![CDATA[Отправить]]></string>
 	<string name="_sys_form_unsubscribe"><![CDATA[Отписаться]]></string>
 	<string name="_sys_form_unsubscribe_input_caption_system_code"><![CDATA[Код безопасности]]></string>
 	<string name="_sys_form_unsubscribe_input_caption_system_do_submit"><![CDATA[Выполнить]]></string>
@@ -2232,6 +2283,8 @@
 	<string name="_sys_menu_item_title_cmts_administration"><![CDATA[Комментарии]]></string>
 	<string name="_sys_menu_item_title_cmts_item_delete"><![CDATA[Удалить]]></string>
 	<string name="_sys_menu_item_title_cmts_item_edit"><![CDATA[Редактировать]]></string>
+        <string name="_sys_menu_item_title_cmts_item_quote"><![CDATA[]]></string>
+        <string name="_sys_menu_item_title_cmts_item_reaction"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_cmts_item_reply"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_cmts_item_score"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_cmts_item_vote"><![CDATA[]]></string>
@@ -2257,9 +2310,9 @@
     <string name="_sys_menu_item_title_sm_rating"><![CDATA[Рейтинг]]></string>
     <string name="_sys_menu_item_title_sm_comments"><![CDATA[Комментарии]]></string>
     <string name="_sys_menu_item_title_sm_actions"><![CDATA[Действия]]></string>
-    <string name="_sys_menu_item_title_sm_befriend"><![CDATA[Добавить друга]]></string>
+    <string name="_sys_menu_item_title_sm_befriend"><![CDATA[Добавить в друзья]]></string>
     <string name="_sys_menu_item_title_sm_befriend_confirm"><![CDATA[Принять запрос о дружбе]]></string>
-    <string name="_sys_menu_item_title_sm_unfriend"><![CDATA[Перестать дружить]]></string>
+    <string name="_sys_menu_item_title_sm_unfriend"><![CDATA[Удалить из друзей]]></string>
     <string name="_sys_menu_item_title_sm_unfriend_cancel"><![CDATA[Отменить запрос о дружбе]]></string>
     <string name="_sys_menu_item_title_sm_unfriend_reject"><![CDATA[Отвергнуть запрос о дружбе]]></string>
     <string name="_sys_menu_item_title_sm_join"><![CDATA[Присоединиться]]></string>
@@ -2295,6 +2348,8 @@
   <string name="_sys_menu_item_title_system_cmts_administration"><![CDATA[Комментарии]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_delete"><![CDATA[Удалить]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_edit"><![CDATA[Редактировать]]></string>
+        <string name="_sys_menu_item_title_system_cmts_item_quote"><![CDATA[Цитировать]]></string>
+        <string name="_sys_menu_item_title_system_cmts_item_reaction"><![CDATA[Реагировать]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_reply"><![CDATA[Ответить]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_report"><![CDATA[Пожаловаться]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_score"><![CDATA[Голосовать (За/Против)]]></string>
@@ -2338,8 +2393,8 @@
     <string name="_sys_menu_item_title_system_sm_rating"><![CDATA[Рейтинг]]></string>
     <string name="_sys_menu_item_title_system_sm_comments"><![CDATA[Комментарии]]></string>
     <string name="_sys_menu_item_title_system_sm_actions"><![CDATA[Действия]]></string>
-    <string name="_sys_menu_item_title_system_sm_befriend"><![CDATA[Добавить друга]]></string>
-    <string name="_sys_menu_item_title_system_sm_unfriend"><![CDATA[Перестать дружить]]></string>
+    <string name="_sys_menu_item_title_system_sm_befriend"><![CDATA[Добавить в друзья]]></string>
+    <string name="_sys_menu_item_title_system_sm_unfriend"><![CDATA[Удалить из друзей]]></string>
     <string name="_sys_menu_item_title_system_sm_join"><![CDATA[Присоединиться]]></string>
     <string name="_sys_menu_item_title_system_sm_leave"><![CDATA[Покинуть]]></string>
     <string name="_sys_menu_item_title_system_sm_nl"><![CDATA[Новая строка]]></string>
@@ -2380,7 +2435,6 @@
 	<string name="_sys_menu_template_title_floating_blocks_dash"><![CDATA[Подвесные блоки с иконками и подписями]]></string>
 	<string name="_sys_menu_template_title_footer"><![CDATA[Основание - Ссылки]]></string>
 	<string name="_sys_menu_template_title_hor"><![CDATA[Горизонтальные ссылки]]></string>
-	<string name="_sys_menu_template_title_icon_buttons_hor"><![CDATA[Горизонтальные кнопки с иконками]]></string>
 	<string name="_sys_menu_template_title_inline"><![CDATA[В тексте]]></string>
 	<string name="_sys_menu_template_title_inline_sbtn"><![CDATA[В тексте ('спец' кнопки)]]></string>
 	<string name="_sys_menu_template_title_interactive"><![CDATA[Интерактивные горизонтальные ссылки]]></string>
@@ -2432,6 +2486,7 @@
 	<string name="_sys_menu_title_switch_language_inline"><![CDATA[Переключатель языка (встроенный)]]></string>
 	<string name="_sys_menu_title_switch_template"><![CDATA[Переключить тему]]></string>
 	<string name="_sys_menu_title_snippet_meta"><![CDATA[Мета информация в карточке]]></string>
+        <string name="_sys_menu_title_vote_reactions_do"><![CDATA[Отреагировать - Меню]]></string>
   <string name="_sys_menu_dashboard_manage_tools_addon_counter1_caption_default"><![CDATA[спрятано]]></string>
   <string name="_sys_menu_dashboard_manage_tools_addon_counter1_caption_profile_default"><![CDATA[неодобрено]]></string>
   <string name="_sys_menu_dashboard_manage_tools_addon_counter2_caption_default"><![CDATA[жалоб]]></string>
@@ -2466,6 +2521,8 @@
 	<string name="_sys_page_block_title_confirm_email"><![CDATA[Email - Подтверждение]]></string>
 	<string name="_sys_page_block_title_confirm_phone"><![CDATA[Телефон - Подтверждение]]></string>
 	<string name="_sys_page_block_title_create_account"><![CDATA[Присоединиться]]></string>
+        <string name="_sys_page_block_title_sys_create_post"><![CDATA[Создать публикацию]]></string>
+	<string name="_sys_page_block_title_create_post"><![CDATA[Добавить...]]></string>
 	<string name="_sys_page_block_title_sys_create_post_context"><![CDATA[Создать публикацию (в контекст)]]></string>
 	<string name="_sys_page_block_title_create_post_context"><![CDATA[Добавить...]]></string>
 	<string name="_sys_page_block_title_sys_create_post_public"><![CDATA[Создать публикацию (публично)]]></string>
@@ -2595,14 +2652,20 @@
             <li><b>{0}</b> всего</li>
             <li><b>{1}</b> удалено</li>
         </ul>]]></string>
+        <string name="_sys_ps_group_title_custom"><![CDATA[Индивидуально]]></string>
         <string name="_sys_ps_group_title_followers"><![CDATA[Подписчики]]></string>
 	<string name="_sys_ps_group_title_friends"><![CDATA[Друзья]]></string>
+        <string name="_sys_ps_group_title_friends_selected"><![CDATA[Избранные друзья...]]></string>
+        <string name="_sys_ps_group_title_relations"><![CDATA[Отношения]]></string>
+        <string name="_sys_ps_group_title_relations_selected"><![CDATA[Избранные отношения...]]></string>
 	<string name="_sys_ps_group_title_me_only"><![CDATA[Только я]]></string>
-	<string name="_sys_ps_group_title_members"><![CDATA[Пользователей]]></string>
-	<string name="_sys_ps_group_title_public"><![CDATA[Публичные]]></string>
+	<string name="_sys_ps_group_title_members"><![CDATA[Пользователи]]></string>
+	<string name="_sys_ps_group_title_public"><![CDATA[Все]]></string>
         <string name="_sys_ps_group_title_participants"><![CDATA[Участники]]></string>
 	<string name="_sys_ps_group_title_closed"><![CDATA[Закрытая]]></string>
     <string name="_sys_ps_group_title_secret"><![CDATA[Секретная]]></string>
+    <string name="_sys_ps_ferr_incorrect_gc_not_allowed"><![CDATA[Пользовательские группы конфиденциальности не доступны.]]></string>
+    <string name="_sys_ps_ferr_incorrect_gc_owner"><![CDATA[Вы не являетесь владельцем данного контента.]]></string>
     <string name="_sys_ps_ferr_incorrect_select"><![CDATA[Вам нужно выбрать значение]]></string>
     <string name="_sys_ps_space_title_friend"><![CDATA[друг]]></string>
     <string name="_sys_push_notification_request"><![CDATA[Хотите получать уведомления с сайта {0}?]]></string>   
@@ -2625,7 +2688,7 @@
     <string name="_sys_score_err_duplicate_vote"><![CDATA[Повторный голос]]></string>
 	<string name="_sys_search_main_title"><![CDATA[Поиск - Домой]]></string>
 	<string name="_sys_select"><![CDATA[Выбрать]]></string>
-	<string name="_sys_send"><![CDATA[Послать]]></string>
+	<string name="_sys_send"><![CDATA[Отправить]]></string>
     <string name="_sys_search_placeholder"><![CDATA[Поиск...]]></string>
     <string name="_sys_show_more"><![CDATA[Показать ещё]]></string>
 	<string name="_sys_spam_detected"><![CDATA[Ваше действие привело к блокировке]]></string>
@@ -2723,7 +2786,7 @@
 	<string name="_sys_txt_confirm_phone_set_phone_desc_set_phone"><![CDATA[Пожалуйста, введите телефонный номер на который будет отправлено SMS с кодом подтверждения.]]></string>
 	<string name="_sys_txt_confirm_phone_set_phone_desc_phone_confirmation"><![CDATA[Пожалуйста, введите код проверки из SMS]]></string>
 
-	<string name="_sys_txt_create_post_placeholder"><![CDATA[Что происходит, {0}]]></string>
+	<string name="_sys_txt_create_post_placeholder"><![CDATA[Что нового, {0}]]></string>
 
     <string name="_sys_txt_current_picture"><![CDATA[Текущая картинка]]></string>
 	<string name="_sys_txt_data_successfully_submitted"><![CDATA[Выполнено]]></string>
@@ -2754,10 +2817,10 @@
     <string name="_sys_txt_form_entry_input_picture_insert"><![CDATA[Вставить в сообщение]]></string>
 	<string name="_sys_txt_form_entry_input_picture_pic_url"><![CDATA[URL прикрепления:]]></string>
     <string name="_sys_txt_form_entry_input_picture_use_as_thumb"><![CDATA[Использовать в качестве миниатюры]]></string>
-	<string name="_sys_txt_form_submission_error"><![CDATA[Неправильная информация. Пожалуйста, проверьте ввод и отошлите снова.]]></string>
+	<string name="_sys_txt_form_submission_error"><![CDATA[Неправильная информация. Пожалуйста, проверьте ввод и отправьте снова.]]></string>
 	<string name="_sys_txt_form_submission_error_csrf_expired"><![CDATA[Маркер устарел. Пожалуйста попробуйте снова.]]></string>
 
-    <string name="_sys_txt_homepage_cover"><![CDATA[Сплоченность людей — нерушимая крепость.<br /><button class="bx-btn bx-hide-when-logged-in bx-def-margin-top" onclick="document.location='{0}'">Присоедениться!</button>]]></string>
+    <string name="_sys_txt_homepage_cover"><![CDATA[Сплоченность людей — нерушимая крепость.<br /><button class="bx-btn bx-hide-when-logged-in bx-def-margin-top" onclick="document.location='{0}'">Присоединиться!</button>]]></string>
     <string name="_sys_txt_login_2fa_description"><![CDATA[Двухэтапная авторизация включена. В дополнении к email-у и паролю, Вам нужно будет ввести код проверки, который мы вышлем вам в SMS.]]></string>
 	<string name="_sys_txt_login_2fa_sms_text"><![CDATA[Ваш код проверки {0}.]]></string>
 	<string name="_sys_txt_login_2fa_sms_error_occured"><![CDATA[Произошла ошибка, пожалуйста, уведомите о ней администратора сайта.]]></string>

@@ -53,6 +53,22 @@ class BxTimelineFormPost extends BxBaseModGeneralFormEntry
         if(isset($CNF['FIELD_ANONYMOUS']) && isset($this->aInputs[$CNF['FIELD_ANONYMOUS']]) && isset($aValues[$CNF['FIELD_OBJECT_ID']]))
             $this->aInputs[$CNF['FIELD_ANONYMOUS']]['checked'] = $aValues[$CNF['FIELD_OBJECT_ID']] < 0;
 
+        $sKey = 'FIELD_OBJECT_PRIVACY_VIEW';
+        if(isset($CNF[$sKey]) && isset($this->aInputs[$CNF[$sKey]]) && $oPrivacy = BxDolPrivacy::getObjectInstance($this->_oModule->_oConfig->getObject('privacy_view'))) {
+            $sField = $CNF[$sKey];
+
+            $iContentId = !empty($aValues[$CNF['FIELD_ID']]) ? (int)$aValues[$CNF['FIELD_ID']] : 0;
+            $iProfileId = !empty($iContentId) ? (int)$this->getContentOwnerProfileId($iContentId) : bx_get_logged_profile_id();
+            $iGroupId = !empty($aValues[$sField]) ? $aValues[$sField] : 0;
+
+            if(!isset($this->aInputs[$sField]['content']))
+                $this->aInputs[$sField]['content'] = '';
+
+            $this->aInputs[$sField]['content'] .= $oPrivacy->loadGroupCustom($iProfileId, $iContentId, $iGroupId, array(
+                'form' => $this->getId()
+            ));
+        }
+
         parent::initChecker ($aValues, $aSpecificValues);
     }
 
@@ -60,6 +76,7 @@ class BxTimelineFormPost extends BxBaseModGeneralFormEntry
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
+        $aValsToAdd[$CNF['FIELD_SYSTEM']] = 0;
         $aValsToAdd[$CNF['FIELD_OBJECT_ID']] *= isset($CNF['FIELD_ANONYMOUS']) && isset($this->aInputs[$CNF['FIELD_ANONYMOUS']]) && $this->getCleanValue($CNF['FIELD_ANONYMOUS']) ? -1 : 1;
 
         if(isset($CNF['FIELD_ADDED']) && empty($aValsToAdd[$CNF['FIELD_ADDED']])) {
@@ -227,18 +244,43 @@ class BxTimelineFormPost extends BxBaseModGeneralFormEntry
             return $aInput;
         }
 
-        if($this->_bPublicMode || $this->_bProfileMode)
+        $bProfileModeOwner = $this->_bProfileMode && $iOwnerId == $iUserId;
+        if($this->_bPublicMode || $bProfileModeOwner) {
+            $iGc = 0;
+            $iKeyGh = false;
             foreach($aInput['values'] as $iKey => $aValue) {
-                //--- Show 'Public' privacy group only in Public post form. 
-                if($this->_bPublicMode && isset($aValue['key']) && $aValue['key'] == BX_DOL_PG_ALL)
+                if(isset($aValue['type']) && in_array($aValue['type'], array('group_header', 'group_end'))) {
+                    if($iKeyGh !== false && $iGc == 0) {
+                        unset($aInput['values'][$iKeyGh]);
+                        $iKeyGh = false;
+
+                        if($aValue['type'] == 'group_end')
+                            unset($aInput['values'][$iKey]);
+                    }
+
+                    if($aValue['type'] == 'group_header') {
+                        $iGc = 0;
+                        $iKeyGh = $iKey;
+                    }
+
                     continue;
+                }
+
+                //--- Show 'Public' privacy group only in Public post form. 
+                if($this->_bPublicMode && $aValue['key'] == BX_DOL_PG_ALL) {
+                    $iGc += 1;
+                    continue;
+                }
 
                 //--- Show a default privacy groups in Profile (for Owner) post form.
-                if($this->_bProfileMode && $iOwnerId == $iUserId && isset($aValue['key']) && (int)$aValue['key'] >= 0)
+                if($bProfileModeOwner && (int)$aValue['key'] >= 0) {
+                    $iGc += 1;
                     continue;
+                }
 
                 unset($aInput['values'][$iKey]);
             }
+        }
 
         return $aInput;
     }

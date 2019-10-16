@@ -27,6 +27,10 @@ class BxBaseModTextConfig extends BxBaseModGeneralConfig
         parent::__construct($aModule);
 
         $this->CNF = array(
+            // modules icon
+            'ICON_POLLS_ANSWERS' => 'vote-yea',
+            'ICON_POLLS_RESULTS' => 'poll-h',
+
             // database tables
             'TABLE_POLLS' => $aModule['db_prefix'] . 'polls',
             'TABLE_POLLS_ANSWERS' => $aModule['db_prefix'] . 'polls_answers',
@@ -44,17 +48,26 @@ class BxBaseModTextConfig extends BxBaseModGeneralConfig
             'PARAM_POLL_ENABLED' => true,
             'PARAM_POLL_HIDDEN_RESULTS' => false,
             'PARAM_POLL_ANONYMOUS_VOTING' => true,
+            'PARAM_MULTICAT_ENABLED' => false,
 
             // objects
             'OBJECT_VOTES_POLL_ANSWERS' => $this->_sName . '_poll_answers',
+
+            // styles
+            'STYLES_POLLS_EMBED_CLASS' => 'body.bx-page-iframe.bx-def-color-bg-page',
+            'STYLES_POLLS_EMBED_CONTENT' => array(
+                'background-color' => '#ffffff'
+            ),
         );
 
         $this->_aJsClasses = array(
-            'poll' => $this->_sClassPrefix . 'Polls'
+            'poll' => $this->_sClassPrefix . 'Polls',
+            'categories' => $this->_sClassPrefix . 'Categories'
         );
 
         $this->_aJsObjects = array(
-            'poll' => 'o' . $this->_sClassPrefix . 'Polls'
+            'poll' => 'o' . $this->_sClassPrefix . 'Polls',
+            'categories' => 'o' . $this->_sClassPrefix . 'Categories'
         );
 
         $sPrefix = str_replace('_', '-', $this->_sName);

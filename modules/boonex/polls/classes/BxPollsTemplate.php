@@ -23,6 +23,29 @@ class BxPollsTemplate extends BxBaseModTextTemplate
         parent::__construct($oConfig, $oDb);
     }
 
+    public function embedEntry($mixedContentInfo, $aParams = array())
+    {
+        $oModule = $this->getModule();
+        $CNF = &$oModule->_oConfig->CNF;
+
+        $aContentInfo = is_array($mixedContentInfo) ? $mixedContentInfo : $this->_oDb->getContentInfoById((int)$mixedContentInfo);
+        if(empty($aContentInfo) || !is_array($aContentInfo))
+            return;
+
+        $aBlock = $this->{$oModule->isPerformed((int)$aContentInfo[$CNF['FIELD_ID']]) ? 'entryResults' : 'entrySubentries'}($aContentInfo);
+
+        $this->addJs(array('entry.js'));
+        $this->addCss(array('entry.css'));
+
+        $oTemplate = BxDolTemplate::getInstance();
+        $oTemplate->addCssStyle($CNF['STYLES_POLLS_EMBED_CLASS'], $CNF['STYLES_POLLS_EMBED_CONTENT']);
+        $oTemplate->setPageNameIndex(BX_PAGE_EMBED);
+        $oTemplate->setPageHeader($this->getTitleAuto($aContentInfo));
+        $oTemplate->setPageContent('page_main_code', $this->getJsCode('entry') . $aBlock['content']);
+        $oTemplate->getPageCode();
+        exit;
+    }
+
     public function getJsCode($sType, $aParams = array(), $bWrap = true)
     {
         $aParams = array_merge(array(
@@ -58,11 +81,12 @@ class BxPollsTemplate extends BxBaseModTextTemplate
 
     public function entryTextAndSubentries($aData, $bForceDisplaySubentries = false)
     {
-        $CNF = &$this->getModule()->_oConfig->CNF;
+        $oModule = $this->getModule();
+        $CNF = &$oModule->_oConfig->CNF;
 
         $sMethod = '_getGetBlockContent';
         $sMenuItem = '';
-        if(!$bForceDisplaySubentries && $this->_oDb->isPerformed($aData[$CNF['FIELD_ID']], bx_get_logged_profile_id())) {
+        if(!$bForceDisplaySubentries && $oModule->isPerformed($aData[$CNF['FIELD_ID']])) {
             $sMethod .= 'Results';
             $sMenuItem = 'results';
         }
@@ -100,16 +124,30 @@ class BxPollsTemplate extends BxBaseModTextTemplate
         );
     }
 
-    protected function getTitle($aData)
+    public function getTitleAuto($aData, $iMaxLen = 32, $sEllipsisSign = '...')
     {
-        return $this->_oConfig->getTitle($aData);
+        $sResult = $this->getTitle($aData);
+        if(strlen($sResult) > 0 && $iMaxLen > 0)
+            $sResult = strmaxtextlen($sResult, $iMaxLen, $sEllipsisSign);
+
+        return $sResult;
+    }
+
+    public function getTitle($aData, $mixedProcessOutput = BX_DATA_TEXT)
+    {
+        $sResult = $this->_oConfig->getTitle($aData);
+        if($mixedProcessOutput !== false && !empty($sResult))
+            $sResult = bx_process_output($sResult, (int)$mixedProcessOutput);
+
+        return $sResult;
     }
 
     protected function getSummary($aData, $sTitle = '', $sText = '', $sUrl = '')
     {
-        $CNF = &$this->getModule()->_oConfig->CNF;
+        $oModule = $this->getModule();
+        $CNF = &$oModule->_oConfig->CNF;
 
-        $aBlock = $this->{$this->_oDb->isPerformed($aData[$CNF['FIELD_ID']], bx_get_logged_profile_id()) ? 'entryResults' : 'entrySubentries'}($aData);
+        $aBlock = $this->{$oModule->isPerformed($aData[$CNF['FIELD_ID']]) ? 'entryResults' : 'entrySubentries'}($aData);
 
         return $aBlock['content'];
     }
@@ -144,14 +182,15 @@ class BxPollsTemplate extends BxBaseModTextTemplate
 
     protected function _getGetBlockMenu($aData, $sSelected = '')
     {
-        $CNF = &$this->getModule()->_oConfig->CNF;
+        $oModule = $this->getModule();
+        $CNF = &$oModule->_oConfig->CNF;
 
         $sJsObject = $this->_oConfig->getJsObject('entry');
         $iContentId = $aData[$CNF['FIELD_ID']];
 
         $aBlocks = array(
             'subentries' => true, 
-            'results' => (int)$aData[$CNF['FIELD_HIDDEN_RESULTS']] == 0 || $this->_oDb->isPerformed($iContentId, bx_get_logged_profile_id())
+            'results' => (int)$aData[$CNF['FIELD_HIDDEN_RESULTS']] == 0 || $oModule->isPerformed($iContentId)
         );
 
         $aMenu = array();

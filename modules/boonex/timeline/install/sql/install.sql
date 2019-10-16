@@ -4,6 +4,7 @@ SET @sName = 'bx_timeline';
 CREATE TABLE IF NOT EXISTS `bx_timeline_events` (
   `id` int(11) NOT NULL auto_increment,
   `owner_id` int(11) NOT NULL default '0',
+  `system` tinyint(4) NOT NULL default '1',
   `type` varchar(255) NOT NULL,
   `action` varchar(255) NOT NULL,
   `object_id` int(11) NOT NULL default '0',
@@ -11,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `bx_timeline_events` (
   `content` text NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
+  `location` text NOT NULL,
   `views` int(11) unsigned NOT NULL default '0',
   `rate` float NOT NULL default '0',
   `votes` int(11) unsigned NOT NULL default '0',

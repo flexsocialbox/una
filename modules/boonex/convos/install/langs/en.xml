@@ -24,7 +24,7 @@
 	<string name="_bx_cnv_form_entry_input_attachments"><![CDATA[Attachments]]></string>
     <string name="_bx_cnv_form_entry_input_recipients"><![CDATA[Recipients]]></string>
     <string name="_bx_cnv_form_entry_input_sys_recipients"><![CDATA[Recipients]]></string>
-    <string name="_bx_cnv_form_entry_input_recipients_err"><![CDATA[Recipients is mandatory]]></string>
+    <string name="_bx_cnv_form_entry_input_recipients_err"><![CDATA[Mandatory field. Please, fill it in with profile(s) you are allowed to contact.]]></string>
     <string name="_bx_cnv_form_entry_input_sys_submit_text"><![CDATA[Draft status]]></string>
     <string name="_bx_cnv_form_entry_input_sys_submit_block"><![CDATA[Submit block]]></string>
     <string name="_bx_cnv_form_entry_input_sys_draft_id"><![CDATA[Draft ID]]></string>
@@ -118,6 +118,8 @@
 
     <string name="_bx_cnv_draft_saving_error"><![CDATA[Draft saving error!]]></string>
     <string name="_bx_cnv_draft_saved_success"><![CDATA[Draft saved.]]></string>
+
+    <string name="_bx_cnv_txt_min_form_placeholder"><![CDATA[{0}, leave your message here.]]></string>
 
     <string name="_bx_cnv_email_new_message"><![CDATA[New message]]></string>
     <string name="_bx_cnv_email_new_message_subject"><![CDATA[New message from {SenderDisplayName}]]></string>

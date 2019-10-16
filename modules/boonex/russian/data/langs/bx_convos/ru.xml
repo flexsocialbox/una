@@ -24,7 +24,7 @@
 	<string name="_bx_cnv_form_entry_input_attachments"><![CDATA[Прикрепления]]></string>
     <string name="_bx_cnv_form_entry_input_recipients"><![CDATA[Получатели]]></string>
     <string name="_bx_cnv_form_entry_input_sys_recipients"><![CDATA[Получатели]]></string>
-    <string name="_bx_cnv_form_entry_input_recipients_err"><![CDATA[Необходимо указать хотя бы одного получателя]]></string>
+    <string name="_bx_cnv_form_entry_input_recipients_err"><![CDATA[Обязательное поле. Пожалуйста, укажите хотя бы одного получателя, которому Вы можете писать.]]></string>
     <string name="_bx_cnv_form_entry_input_sys_submit_text"><![CDATA[Статус черновика]]></string>
     <string name="_bx_cnv_form_entry_input_sys_submit_block"><![CDATA[Блок отправки сообщения]]></string>
     <string name="_bx_cnv_form_entry_input_sys_draft_id"><![CDATA[ID черновика]]></string>
@@ -118,6 +118,8 @@
 
     <string name="_bx_cnv_draft_saving_error"><![CDATA[Ошибка сохранения черновика!]]></string>
     <string name="_bx_cnv_draft_saved_success"><![CDATA[Черновик сохранён.]]></string>
+
+    <string name="_bx_cnv_txt_min_form_placeholder"><![CDATA[Напишите сообщение...]]></string>
 
     <string name="_bx_cnv_email_new_message"><![CDATA[Новое сообщение]]></string>
     <string name="_bx_cnv_email_new_message_subject"><![CDATA[Новое сообщение от {SenderDisplayName}]]></string>

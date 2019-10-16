@@ -3,6 +3,7 @@
 
 	<string name="_bx_market"><![CDATA[Market]]></string>
 	<string name="_bx_market_cmts"><![CDATA[Market's Reviews]]></string>
+        <string name="_bx_market_reactions"><![CDATA[Market's Reactions]]></string>
 
 	<string name="_bx_market_option_enable_recurring"><![CDATA[Allow to sell subscriptions]]></string>
 	<string name="_bx_market_option_recurring_reserve"><![CDATA[Reserve (in days) to accept and process recurring payment notification]]></string>
@@ -140,6 +141,7 @@
 	<string name="_bx_market_page_title_browse_featured"><![CDATA[Featured Products]]></string>
     <string name="_bx_market_page_title_browse_latest"><![CDATA[Latest Products]]></string>
     <string name="_bx_market_page_title_browse_popular"><![CDATA[Popular Products]]></string>
+    <string name="_bx_market_page_title_browse_top"><![CDATA[Top Products]]></string>
     <string name="_bx_market_page_title_browse_updated"><![CDATA[Updated Products]]></string>
     <string name="_bx_market_page_title_browse_category"><![CDATA[Products by category: {0}]]></string>
     <string name="_bx_market_page_title_browse_keyword"><![CDATA[Products by hashtag: {0}]]></string>
@@ -171,11 +173,14 @@
     <string name="_bx_market_page_title_entries_featured"><![CDATA[Featured Products]]></string>
     <string name="_bx_market_page_title_sys_entries_popular"><![CDATA[Popular Products]]></string>
     <string name="_bx_market_page_title_entries_popular"><![CDATA[Popular Products]]></string>
+    <string name="_bx_market_page_title_sys_entries_top"><![CDATA[Top Products]]></string>
+    <string name="_bx_market_page_title_entries_top"><![CDATA[Top Products]]></string>
     <string name="_bx_market_page_title_sys_entries_updated"><![CDATA[Updated Products]]></string>
     <string name="_bx_market_page_title_entries_updated"><![CDATA[Updated Products]]></string>
     <string name="_bx_market_page_block_title_popular_entries"><![CDATA[Popular Products]]></string>
     <string name="_bx_market_page_block_title_popular_entries_view_extended"><![CDATA[Popular Products (Extended View)]]></string>
     <string name="_bx_market_page_block_title_popular_entries_view_full"><![CDATA[Popular Products (Full View)]]></string>
+    <string name="_bx_market_page_block_title_top_entries"><![CDATA[Top Products]]></string>
     <string name="_bx_market_page_block_title_updated_entries"><![CDATA[Updated Products]]></string>
     <string name="_bx_market_page_block_title_updated_entries_view_extended"><![CDATA[Updated Products (Extended View)]]></string>
     <string name="_bx_market_page_block_title_updated_entries_view_full"><![CDATA[Updated Products (Full View)]]></string>
@@ -272,6 +277,8 @@
     <string name="_bx_market_menu_item_title_entries_featured"><![CDATA[Featured]]></string>
     <string name="_bx_market_menu_item_title_system_entries_popular"><![CDATA[Popular Products]]></string>
     <string name="_bx_market_menu_item_title_entries_popular"><![CDATA[Popular]]></string>
+    <string name="_bx_market_menu_item_title_system_entries_top"><![CDATA[Top Products]]></string>
+    <string name="_bx_market_menu_item_title_entries_top"><![CDATA[Top]]></string>
     <string name="_bx_market_menu_item_title_system_entries_updated"><![CDATA[Updated Products]]></string>
     <string name="_bx_market_menu_item_title_entries_updated"><![CDATA[Updated]]></string>
     <string name="_bx_market_menu_title_view_entry_submenu"><![CDATA[View Product Submenu]]></string>
@@ -412,7 +419,7 @@
 	<string name="_bx_market_err_not_accept_payments_single"><![CDATA[You need to activate at least one payment provider, which is working with Shopping Cart. You may do it via My Account menu -> Settings page -> <a href="{0}">Payments</a> tab.]]></string>
 	<string name="_bx_market_err_not_accept_payments_recurring"><![CDATA[You need to activate at least one payment provider, which is working with Subscriptions. You may do it via My Account menu -> Settings page -> <a href="{0}">Payments</a> tab.]]></string>
 
-    <string name="_bx_market_txt_all_entries_by"><![CDATA[<a href="{0}">All Products by {1} ({2})</a>]]></string>
+    <string name="_bx_market_txt_all_entries_by"><![CDATA[{0} products]]></string>
     <string name="_bx_market_txt_all_entries_in"><![CDATA[<a href="{0}">All Products in {1} ({2})</a>]]></string>
     <string name="_bx_market_txt_category"><![CDATA[Category:]]></string>
     <string name="_bx_market_txt_most_current_version"><![CDATA[The most current version]]></string>
@@ -420,6 +427,7 @@
     <string name="_bx_market_txt_sample_single_with_article"><![CDATA[a product]]></string>
     <string name="_bx_market_txt_sample_comment_single"><![CDATA[comment to product]]></string>
     <string name="_bx_market_txt_sample_vote_single"><![CDATA[vote to product]]></string>
+    <string name="_bx_market_txt_sample_reaction_single"><![CDATA['{0}' reaction to product]]></string>
     <string name="_bx_market_txt_sample_score_up_single"><![CDATA[score up vote to product]]></string>
     <string name="_bx_market_txt_sample_score_down_single"><![CDATA[score down vote to product]]></string>
     <string name="_bx_market_txt_author_added_product"><![CDATA[{0} {1}]]></string>

@@ -3,6 +3,7 @@
 
 	<string name="_bx_market"><![CDATA[Рынок]]></string>
 	<string name="_bx_market_cmts"><![CDATA[Рынок - Обзоры]]></string>
+        <string name="_bx_market_reactions"><![CDATA[Рынок - Реакции]]></string>
 
 	<string name="_bx_market_option_enable_recurring"><![CDATA[Разрешить продажу подписок]]></string>
 	<string name="_bx_market_option_recurring_reserve"><![CDATA[Резерв (в днях) на принятие и обработку сообщения об оплате подписки.]]></string>
@@ -140,6 +141,7 @@
 	<string name="_bx_market_page_title_browse_featured"><![CDATA[Продвинутые продукты]]></string>
     <string name="_bx_market_page_title_browse_latest"><![CDATA[Новые продукты]]></string>
     <string name="_bx_market_page_title_browse_popular"><![CDATA[Популярные продукты]]></string>
+    <string name="_bx_market_page_title_browse_top"><![CDATA[Топ продуктов]]></string>
     <string name="_bx_market_page_title_browse_updated"><![CDATA[Обновлённые продукты]]></string>
     <string name="_bx_market_page_title_browse_category"><![CDATA[Продукты в категории: {0}]]></string>
     <string name="_bx_market_page_title_browse_keyword"><![CDATA[Продукты с хэштегом: {0}]]></string>
@@ -171,11 +173,14 @@
     <string name="_bx_market_page_title_entries_featured"><![CDATA[Продвинутые продукты]]></string>
     <string name="_bx_market_page_title_sys_entries_popular"><![CDATA[Популярные продукты]]></string>
     <string name="_bx_market_page_title_entries_popular"><![CDATA[Популярные продукты]]></string>
+    <string name="_bx_market_page_title_sys_entries_top"><![CDATA[Топ продуктов]]></string>
+    <string name="_bx_market_page_title_entries_top"><![CDATA[Топ продуктов]]></string>
     <string name="_bx_market_page_title_sys_entries_updated"><![CDATA[Обновленные продукты]]></string>
     <string name="_bx_market_page_title_entries_updated"><![CDATA[Обновленные продукты]]></string>
     <string name="_bx_market_page_block_title_popular_entries"><![CDATA[Популярные продукты]]></string>
     <string name="_bx_market_page_block_title_popular_entries_view_extended"><![CDATA[Популярные продукты (Расширенный просмотр)]]></string>
     <string name="_bx_market_page_block_title_popular_entries_view_full"><![CDATA[Популярные продукты (Полный просмотр)]]></string>
+    <string name="_bx_market_page_block_title_top_entries"><![CDATA[Топ продуктов]]></string>
     <string name="_bx_market_page_block_title_updated_entries"><![CDATA[Обновленные продукты]]></string>
     <string name="_bx_market_page_block_title_updated_entries_view_extended"><![CDATA[Обновленные продукты (Расширенный просмотр)]]></string>
     <string name="_bx_market_page_block_title_updated_entries_view_full"><![CDATA[Обновленные продукты (Полный просмотр)]]></string>
@@ -271,6 +276,8 @@
     <string name="_bx_market_menu_item_title_entries_featured"><![CDATA[Продвинутые]]></string>
     <string name="_bx_market_menu_item_title_system_entries_popular"><![CDATA[Популярные продукты]]></string>
     <string name="_bx_market_menu_item_title_entries_popular"><![CDATA[Популярные]]></string>
+    <string name="_bx_market_menu_item_title_system_entries_top"><![CDATA[Топ продуктов]]></string>
+    <string name="_bx_market_menu_item_title_entries_top"><![CDATA[Топ]]></string>
     <string name="_bx_market_menu_item_title_system_entries_updated"><![CDATA[Обновленные продукты]]></string>
     <string name="_bx_market_menu_item_title_entries_updated"><![CDATA[Обновленные]]></string>
     <string name="_bx_market_menu_title_view_entry_submenu"><![CDATA[Просмотреть продукт - Подменю]]></string>
@@ -410,7 +417,7 @@
 	<string name="_bx_market_err_not_accept_payments_single"><![CDATA[Вам необходимо активировать хотя бы одину платежную систему, работающую с корзиной. Вы можете сделать это через меню Мой аккаунт -> страница Заказы -> <a href="{0}">вкладка Настройки</a>.]]></string>
 	<string name="_bx_market_err_not_accept_payments_recurring"><![CDATA[Вам необходимо активировать хотя бы одину платежную систему, работающую с подписками. Вы можете сделать это через меню Мой аккаунт -> страница Заказы -> <a href="{0}">вкладка Настройки</a>.]]></string>
 
-    <string name="_bx_market_txt_all_entries_by"><![CDATA[<a href="{0}">Все продукты от {1} ({2})</a>]]></string>
+    <string name="_bx_market_txt_all_entries_by"><![CDATA[{0} продуктов]]></string>
     <string name="_bx_market_txt_all_entries_in"><![CDATA[<a href="{0}">Все продукты в {1} ({2})</a>]]></string>
     <string name="_bx_market_txt_category"><![CDATA[Категория:]]></string>
     <string name="_bx_market_txt_most_current_version"><![CDATA[Самая новая версия]]></string>
@@ -418,6 +425,7 @@
     <string name="_bx_market_txt_sample_single_with_article"><![CDATA[продукт]]></string>
     <string name="_bx_market_txt_sample_comment_single"><![CDATA[обзор к продукту]]></string>
     <string name="_bx_market_txt_sample_vote_single"><![CDATA[голос за продукт]]></string>
+    <string name="_bx_market_txt_sample_reaction_single"><![CDATA[реакция '{0}' к продукту]]></string>
     <string name="_bx_market_txt_sample_score_up_single"><![CDATA[голос за продукт]]></string>
     <string name="_bx_market_txt_sample_score_down_single"><![CDATA[голос против продукта]]></string>
     <string name="_bx_market_txt_author_added_product"><![CDATA[{0} {1}]]></string>

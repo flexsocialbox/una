@@ -41,6 +41,7 @@ class BxPostsConfig extends BxBaseModTextConfig
             'FIELD_TEXT' => 'text',
             'FIELD_TEXT_ID' => 'post-text',
             'FIELD_CATEGORY' => 'cat',
+            'FIELD_MULTICAT' => 'multicat',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
             'FIELD_COVER' => 'covers',
             'FIELD_PHOTO' => 'pictures',
@@ -53,6 +54,7 @@ class BxPostsConfig extends BxBaseModTextConfig
             'FIELD_COMMENTS' => 'comments',
             'FIELD_STATUS' => 'status',
             'FIELD_STATUS_ADMIN' => 'status_admin',
+            'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELD_LABELS' => 'labels',
             'FIELD_ANONYMOUS' => 'anonymous',
@@ -60,6 +62,10 @@ class BxPostsConfig extends BxBaseModTextConfig
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
             'FIELDS_DELAYED_PROCESSING' => 'videos', // can be array of fields or comma separated string of field names
 
+             // some params
+            'PARAM_MULTICAT_ENABLED' => true,
+            'PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES' => 'bx_posts_auto_activation_for_categories',
+            
             // page URIs
             'URI_VIEW_ENTRY' => 'view-post',
             'URI_AUTHOR_ENTRIES' => 'posts-author',
@@ -70,6 +76,7 @@ class BxPostsConfig extends BxBaseModTextConfig
 
             'URL_HOME' => 'page.php?i=posts-home',
             'URL_POPULAR' => 'page.php?i=posts-popular',
+            'URL_TOP' => 'page.php?i=posts-top',
             'URL_UPDATED' => 'page.php?i=posts-updated',
             'URL_MANAGE_COMMON' => 'page.php?i=posts-manage',
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=posts-administration',
@@ -129,6 +136,7 @@ class BxPostsConfig extends BxBaseModTextConfig
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_posts_menu_manage_tools', //manage menu in content administration tools
             'OBJECT_GRID_ADMINISTRATION' => 'bx_posts_administration',
             'OBJECT_GRID_COMMON' => 'bx_posts_common',
+            'OBJECT_GRID_CATEGORIES' => 'bx_posts_categories',
             'OBJECT_UPLOADERS' => array('bx_posts_simple', 'bx_posts_html5'),
 
             // menu items which visibility depends on custom visibility checking
@@ -162,6 +170,7 @@ class BxPostsConfig extends BxBaseModTextConfig
             	'txt_sample_single_with_article' => '_bx_posts_txt_sample_single_with_article',
             	'txt_sample_comment_single' => '_bx_posts_txt_sample_comment_single',
             	'txt_sample_vote_single' => '_bx_posts_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_posts_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_posts_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_posts_txt_sample_score_down_single',
                 'form_field_author' => '_bx_posts_form_entry_input_author',
@@ -177,6 +186,9 @@ class BxPostsConfig extends BxBaseModTextConfig
                 'txt_all_entries_by_author' => '_bx_posts_page_title_browse_by_author',
                 'txt_all_entries_by_context' => '_bx_posts_page_title_browse_by_context',
                 'txt_err_cannot_perform_action' => '_bx_posts_txt_err_cannot_perform_action',
+                'txt_poll_menu_view_answers' => '_bx_posts_txt_poll_view_answers',
+                'txt_poll_menu_view_results' => '_bx_posts_txt_poll_view_results',
+                'txt_poll_menu_view_' => '_bx_posts_txt_poll_view_',
                 'txt_poll_answer_vote_do_by' => '_bx_posts_txt_poll_answer_vote_do_by',
                 'txt_poll_answer_vote_counter' => '_bx_posts_txt_poll_answer_vote_counter',
                 'txt_poll_answer_vote_percent' => '_bx_posts_txt_poll_answer_vote_percent'

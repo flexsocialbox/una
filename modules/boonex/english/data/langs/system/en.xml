@@ -592,6 +592,8 @@
 	<string name="_adm_dbd_txt_c_clear_template"><![CDATA[Clear Template cache]]></string>
 	<string name="_adm_dbd_txt_c_css"><![CDATA[CSS]]></string>
 	<string name="_adm_dbd_txt_c_clear_css"><![CDATA[Clear CSS cache]]></string>
+        <string name="_adm_dbd_txt_c_less"><![CDATA[LESS]]></string>
+        <string name="_adm_dbd_txt_c_clear_less"><![CDATA[Clear LESS cache]]></string>
 	<string name="_adm_dbd_txt_c_js"><![CDATA[JavaScript]]></string>
 	<string name="_adm_dbd_txt_c_clear_js"><![CDATA[Clear JavaScript cache]]></string>
         <string name="_adm_dbd_txt_c_clear_custom"><![CDATA[Clear Custom cache]]></string>
@@ -677,10 +679,14 @@
 	<string name="_adm_form_btn_forms_cancel"><![CDATA[Cancel]]></string>
 	<string name="_adm_form_btn_forms_edit"><![CDATA[Edit form]]></string>
 	<string name="_adm_form_btn_forms_save"><![CDATA[Save]]></string>
+  <string name="_adm_form_btn_categories_cancel"><![CDATA[Cancel]]></string>
+  <string name="_adm_form_btn_categories_submit"><![CDATA[Submit]]></string>
         <string name="_adm_form_btn_labels_add"><![CDATA[Add]]></string>
         <string name="_adm_form_btn_labels_back"><![CDATA[Back]]></string>
         <string name="_adm_form_btn_labels_cancel"><![CDATA[Cancel]]></string>
         <string name="_adm_form_btn_labels_submit"><![CDATA[Submit]]></string>
+  <string name="_adm_form_btn_categories_add"><![CDATA[Add]]></string>
+  <string name="_adm_form_btn_categories_delete"><![CDATA[Delete]]></string>
 	<string name="_adm_form_btn_pre_lists_add"><![CDATA[Add]]></string>
 	<string name="_adm_form_btn_pre_lists_cancel"><![CDATA[Cancel]]></string>
 	<string name="_adm_form_btn_pre_lists_create"><![CDATA[Add New List]]></string>
@@ -831,7 +837,8 @@
 	<string name="_adm_form_txt_field_type_image"><![CDATA[image]]></string>
 	<string name="_adm_form_txt_field_type_input_set"><![CDATA[input set]]></string>
 	<string name="_adm_form_txt_field_type_location"><![CDATA[location]]></string>
-	<string name="_adm_form_txt_field_type_number"><![CDATA[number]]></string>
+  <string name="_adm_form_txt_field_type_location_radius"><![CDATA[location radius]]></string>
+  <string name="_adm_form_txt_field_type_number"><![CDATA[number]]></string>
 	<string name="_adm_form_txt_field_type_password"><![CDATA[password]]></string>
 	<string name="_adm_form_txt_field_type_radio_set"><![CDATA[radio set]]></string>
 	<string name="_adm_form_txt_field_type_reset"><![CDATA[reset]]></string>
@@ -843,6 +850,7 @@
 	<string name="_adm_form_txt_field_type_text"><![CDATA[text]]></string>
 	<string name="_adm_form_txt_field_type_text_auto"><![CDATA[auto text]]></string>
 	<string name="_adm_form_txt_field_type_textarea"><![CDATA[textarea]]></string>
+        <string name="_adm_form_txt_field_type_time"><![CDATA[time]]></string>
 	<string name="_adm_form_txt_field_type_value"><![CDATA[info]]></string>
 	<string name="_adm_form_txt_field_unique"><![CDATA[Unique]]></string>
 	<string name="_adm_form_txt_field_value_button"><![CDATA[Title]]></string>
@@ -890,7 +898,16 @@
         <string name="_adm_form_txt_labels_parent_label"><![CDATA[Parent Label]]></string>
         <string name="_adm_form_txt_labels_sibling_labels"><![CDATA[Sibling Labels]]></string>
         <string name="_adm_form_txt_labels_value"><![CDATA[Label]]></string>
-	<string name="_adm_form_txt_pre_lists_country"><![CDATA[Country]]></string>
+        <string name="_adm_form_txt_categories_author"><![CDATA[Author]]></string>
+        <string name="_adm_form_txt_categories_added"><![CDATA[Added]]></string>
+		<string name="_adm_form_txt_categories_module"><![CDATA[Module]]></string>
+        <string name="_adm_form_txt_categories_value"><![CDATA[Value]]></string>
+        <string name="_adm_form_txt_categories_add_popup"><![CDATA[Add category]]></string>
+        <string name="_adm_form_txt_categories_edit_popup"><![CDATA[Edit "{0}" category]]></string>
+        <string name="_adm_form_err_categories_value"><![CDATA[Category should have unique non-empty value.]]></string>
+      
+  
+  <string name="_adm_form_txt_pre_lists_country"><![CDATA[Country]]></string>
 	<string name="_adm_form_txt_pre_lists_create_popup"><![CDATA[Add New List]]></string>
 	<string name="_adm_form_txt_pre_lists_edit_popup"><![CDATA[Edit "{0}" List]]></string>
 	<string name="_adm_form_txt_pre_lists_gl_module"><![CDATA[Module]]></string>
@@ -1330,6 +1347,7 @@
 	<string name="_adm_stg_cpt_option_sys_ftp_password"><![CDATA[FTP server password]]></string>
 	<string name="_adm_stg_cpt_option_sys_cron_time"><![CDATA[Last cron execution time]]></string>
 	<string name="_adm_stg_cpt_option_sys_install_time"><![CDATA[Installation date]]></string>
+	<string name="_adm_stg_cpt_option_sys_upgrade_channel"><![CDATA[Update channel]]></string>
 	<string name="_adm_stg_cpt_option_sys_live_updates_interval"><![CDATA[Live updates interval (in milliseconds)]]></string>
 	<string name="_adm_stg_cpt_option_sys_maps_api_key"><![CDATA[Google Maps API key]]></string>
 	<string name="_adm_stg_cpt_option_sys_embed_default"><![CDATA[Embeds provider]]></string>
@@ -1483,6 +1501,7 @@
 	<string name="_adm_tmi_cpt_edit"><![CDATA[Manage Launcher]]></string>
 	<string name="_adm_tmi_cpt_extensions"><![CDATA[Add Apps]]></string>
 	<string name="_adm_tmi_cpt_favorite"><![CDATA[Show Favorite Only]]></string>
+        <string name="_adm_tmi_cpt_language"><![CDATA[Language]]></string>
 	<string name="_adm_tmi_cpt_logout"><![CDATA[Sign out]]></string>
 	<string name="_adm_tmi_cpt_site"><![CDATA[Go To Site]]></string>
 	<string name="_adm_tmi_cpt_tour"><![CDATA[Tour]]></string>
@@ -1590,18 +1609,32 @@
         <string name="_cmt_txt_added_sample"><![CDATA[added a new comment]]></string>
 	<string name="_cmt_txt_or"><![CDATA[or]]></string>
 	<string name="_cmt_txt_sample_comment_single"><![CDATA[comment]]></string>
+        <string name="_cmt_txt_sample_reaction_single"><![CDATA['{0}' reaction to comment]]></string>
 	<string name="_cmt_txt_sample_reply_to"><![CDATA[reply to comment]]></string>
+        <string name="_cmt_txt_sample_score_up_single"><![CDATA[score up vote to comment]]></string>
+        <string name="_cmt_txt_sample_score_down_single"><![CDATA[score down vote to comment]]></string>
+        <string name="_cmt_txt_sample_vote_single"><![CDATA[vote to comment]]></string>
 	<string name="_cmt_txt_n_comments"><![CDATA[{0} comments]]></string>
         <string name="_cmt_txt_do"><![CDATA[Comment]]></string>
         <string name="_cmt_txt_counter"><![CDATA[{0}]]></string>
 	<string name="_cmt_txt_counter_empty"><![CDATA[Comment]]></string>
         <string name="_cmt_txt_min_form_placeholder"><![CDATA[{0}, leave your comment here.]]></string>
-	<string name="_copyright"><![CDATA[&copy; {0} Company]]></string>
+        <string name="_cmt_rvw_block_rating_title"><![CDATA[Reviews Rating]]></string>
+        <string name="_cmt_rvw_block_reviews_title"><![CDATA[Reviews ({0})]]></string>
+        <string name="_cmt_rvw_txt_min_form_placeholder"><![CDATA[{0}, leave your review here.]]></string>
+        <string name="_cmt_rvw_txt_sample_comment_single"><![CDATA[review]]></string>
+        <string name="_cmt_rvw_txt_sample_reaction_single"><![CDATA['{0}' reaction to review]]></string>
+        <string name="_cmt_rvw_txt_sample_score_up_single"><![CDATA[score up vote to review]]></string>
+        <string name="_cmt_rvw_txt_sample_score_down_single"><![CDATA[score down vote to review]]></string>
+        <string name="_cmt_rvw_txt_sample_vote_single"><![CDATA[vote to review]]></string>
+        <string name="_cmt_rvw_txt_empty"><![CDATA[No reviews yet]]></string>
+        <string name="_copyright"><![CDATA[&copy; {0} Company]]></string>
 	<string name="_delete"><![CDATA[delete]]></string>
 	<string name="_error occured"><![CDATA[Error occurred]]></string>
 	<string name="_from"><![CDATA[from]]></string>
 	<string name="_hidden_comment"><![CDATA[Comment by <b>{0}</b> is hidden.]]></string>
-	<string name="_in_reply_to"><![CDATA[In reply to {0}]]></string>
+	<string name="_in_reply_to"><![CDATA[In reply to]]></string>
+        <string name="_in_reply_to_x"><![CDATA[In reply to {0}]]></string>
 	<string name="_item"><![CDATA[item]]></string>
 	<string name="_items"><![CDATA[items]]></string>
 	<string name="_member_banned"><![CDATA[Sorry, you've been banned]]></string>
@@ -2038,8 +2071,9 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_form_input_age"><![CDATA[Age]]></string>
 	<string name="_sys_form_input_sys_location"><![CDATA[Location]]></string>
 	<string name="_sys_form_input_location"><![CDATA[Location]]></string>
+  <string name="_sys_form_input_location_radius_label"><![CDATA[Radius (in km)]]></string>
 	<string name="_sys_form_input_sys_labels"><![CDATA[Labels]]></string>
-    <string name="_sys_form_input_labels"><![CDATA[Labels]]></string>
+  <string name="_sys_form_input_labels"><![CDATA[Labels]]></string>
 	<string name="_sys_form_input_sys_anonymous"><![CDATA[Post as anonymous]]></string>
 	<string name="_sys_form_input_anonymous"><![CDATA[Post as anonymous]]></string>
 	<string name="_sys_form_login"><![CDATA[Log in]]></string>
@@ -2080,8 +2114,22 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_form_login_input_phone_error_format"><![CDATA[Wrong phone number, allowed digits only and start from '+']]></string>
 	<string name="_sys_form_login_input_phone_error_not_unique"><![CDATA[This phone is already used by someone.]]></string>
 	<string name="_sys_form_login_input_code_error_invalid"><![CDATA[Wrong verification code. Please, repeat code or <a href="{0}">change the phone number and repeat from the beginning</a>.]]></string>
-	
 	<string name="_sys_form_paceholder_profiles_suggestions"><![CDATA[Type name here...]]></string>
+        <string name="_sys_form_ps_group_custom"><![CDATA[Privacy: Manage custom group]]></string>
+        <string name="_sys_form_display_ps_gc_select"><![CDATA[Privacy: Select custom group display]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_profile_id"><![CDATA[Profile ID]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_content_id"><![CDATA[Content ID]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_object"><![CDATA[Object]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_action"><![CDATA[Action]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_group_id"><![CDATA[Group ID]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_search"><![CDATA[Search]]></string>
+        <string name="_sys_form_ps_gc_input_caption_search"><![CDATA[Search]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_list"><![CDATA[List]]></string>
+        <string name="_sys_form_ps_gc_input_caption_list"><![CDATA[or select]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_do_submit"><![CDATA[Submit]]></string>
+        <string name="_sys_form_ps_gc_input_caption_do_submit"><![CDATA[Submit]]></string>
+        <string name="_sys_form_ps_gc_input_caption_system_do_cancel"><![CDATA[Cancel]]></string>
+        <string name="_sys_form_ps_gc_input_caption_do_cancel"><![CDATA[Cancel]]></string>
 	<string name="_sys_form_report"><![CDATA[Report]]></string>
 	<string name="_sys_form_report_input_caption_submit"><![CDATA[Post]]></string>
 	<string name="_sys_form_report_input_caption_text"><![CDATA[Report Text]]></string>
@@ -2093,6 +2141,22 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_form_report_input_caption_system_text"><![CDATA[Report Text]]></string>
 	<string name="_sys_form_report_input_caption_system_type"><![CDATA[Report Type]]></string>
 	<string name="_sys_form_report_input_caption_system_sys"><![CDATA[Object Type]]></string>
+        <string name="_sys_form_review"><![CDATA[Review]]></string>
+        <string name="_sys_form_review_display_edit"><![CDATA[Review Edit Form]]></string>
+	<string name="_sys_form_review_display_post"><![CDATA[Review Post Form]]></string>
+	<string name="_sys_form_review_input_caption_cmt_author_id"><![CDATA[Author]]></string>
+	<string name="_sys_form_review_input_caption_cmt_text"><![CDATA[Text]]></string>
+	<string name="_sys_form_review_input_caption_system_action"><![CDATA[Action]]></string>
+        <string name="_sys_form_review_input_caption_system_cmt_author_id"><![CDATA[Author]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_id"><![CDATA[ID]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_image"><![CDATA[Image]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_parent_id"><![CDATA[Parent ID]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_submit"><![CDATA[Post]]></string>
+	<string name="_sys_form_review_input_caption_system_cmt_text"><![CDATA[Text]]></string>
+        <string name="_sys_form_review_input_caption_system_cmt_mood"><![CDATA[Rating]]></string>
+	<string name="_sys_form_review_input_caption_system_id"><![CDATA[Object ID]]></string>
+	<string name="_sys_form_review_input_caption_system_sys"><![CDATA[Object Type]]></string>
+	<string name="_sys_form_review_input_submit"><![CDATA[Post]]></string>
 	<string name="_sys_form_unsubscribe"><![CDATA[Unsubscribe]]></string>
 	<string name="_sys_form_unsubscribe_input_caption_system_code"><![CDATA[Security Code]]></string>
 	<string name="_sys_form_unsubscribe_input_caption_system_do_submit"><![CDATA[Submit]]></string>
@@ -2231,6 +2295,8 @@ If it is not enabled then please consider implement this optimization, since it 
   <string name="_sys_menu_item_title_cmts_administration"><![CDATA[Comments]]></string>
 	<string name="_sys_menu_item_title_cmts_item_delete"><![CDATA[Delete]]></string>
 	<string name="_sys_menu_item_title_cmts_item_edit"><![CDATA[Edit]]></string>
+        <string name="_sys_menu_item_title_cmts_item_quote"><![CDATA[]]></string>
+        <string name="_sys_menu_item_title_cmts_item_reaction"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_cmts_item_reply"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_cmts_item_score"><![CDATA[]]></string>
 	<string name="_sys_menu_item_title_cmts_item_vote"><![CDATA[]]></string>
@@ -2292,9 +2358,11 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_menu_item_title_system_account_settings_pwd"><![CDATA[Password]]></string>
 	<string name="_sys_menu_item_title_system_add_content"><![CDATA[Add Content]]></string>
 	<string name="_sys_menu_item_title_system_cart"><![CDATA[Shopping Cart]]></string>
-  <string name="_sys_menu_item_title_system_cmts_administration"><![CDATA[Comments]]></string>
+        <string name="_sys_menu_item_title_system_cmts_administration"><![CDATA[Comments]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_delete"><![CDATA[Delete]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_edit"><![CDATA[Edit]]></string>
+        <string name="_sys_menu_item_title_system_cmts_item_quote"><![CDATA[Quote]]></string>
+        <string name="_sys_menu_item_title_system_cmts_item_reaction"><![CDATA[Reaction]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_reply"><![CDATA[Reply]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_report"><![CDATA[Report]]></string>
 	<string name="_sys_menu_item_title_system_cmts_item_score"><![CDATA[Score]]></string>
@@ -2381,7 +2449,6 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_menu_template_title_floating_blocks_dash"><![CDATA[Floating Blocks with icons & captions]]></string>
 	<string name="_sys_menu_template_title_footer"><![CDATA[Footer Links]]></string>
 	<string name="_sys_menu_template_title_hor"><![CDATA[Horizontal Links]]></string>
-	<string name="_sys_menu_template_title_icon_buttons_hor"><![CDATA[Horizontal Icon Buttons]]></string>
 	<string name="_sys_menu_template_title_inline"><![CDATA[Inline]]></string>
 	<string name="_sys_menu_template_title_inline_sbtn"><![CDATA[Inline ('special' buttons)]]></string>
 	<string name="_sys_menu_template_title_interactive"><![CDATA[Interactive Horizontal Links]]></string>
@@ -2433,6 +2500,7 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_menu_title_switch_language_inline"><![CDATA[Language Switch (inline)]]></string>
 	<string name="_sys_menu_title_switch_template"><![CDATA[Switch Template]]></string>
 	<string name="_sys_menu_title_snippet_meta"><![CDATA[Snippet Meta Info]]></string>
+        <string name="_sys_menu_title_vote_reactions_do"><![CDATA[Do Reaction Vote]]></string>
   <string name="_sys_menu_dashboard_manage_tools_addon_counter1_caption_default"><![CDATA[hidden]]></string>
   <string name="_sys_menu_dashboard_manage_tools_addon_counter1_caption_profile_default"><![CDATA[unapproved]]></string>
   <string name="_sys_menu_dashboard_manage_tools_addon_counter2_caption_default"><![CDATA[reported]]></string>
@@ -2467,6 +2535,8 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_page_block_title_confirm_email"><![CDATA[Email Confirmation]]></string>
 	<string name="_sys_page_block_title_confirm_phone"><![CDATA[Phone Confirmation]]></string>
 	<string name="_sys_page_block_title_create_account"><![CDATA[Sign up]]></string>
+        <string name="_sys_page_block_title_sys_create_post"><![CDATA[Create Post]]></string>
+	<string name="_sys_page_block_title_create_post"><![CDATA[Add new...]]></string>
 	<string name="_sys_page_block_title_sys_create_post_context"><![CDATA[Create Post (Context)]]></string>
 	<string name="_sys_page_block_title_create_post_context"><![CDATA[Add new...]]></string>
 	<string name="_sys_page_block_title_sys_create_post_public"><![CDATA[Create Post (Public)]]></string>
@@ -2596,14 +2666,20 @@ If it is not enabled then please consider implement this optimization, since it 
             <li><b>{0}</b> total</li>
             <li><b>{1}</b> deleted</li>
         </ul>]]></string>
+        <string name="_sys_ps_group_title_custom"><![CDATA[Custom]]></string>
         <string name="_sys_ps_group_title_followers"><![CDATA[Followers]]></string>
 	<string name="_sys_ps_group_title_friends"><![CDATA[Friends]]></string>
+        <string name="_sys_ps_group_title_friends_selected"><![CDATA[Selected Friends...]]></string>
+        <string name="_sys_ps_group_title_relations"><![CDATA[Relationships]]></string>
+        <string name="_sys_ps_group_title_relations_selected"><![CDATA[Selected Relationships...]]></string>
 	<string name="_sys_ps_group_title_me_only"><![CDATA[Me only]]></string>
 	<string name="_sys_ps_group_title_members"><![CDATA[Members]]></string>
 	<string name="_sys_ps_group_title_public"><![CDATA[Public]]></string>
         <string name="_sys_ps_group_title_participants"><![CDATA[Participants]]></string>
 	<string name="_sys_ps_group_title_closed"><![CDATA[Closed]]></string>
 	<string name="_sys_ps_group_title_secret"><![CDATA[Secret]]></string>
+    <string name="_sys_ps_ferr_incorrect_gc_not_allowed"><![CDATA[Custom privacy groups aren't allowed.]]></string>
+    <string name="_sys_ps_ferr_incorrect_gc_owner"><![CDATA[You are not an owner of the content.]]></string>
     <string name="_sys_ps_ferr_incorrect_select"><![CDATA[You need to select some value]]></string>
     <string name="_sys_ps_space_title_friend"><![CDATA[friend]]></string>
     <string name="_sys_push_notification_request"><![CDATA[Would you like to get notifications from {0}?]]></string>  
@@ -2707,7 +2783,9 @@ If it is not enabled then please consider implement this optimization, since it 
 	<string name="_sys_txt_account_unconfirmed_phone"><![CDATA[Your phone is unconfirmed. Please, confirm it on <a href="{0}">verification page</a>.]]></string>
 	<string name="_sys_txt_account_profile_system"><![CDATA[Please <a href="{0}">create a profile</a> to start using the site.]]></string>
 	<string name="_sys_txt_captcha_not_available"><![CDATA[CAPTCHA not available]]></string>
-    <string name="_sys_txt_change_image"><![CDATA[Change Picture]]></string>
+  <string name="_sys_txt_categories_button_caption_add"><![CDATA[Add]]></string>
+  <string name="_sys_txt_categories_button_caption_addnew"><![CDATA[Create own category]]></string>
+  <string name="_sys_txt_change_image"><![CDATA[Change Picture]]></string>
     <string name="_sys_txt_cmt_loading"><![CDATA[Loading...]]></string>
 	<string name="_sys_txt_confirm_email_already_confirmed"><![CDATA[Your email address is already confirmed.]]></string>
 	<string name="_sys_txt_confirm_email_desc"><![CDATA[Please enter confirmation code which was sent to your email address, or just click confirmation link in the same email message.]]></string>

@@ -57,29 +57,31 @@ class BxBaseFormLogin extends BxTemplFormView
         if (isset($this->aInputs['ID']))
             $this->aInputs['ID']['skip_domain_check'] = true;
 
-        $sRelocate = bx_process_input(bx_get('relocate'));
-        if (!$sRelocate && isset($_SERVER['HTTP_REFERER']) && 0 === mb_stripos($_SERVER['HTTP_REFERER'], BX_DOL_URL_ROOT)) {
+        if (isset($this->aInputs['relocate'])) {
+            $sRelocate = bx_process_input(bx_get('relocate'));
+            if (!$sRelocate && isset($_SERVER['HTTP_REFERER']) && 0 === mb_stripos($_SERVER['HTTP_REFERER'], BX_DOL_URL_ROOT)) {
 
-            $sRelocate = $_SERVER['HTTP_REFERER'];
-    
-            foreach ($aNoRelocatePages as $s) {
-                if (false !== mb_stripos($_SERVER['HTTP_REFERER'], $s)) {
-                    $sRelocate = BX_DOL_URL_ROOT . 'member.php';
-                    break;
-                }
-            }   
-        }
+                $sRelocate = $_SERVER['HTTP_REFERER'];
         
-        $this->aInputs['relocate']['value'] = $sRelocate ? $sRelocate : BX_DOL_URL_ROOT . 'member.php';
+                foreach ($aNoRelocatePages as $s) {
+                    if (false !== mb_stripos($_SERVER['HTTP_REFERER'], $s)) {
+                        $sRelocate = BX_DOL_URL_ROOT . 'member.php';
+                        break;
+                    }
+                }   
+            }
+            
+            $this->aInputs['relocate']['value'] = $sRelocate ? $sRelocate : BX_DOL_URL_ROOT . 'member.php';
+        }
     }
 
     function isValid ()
     {
         if (!parent::isValid())
             return false;
-        
-		$sId = trim($this->getCleanValue('ID'));
-        $sPassword = $this->getCleanValue('Password');
+
+        $sId = trim($this->getCleanValue('ID'));
+        $sPassword = trim($this->getCleanValue('Password'));
 
         if ($sId != ''){
             $sErrorString = bx_check_password($sId, $sPassword, $this->getRole());

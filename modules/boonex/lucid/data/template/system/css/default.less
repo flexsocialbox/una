@@ -1,7 +1,13 @@
 @import '../../../../../../../template/css/default.less';
 
-/* viewport */
+/**
+ * Is used for inputs and buttons. They should have the same value 
+ * because Input and Button can be positioned in one line.
+ */
+@base-input-box-sizing: border-box;
 
+
+/* viewport */
 html.bx-media-tablet {
     font-size: @bx-viewport-font-tablet !important;
 }
@@ -19,7 +25,7 @@ html.bx-media-phone {
 	height: @bx-height-header !important;
 }
 
-.bx-toolbar-item .bx-menu-toolbar .bx-menu-toolbar-item a img:not(.bx-def-thumb-size) {
+.bx-toolbar-item .bx-menu-toolbar .bx-menu-toolbar-item a img:not(.bx-base-pofile-unit-thumb) {
     max-width: @bx-height-header - 2;
     max-height: @bx-height-header - 2;
 }
@@ -163,8 +169,10 @@ a:hover > .sys-icon-a i {
 	color: @bx-color-link-header-hover;
 }
 .bx-header .sys-icon,
-.bx-header .sys-icon-a {
-	color: @bx-color-icon-header; 
+.bx-header .sys-icon-a,
+.cd-dropdown .cd-dropdown-content a .sys-icon,
+.cd-dropdown .cd-dropdown-content a .sys-icon-a {
+    color: @bx-color-icon-header; 
 }
 .bx-header .cd-nav-trigger span, 
 .bx-header .cd-nav-trigger span::before, 
@@ -354,7 +362,8 @@ a.bx-def-font-h3:hover {
     background-color: @bx-color-cover;
 }
 
-.bx-menu-toolbar-padding .bx-cover-wrapper {
+.bx-menu-toolbar-padding .bx-cover-wrapper,
+.bx-menu-toolbar-padding .bx-base-pofile-cover {
     border-width: @bx-border-width-cover;
     border-style: @bx-border-type;
     border-color: @bx-color-border-cover;
@@ -395,7 +404,9 @@ a.bx-def-font-h3:hover {
     font-family: @bx-font-family-cover;
 }
 .bx-cover-wrapper .bx-cover .bx-cover-title,
-.bx-cover-wrapper .bx-cover .bx-cover-title .bx-def-font-contrasted {
+.bx-cover-wrapper .bx-cover .bx-cover-title .bx-def-font-contrasted,
+.bx-cover-wrapper .bx-cover .bx-cover-title .bx-def-font-contrasted:after,
+.bx-cover-wrapper .bx-cover .bx-cover-title .bx-def-font-contrasted:before {
     color: @bx-color-font-cover;
 }
 .bx-cover-wrapper .bx-cover .bx-cover-title,
@@ -712,14 +723,6 @@ a.bx-def-font-h3:hover {
 	background-repeat: @bx-image-bg-menu-page-repeat;
     background-size: @bx-image-bg-menu-page-size;
 }
-.bx-menu-main-bar-wrapper:before {
-    border-bottom-left-radius: @bx-border-radius-block-bl;
-    background: @bx-color-menu-page-gradient-left;
-}
-.bx-menu-main-bar-wrapper:after {
-    border-bottom-right-radius: @bx-border-radius-block-br;
-    background: @bx-color-menu-page-gradient-right;
-}
 .bx-menu-main-bar-wrapper .bx-menu-main-submenu {
 	padding: @bx-content-padding-menu-page;
 }
@@ -746,12 +749,15 @@ a.bx-def-font-h3:hover {
 .bx-form-value .bx-form-input-radio_set,
 .bx-form-value .bx-form-input-checkbox_set,
 .bx-form-value .bx-form-input-number,
+.bx-form-value .bx-form-input-time,
 .bx-form-value .bx-form-input-datepicker,
 .bx-form-value .bx-form-input-datetime,
 .bx-form-value .bx-form-input-wrapper-textarea.bx-form-input-wrapper-html,
 .bx-form-value .bx-form-input-textarea,
 .bx-form-value .bx-form-input-password,
 .bx-form-value .bx-form-input-text {
+    .box-sizing(@base-input-box-sizing);
+
     border-color: @bx-color-border-form-input;
     border-width: @bx-border-width-form-input;
 
@@ -768,6 +774,7 @@ a.bx-def-font-h3:hover {
 .bx-form-value .bx-form-input-doublerange,
 .bx-form-value .bx-form-input-select,
 .bx-form-value .bx-form-input-number,
+.bx-form-value .bx-form-input-time,
 .bx-form-value .bx-form-input-datepicker,
 .bx-form-value .bx-form-input-datetime,
 .bx-form-value .bx-form-input-password,
@@ -797,6 +804,7 @@ a.bx-def-font-h3:hover {
 .bx-form-value .bx-form-input-slider:focus,
 .bx-form-value .bx-form-input-doublerange:focus,
 .bx-form-value .bx-form-input-number:focus,
+.bx-form-value .bx-form-input-time:focus,
 .bx-form-value .bx-form-input-datepicker:focus,
 .bx-form-value .bx-form-input-datetime:focus,
 .bx-form-value .bx-form-input-textarea:focus,
@@ -819,7 +827,7 @@ a.bx-def-font-h3:hover {
 
 /* button (normal) */
 .bx-btn {
-	.box-sizing(content-box);
+	.box-sizing(@base-input-box-sizing);
 
 	height: @bx-height-button;
 	line-height: (@bx-height-button - 0.1);
@@ -845,10 +853,10 @@ a.bx-def-font-h3:hover {
 	color: @bx-font-color-button;
 }
 .bx-btn.bx-btn-primary {
-	.box-sizing(content-box);
+	.box-sizing(@base-input-box-sizing);
 
 	height: @bx-height-button-primary;
-	line-height: @bx-height-button-primary;
+	line-height: (@bx-height-button-primary - 0.1);
 
 	.background-color (@bx-color-button-primary);
 
@@ -925,10 +933,10 @@ a.bx-def-font-h3:hover {
 
 /* button (large) */
 .bx-btn.bx-btn-large {
-	.box-sizing(content-box);
+	.box-sizing(@base-input-box-sizing);
 
 	height: @bx-height-button-large;
-	line-height: @bx-height-button-large;
+	line-height: (@bx-height-button-large - 0.2);
 
 	.background-color (@bx-color-button-large);
 
@@ -951,10 +959,10 @@ a.bx-def-font-h3:hover {
 	color: @bx-font-color-button-large;
 }
 .bx-btn.bx-btn-large.bx-btn-primary {
-	.box-sizing(content-box);
+	.box-sizing(@base-input-box-sizing);
 
 	height: @bx-height-button-large-primary;
-	line-height: @bx-height-button-large-primary;
+	line-height: (@bx-height-button-large-primary - 0.2);
 
 	.background-color (@bx-color-button-large-primary);
 
@@ -1031,10 +1039,10 @@ a.bx-def-font-h3:hover {
 
 /* button (small) */
 .bx-btn.bx-btn-small {
-	.box-sizing(content-box);
+	.box-sizing(@base-input-box-sizing);
 
 	height: @bx-height-button-small;
-	line-height: @bx-height-button-small;
+	line-height: (@bx-height-button-small - 0.1);
 
 	.background-color (@bx-color-button-small);
 
@@ -1057,10 +1065,10 @@ a.bx-def-font-h3:hover {
 	color: @bx-font-color-button-small;
 }
 .bx-btn.bx-btn-small.bx-btn-primary {
-	.box-sizing(content-box);
+	.box-sizing(@base-input-box-sizing);
 
 	height: @bx-height-button-small-primary;
-	line-height: @bx-height-button-small-primary;
+	line-height: (@bx-height-button-small-primary - 0.1);
 
 	.background-color (@bx-color-button-small-primary);
 

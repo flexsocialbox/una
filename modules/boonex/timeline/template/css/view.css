@@ -170,29 +170,43 @@ div.bx-tl-item div.bx-tl-owner-actions .bx-btn {
 
 /*--- Item Content Style ---*/
 div.bx-tl-item-content {
-	position: relative;
+    position: relative;
     text-align: left;
 }
 div.bx-tl-item-content form {
-	padding-left: 1rem;
-	padding-right: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 div.bx-tl-item-content div.bx-tl-title {
-	text-overflow: ellipsis;
+    text-overflow: ellipsis;
     overflow: hidden;
 }
 div.bx-tl-item-content div.bx-tl-content iframe {
-	width: 100%;
+    width: 100%;
+    min-height: 240px !important;
 }
 div.bx-tl-item-text div.bx-tl-content {
-	position: relative;
+    position: relative;
     max-height: 250px;
 
-	text-overflow: ellipsis;
+    text-overflow: ellipsis;
     overflow: hidden;
 }
-div.bx-tl-item-text div.bx-tl-content.bx-tl-overflow {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+div.bx-tl-item-text div.bx-tl-content > p:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+div.bx-tl-item-text div.bx-tl-content > p:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+div.bx-tl-item-text div.bx-tl-content.bx-tl-overflow:before {
+    content: '';
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    background: linear-gradient(to bottom, transparent, #ffffff);
 }
 div.bx-tl-item-text div.bx-tl-content-show-more {
     position: relative;
@@ -209,6 +223,11 @@ div.bx-tl-item-text div.bx-tl-content p {
 div.bx-tl-item-text div.bx-tl-content img {
 	max-width: 100%;
 	height: auto;
+}
+
+/*--- Item Reactions Style ---*/
+div.bx-tl-item-reactions .bx-vote-counter {
+    margin-top: 0.5rem;
 }
 
 /*--- Item Images Style ---*/
@@ -246,12 +265,11 @@ div.bx-tl-view-timeline div.bx-tl-items:before {
     content: '';
     position: absolute;
     top: 0px;
-    left: 18px;
-    left: 1.125rem;
+    left: 1.1375rem;
     width: 4px;
     height: 100%;
 
-    background: rgba(0, 0, 0, 0.1);
+    background: #dddddd;
 }
 div.bx-tl-view-timeline div.bx-tl-items,
 div.bx-tl-view-search div.bx-tl-items,
@@ -265,43 +283,34 @@ div.bx-tl-view-item div.bx-tl-item {
     position: relative;
 }
 div.bx-tl-view-timeline div.bx-tl-item-type {
-	position: absolute;
+    position: absolute;
     top: 0px;
     left: 0px;
 }
 div.bx-tl-view-timeline div.bx-tl-item-circle {
-	width: 40px;
-    width: 2.5rem;
-    height: 40px;
-    height: 2.5rem;
+    position: relative;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
 
-	background-color: #ffffff;
-	background-clip: padding-box;
-	border-radius: 5rem;
-	box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.1);
+    width: 40px;
+    height: 40px;
+
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border-radius: 40px;
+    box-shadow: inset 0 0 0 3px #dddddd;
 
     text-align: center;
     color: #999999;
-	
-	overflow: hidden;
+
+    overflow: hidden;
 }
 div.bx-tl-view-timeline div.bx-tl-item-circle .sys-icon {
-	display: block;
-
-	margin-left: auto;
-	margin-right: auto;
-
-	width: 40px;
-    width: 2.5rem;
-    height: 40px;
-    height: 2.5rem;
-
-	text-align: center;
-
-	line-height: 38px;
-	line-height: 2.375rem;
-    font-size: 20px;
-	font-size: 1.25rem;
+    font-size: 1.375rem;
 }
 
 
@@ -460,6 +469,13 @@ div.bx-tl-view-outline div.bx-tl-reposted div.bx-tl-content {
 	color: #999999;
 }
 
+/*--- Item Style: View page ---*/
+div.bx-tl-view-item-comments .bx-tl-item-comments {
+    margin-top: 0;
+}
+div.bx-tl-view-item-comments .cmts .cmt:first-child  {
+    padding-top: 0;
+}
 
 /*--- Item Brief Style ---*/
 div.bx-tl-bview-image {

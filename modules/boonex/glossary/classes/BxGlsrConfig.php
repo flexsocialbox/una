@@ -58,6 +58,7 @@ class BxGlsrConfig extends BxBaseModTextConfig
 
             'URL_HOME' => 'page.php?i=glossary-home',
             'URL_POPULAR' => 'page.php?i=glossary-popular',
+            'URL_TOP' => 'page.php?i=glossary-top',
             'URL_UPDATED' => 'page.php?i=glossary-updated',
             'URL_MANAGE_COMMON' => 'page.php?i=glossary-manage',
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=glossary-administration',
@@ -117,6 +118,7 @@ class BxGlsrConfig extends BxBaseModTextConfig
                 'txt_sample_single_with_article' => '_bx_glossary_txt_sample_single_with_article',
                 'txt_sample_comment_single' => '_bx_glossary_txt_sample_comment_single',
                 'txt_sample_vote_single' => '_bx_glossary_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_glossary_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_glossary_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_glossary_txt_sample_score_down_single',
                 'form_field_author' => '_bx_glossary_form_entry_input_author',

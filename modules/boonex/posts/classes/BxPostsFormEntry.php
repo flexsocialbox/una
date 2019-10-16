@@ -128,9 +128,12 @@ class BxPostsFormEntry extends BxBaseModTextFormEntry
 
         $aValsToAdd[$CNF['FIELD_STATUS']] = $aValsToAdd[$CNF['FIELD_PUBLISHED']] > $aValsToAdd[$CNF['FIELD_ADDED']] ? 'awaiting' : 'active';
 
+        $this->processMulticatBefore($CNF['FIELD_MULTICAT'], $aValsToAdd);
         $iContentId = parent::insert ($aValsToAdd, $isIgnore);
-        if(!empty($iContentId))
+        if(!empty($iContentId)){
             $this->processFiles($CNF['FIELD_COVER'], $iContentId, true);
+            $this->processMulticatAfter($CNF['FIELD_MULTICAT'], $iContentId);
+        }
 
         return $iContentId;
     }
@@ -146,10 +149,12 @@ class BxPostsFormEntry extends BxBaseModTextFormEntry
 
             $aValsToAdd[$CNF['FIELD_PUBLISHED']] = $iPublished;
         }
-
+        
+        $this->processMulticatBefore($CNF['FIELD_MULTICAT'], $aValsToAdd);
         $iResult = parent::update ($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
 
         $this->processFiles($CNF['FIELD_COVER'], $iContentId, false);
+        $this->processMulticatAfter($CNF['FIELD_MULTICAT'], $iContentId);
 
         return $iResult;
     }

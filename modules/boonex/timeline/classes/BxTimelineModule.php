@@ -80,8 +80,12 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if($aData === false || !isset($aData['content']['videos'][$iVideoId]))
             return;
 
-        $oTemplate = $this->_oTemplate;
-        $oTemplate->setPageNameIndex (BX_PAGE_CLEAR);
+
+        $oTemplate = BxDolTemplate::getInstance();
+        $oTemplate->addJs(array(
+            'embedly-player.min.js'
+        ));
+        $oTemplate->setPageNameIndex (BX_PAGE_EMBED);
         $oTemplate->setPageContent ('page_main_code', $this->_oTemplate->getVideo($aEvent, $aData['content']['videos'][$iVideoId]));
         $oTemplate->getPageCode();
     }
@@ -381,7 +385,20 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
     public function actionGetItemBrief()
     {
-        echo BxDolPage::getObjectInstance($this->_oConfig->getObject('page_item_brief'), $this->_oTemplate)->getCode();
+        echo BxDolPage::getObjectInstance($this->_oConfig->getObject('page_item_brief'), $this->_oTemplate)->getCodeDynamic();
+    }
+
+    public function actionGetJumpTo()
+    {
+        $aParams = $this->_prepareParamsGet();
+        $this->_iOwnerId = $aParams['owner_id'];
+
+        $sJsObjectView = $this->_oConfig->getJsObjectView($aParams);
+
+        echoJson(array(
+            'content' => $this->_oTemplate->getJumpTo($aParams),
+            'eval' => $sJsObjectView . '.onGetJumpTo(oData)'
+        ));
     }
 
     public function actionResumeLiveUpdate()
@@ -483,6 +500,58 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      * @page service Service Calls
      * @section bx_timeline Timeline
      * @subsection bx_timeline-other Other
+     * @subsubsection bx_timeline-get_content_owner_profile_id get_content_owner_profile_id
+     * 
+     * @code bx_srv('bx_timeline', 'get_content_owner_profile_id', [...]); @endcode
+     * 
+     * Get event's owner profile id.
+     * 
+     * @param $mixedEvent integer value with event ID or an array with event info.
+     * @return event's owner profile id.
+     * 
+     * @see BxTimelineModule::serviceGetContentOwnerProfileId
+     */
+    /** 
+     * @ref bx_timeline-get_content_owner_profile_id "get_content_owner_profile_id"
+     */
+    public function serviceGetContentOwnerProfileId($mixedEvent)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iProfile = (int)bx_get_logged_profile_id();
+        if(empty($mixedEvent))
+            return $iProfile;
+
+        if(!is_array($mixedEvent))
+            $mixedEvent = $this->_oDb->getContentInfoById((int)$mixedEvent);
+
+        if(empty($mixedEvent) || !is_array($mixedEvent) || !isset($mixedEvent[$CNF['FIELD_SYSTEM']]))
+            return $iProfile;
+
+        if((int)$mixedEvent[$CNF['FIELD_SYSTEM']] == 0)
+            return (int)$mixedEvent[$CNF['FIELD_OBJECT_ID']];
+
+        if(!empty($mixedEvent['object_owner_id']))
+            return (int)$mixedEvent['object_owner_id'];
+
+        if(!empty($mixedEvent['content'])) {
+            $aContent = unserialize($mixedEvent['content']);
+
+            if(!empty($aContent) && is_array($aContent) && !empty($aContent['object_author_id']))
+                return (int)$aContent['object_author_id'];
+        }
+
+        $aEventData = $this->_oTemplate->getData($mixedEvent);
+        if(!empty($aEventData) && is_array($aEventData) && !empty($aEventData['object_owner_id']))
+            return (int)$aEventData['object_owner_id'];
+
+        return $iProfile;
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_timeline Timeline
+     * @subsection bx_timeline-other Other
      * @subsubsection bx_timeline-get_create_post_form get_create_post_form
      * 
      * @code bx_srv('bx_timeline', 'get_create_post_form', [...]); @endcode
@@ -501,20 +570,28 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     {
     	$aParams = array_merge($this->_aFormParams, $aParams);
 
-        $this->_iOwnerId = $aParams['context_id'];
+        $bContext = $aParams['context_id'] !== false;
+        $this->_iOwnerId = $bContext ? abs($aParams['context_id']) : 0;
 
     	$oForm = $this->serviceGetObjectForm('add', $aParams);
     	if(!$oForm)
             return '';
 
+        $aParams['type'] = BX_BASE_MOD_NTFS_TYPE_PUBLIC;
+        $aParams['form_display'] = 'form_display_post_add_public';
+        if($bContext) {
+            if($aParams['context_id'] < 0) {
+                $aParams['type'] = BX_BASE_MOD_NTFS_TYPE_OWNER;
+                $aParams['form_display'] = 'form_display_post_add_profile';
+            }
+            else {
+                $aParams['type'] = BX_TIMELINE_TYPE_OWNER_AND_CONNECTIONS;
+                $aParams['form_display'] = 'form_display_post_add';
+            }
+        }
+
         if(!empty($aParams['display']))
             $aParams['form_display'] = $aParams['display'];
-        else if(isset($aParams['context_id'])) {
-            if((int)$aParams['context_id'] == 0)
-                $aParams['form_display'] = 'form_display_post_add_public';
-            else
-                $aParams['form_display'] = 'form_display_post_add_profile';
-        }
 
     	$aResult = $this->getFormPost($aParams);
     	if(!empty($aResult['form'])) {
@@ -522,13 +599,13 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
             $sCode = '';
             $sCode .= $this->_oTemplate->getCssJs($bDynamicMode);
-            $sCode .= $this->_oTemplate->getJsCodePost($this->_iOwnerId);
+            $sCode .= $this->_oTemplate->getJsCodePost($this->_iOwnerId, $aParams);
             $sCode .= $aResult['form'];
             return $sCode;
         }
 
         if(!empty($aResult['message']))
-                return $aResult['message'];
+            return $aResult['message'];
 
         return '';
     }
@@ -554,19 +631,29 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      */
     public function serviceGetObjectForm ($sType, $aParams = array())
     {
-    	if (!in_array($sType, array('add')))
+    	if(!in_array($sType, array('add')))
             return false;
 
-        $CNF = &$this->_oConfig->CNF;
+        $bContext = $aParams['context_id'] !== false;
+        if($bContext && ($oContextProfile = BxDolProfile::getInstance(abs($aParams['context_id']))) !== false)
+            if($oContextProfile->checkAllowedPostInProfile() !== CHECK_ACTION_RESULT_ALLOWED)
+                return false;
+
+        $aParams['type'] = BX_BASE_MOD_NTFS_TYPE_PUBLIC;
+        $aParams['form_display'] = 'form_display_post_add_public';
+        if($bContext) {
+            if($aParams['context_id'] < 0) {
+                $aParams['type'] = BX_BASE_MOD_NTFS_TYPE_OWNER;
+                $aParams['form_display'] = 'form_display_post_add_profile';
+            }
+            else {
+                $aParams['type'] = BX_TIMELINE_TYPE_OWNER_AND_CONNECTIONS;
+                $aParams['form_display'] = 'form_display_post_add';
+            }
+        }
 
         if(!empty($aParams['display']))
             $aParams['form_display'] = $aParams['display'];
-        else if(isset($aParams['context_id'])) {
-            if((int)$aParams['context_id'] == 0)
-                $aParams['form_display'] = 'form_display_post_add_public';
-            else
-                $aParams['form_display'] = 'form_display_post_add_profile';
-        }
 
         $oForm = $this->getFormPostObject($aParams);
 
@@ -593,13 +680,53 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      */
     public function serviceGetTimelinePost($aEvent, $aBrowseParams = array())
     {
-        $CNF = &$this->_oConfig->CNF;
+        $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
+        if(empty($aContentInfo) || !is_array($aContentInfo))
+            return false;
+
+        $aEvent = array_merge($aEvent, array(
+            'owner_id' => $aContentInfo['owner_id'],
+            'object_privacy_view' => $aContentInfo['object_privacy_view']
+        ));
 
         /*
          * Note. For 'Direct Timeline Posts' FIELD_OBJECT_ID contains post's author profile ID.
          */
-        $CNF['FIELD_AUTHOR'] = $CNF['FIELD_OBJECT_ID'];
+        $this->_oConfig->CNF['FIELD_AUTHOR'] = $this->_oConfig->CNF['FIELD_OBJECT_ID'];
         return parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_timeline Timeline
+     * @subsection get_timeline_post
+     * @see BxTimelineModule::serviceGetTimelinePostAllowedView
+     *
+     * Check Timeline post's visibility. It's needed for Timeline module, when its events 
+     * are accessed and checked from outside. For example, when they are referenced 
+     * from Channels module.
+     * 
+     * @param $aEvent timeline event array from Timeline module
+     * @return mixed value: CHECK_ACTION_RESULT_ALLOWED or text of some error message.
+     */
+    public function serviceGetTimelinePostAllowedView($aEvent)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iOwnerId = (int)$aEvent[$CNF['FIELD_OWNER_ID']];
+        if($iOwnerId == 0)
+            return CHECK_ACTION_RESULT_ALLOWED;
+
+        $oOwner = BxDolProfile::getInstance($iOwnerId);
+        if(!$oOwner)
+            return CHECK_ACTION_RESULT_ALLOWED;
+
+        $sModule = $oOwner->getModule();
+        $aOwnerInfo = BxDolService::call($sModule, 'get_info', array($oOwner->getContentId(), false));
+        if(empty($aOwnerInfo) || !is_array($aOwnerInfo))
+            return CHECK_ACTION_RESULT_ALLOWED;
+
+        return BxDolService::call($sModule, 'check_allowed_view_for_profile', array($aOwnerInfo));
     }
 
     /**
@@ -1388,7 +1515,10 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
                 array('group' => $sModule . '_vote', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVote', 'module_name' => $sModule, 'module_method' => 'get_notifications_vote', 'module_class' => 'Module'),
                 array('group' => $sModule . '_vote', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'undoVote'),
-                
+
+                array('group' => $sModule . '_reaction', 'type' => 'insert', 'alert_unit' => $sModule . '_reactions', 'alert_action' => 'doVote', 'module_name' => $sModule, 'module_method' => 'get_notifications_reaction', 'module_class' => 'Module'),
+                array('group' => $sModule . '_reaction', 'type' => 'delete', 'alert_unit' => $sModule . '_reactions', 'alert_action' => 'undoVote'),
+
                 array('group' => $sModule . '_score_up', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVoteUp', 'module_name' => $sModule, 'module_method' => 'get_notifications_score_up', 'module_class' => 'Module'),
 
                 array('group' => $sModule . '_score_down', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVoteDown', 'module_name' => $sModule, 'module_method' => 'get_notifications_score_down', 'module_class' => 'Module'),
@@ -1398,6 +1528,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
                 array('group' => 'content', 'unit' => $sModule, 'action' => 'repost', 'types' => array('follow_member', 'follow_context')),
                 array('group' => 'comment', 'unit' => $sModule, 'action' => 'commentPost', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'vote', 'unit' => $sModule, 'action' => 'doVote', 'types' => array('personal', 'follow_member', 'follow_context')),
+                array('group' => 'vote', 'unit' => $sModule . '_reactions', 'action' => 'doVote', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'score_up', 'unit' => $sModule, 'action' => 'doVoteUp', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'score_down', 'unit' => $sModule, 'action' => 'doVoteDown', 'types' => array('personal', 'follow_member', 'follow_context'))
             ),
@@ -1413,6 +1544,9 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
                 
                 array('unit' => $sModule, 'action' => 'doVote'),
                 array('unit' => $sModule, 'action' => 'undoVote'),
+
+                array('unit' => $sModule . '_reactions', 'action' => 'doVote'),
+                array('unit' => $sModule . '_reactions', 'action' => 'undoVote'),
 
                 array('unit' => $sModule, 'action' => 'doVoteUp'),
                 array('unit' => $sModule, 'action' => 'doVoteDown'),
@@ -1478,7 +1612,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         else
             $iEntryAuthor = (int)$aContent['object_id'];
 
-        $sEntryCaption = !empty($aContent['title']) ? $aContent['title'] : $this->_oConfig->getTitle($aContent['description'], $aContent['object_id']);
+        $sEntryCaption = call_user_func_array(array($this->_oConfig, 'getTitleShort'), !empty($aContent['title']) ? array($aContent['title']) : array($aContent['description'], $aContent['object_id']));
 
         return array(
             'entry_sample' => $CNF['T']['txt_sample_single_ext'],
@@ -1520,7 +1654,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(!$oComment || !$oComment->isEnabled())
             return array();
 
-        $sEntryCaption = !empty($aContent['title']) ? $aContent['title'] : $this->_oConfig->getTitle($aContent['description'], $aContent['object_id']);
+        $sEntryCaption = call_user_func_array(array($this->_oConfig, 'getTitleShort'), !empty($aContent['title']) ? array($aContent['title']) : array($aContent['description'], $aContent['object_id']));
 
         return array(
             'entry_sample' => $CNF['T']['txt_sample_single'],
@@ -1564,7 +1698,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(!$oVote || !$oVote->isEnabled())
             return array();
 
-        $sEntryCaption = !empty($aContent['title']) ? $aContent['title'] : $this->_oConfig->getTitle($aContent['description'], $aContent['object_id']);
+        $sEntryCaption = call_user_func_array(array($this->_oConfig, 'getTitleShort'), !empty($aContent['title']) ? array($aContent['title']) : array($aContent['description'], $aContent['object_id']));
 
         return array(
             'entry_sample' => $CNF['T']['txt_sample_single'],
@@ -1572,6 +1706,46 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'entry_caption' => $sEntryCaption,
             'entry_author' => $aContent['owner_id'],
             'subentry_sample' => $CNF['T']['txt_sample_vote_single'],
+            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
+        );
+    }
+
+    /**
+     * Entry post vote for Notifications module
+     */
+    public function serviceGetNotificationsReaction($aEvent)
+    {
+    	$CNF = &$this->_oConfig->CNF;
+
+    	$iContent = (int)$aEvent['object_id'];
+        $aContent = $this->_oDb->getEvents(array('browse' => 'id', 'value' => $iContent));
+        if(empty($aContent) || !is_array($aContent))
+            return array();
+
+        $oReaction = BxDolVote::getObjectInstance($CNF['OBJECT_REACTIONS'], $iContent);
+        if(!$oReaction || !$oReaction->isEnabled())
+            return array();
+
+        $aSubentry = $oReaction->getTrackBy(array('type' => 'id', 'id' => (int)$aEvent['subobject_id']));
+        if(empty($aSubentry) || !is_array($aSubentry))
+            return array();
+
+        $aSubentrySampleParams = array();
+        $aReaction = $oReaction->getReaction($aSubentry['reaction']);
+        if(!empty($aReaction['title']))
+            $aSubentrySampleParams[] = $aReaction['title'];
+        else
+            $aSubentrySampleParams[] = '_undefined';
+
+        $sEntryCaption = call_user_func_array(array($this->_oConfig, 'getTitleShort'), !empty($aContent['title']) ? array($aContent['title']) : array($aContent['description'], $aContent['object_id']));
+
+        return array(
+            'entry_sample' => $CNF['T']['txt_sample_single'],
+            'entry_url' => $this->_oConfig->getItemViewUrl($aContent),
+            'entry_caption' => $sEntryCaption,
+            'entry_author' => $aContent['owner_id'],
+            'subentry_sample' => $CNF['T']['txt_sample_reaction_single'],
+            'subentry_sample_params' => $aSubentrySampleParams,
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
         );
     }
@@ -1636,7 +1810,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(!$oScore || !$oScore->isEnabled())
             return array();
 
-        $sEntryCaption = !empty($aContent['title']) ? $aContent['title'] : $this->_oConfig->getTitle($aContent['description'], $aContent['object_id']);
+        $sEntryCaption = call_user_func_array(array($this->_oConfig, 'getTitleShort'), !empty($aContent['title']) ? array($aContent['title']) : array($aContent['description'], $aContent['object_id']));
 
         return array(
             'entry_sample' => $CNF['T']['txt_sample_single'],
@@ -1802,6 +1976,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
         $iId = $this->_oDb->insertEvent(array(
             'owner_id' => $iOwnerId,
+            'system' => 0,
             'type' => $this->_oConfig->getPrefix('common_post') . 'repost',
             'action' => '',
             'object_id' => $iAuthorId,
@@ -2007,7 +2182,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     /** 
      * @ref bx_timeline-get_live_update "get_live_update"
      */
-    public function serviceGetLiveUpdate($aBrowseParams, $iProfileId, $iCount = 0, $iInit = 0)
+    public function serviceGetLiveUpdate($aBrowseParams, $iProfileId, $iValue = 0, $iInit = 0)
     {
         $sKey = $this->_oConfig->getLiveUpdateKey($aBrowseParams);
 
@@ -2016,21 +2191,26 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             return false;
 
         $aParams = $this->_prepareParams($aBrowseParams);
-        $aParams['filter'] = BX_TIMELINE_FILTER_OTHER_VIEWER;
-        $aParams['count'] = true;
-
-        $iCountNew = $this->_oDb->getEvents($aParams);
-        if($iCountNew == $iCount)
+        $aParams = array_merge($aParams, array(
+            'per_page' => 1,
+            'filter' => BX_TIMELINE_FILTER_OTHER_VIEWER
+        ));
+        $aEvents = $this->_oDb->getEvents($aParams);
+        if(empty($aEvents) || !is_array($aEvents) || count($aEvents) != 1)
+            return false;
+        
+        $iValueNew = $aEvents[0]['id'];
+        if($iValueNew == $iValue)
             return false;
 
         if((int)$iInit != 0)
-            return array('count' => $iCountNew);
+            return array('count' => $iValueNew);
 
         return array(
-            'count' => $iCountNew, // required (for initialization and visualization)
+            'count' => $iValueNew, // required (for initialization and visualization)
             'method' => $this->_oConfig->getJsObjectView($aBrowseParams) . '.showLiveUpdate(oData)', // required (for visualization)
             'data' => array(
-                'code' => $this->_oTemplate->getLiveUpdate($aBrowseParams, $iProfileId, $iCount, $iCountNew)
+                'code' => $this->_oTemplate->getLiveUpdate($aBrowseParams, $iProfileId, $iValue, $iValueNew)
             ),  // optional, may have some additional data to be passed in JS method provided using 'method' param above.
         );
     }
@@ -2250,6 +2430,15 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             ));
 
             if(!empty($iId)) {
+                $aContent = array_merge($aContent, array(
+                    'timeline_group' => array(
+                        'by' => $this->getName() . '_' . $iUserId . '_' . $iId,
+                        'field' => 'owner_id'
+                    )
+                ));
+                $this->_oDb->updateEvent(array('content' => serialize($aContent)), array('id' => $iId));
+
+                //--- Process Meta ---//
             	$oMetatags = BxDolMetatags::getObjectInstance($this->_oConfig->getObject('metatags'));
             	if($bText)
                     $oMetatags->metaAdd($iId, $sText);
@@ -2374,12 +2563,12 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
         $oForm = BxDolForm::getObjectInstance($this->_oConfig->getObject($sFormObject), $this->_oConfig->getObject($sFormDisplay), $this->_oTemplate);        
 
-        $sParamsKey = 'ajax_mode';
-        if(isset($aParams[$sParamsKey]) && is_bool($aParams[$sParamsKey]))
-            $oForm->setAjaxMode((bool)$aParams[$sParamsKey]);
-
+        /**
+         * Note. 'ajax_mode' parameter isn't checked because
+         * timeline post form works as Ajax form by default.
+         */
         $sParamsKey = 'visibility_autoselect';
-        if(isset($aParams[$sParamsKey]) && is_bool($aParams[$sParamsKey]))
+        if(isset($aParams[$sParamsKey]) && (bool)$aParams[$sParamsKey] === true)
             $oForm->setVisibilityAutoselect((bool)$aParams[$sParamsKey]);
 
         $oForm->init();
@@ -2507,6 +2696,9 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         $iUserId = $this->getUserId();
 
         $aCheckResult = checkActionModule($iUserId, 'post', $this->getName(), $bPerform);
+        if($aCheckResult[CHECK_ACTION_RESULT] !== CHECK_ACTION_RESULT_ALLOWED)
+            return $aCheckResult[CHECK_ACTION_MESSAGE];
+        
         if(!empty($this->_iOwnerId) && ($oProfileOwner = BxDolProfile::getInstance($this->_iOwnerId)) !== false) {
             if($oProfileOwner->checkAllowedPostInProfile() !== CHECK_ACTION_RESULT_ALLOWED)
                 return _t('_sys_txt_access_denied');
@@ -2521,11 +2713,14 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     {
         $CNF = $this->_oConfig->CNF;
 
-        $mixedResult = BxDolProfile::getInstance($aEvent[$CNF['FIELD_OWNER_ID']])->checkAllowedProfileView();
-        if($mixedResult !== CHECK_ACTION_RESULT_ALLOWED)
+        if((int)$aEvent[$CNF['FIELD_OWNER_ID']] == 0)
+            return true;
+
+        $oProfileOwner = BxDolProfile::getInstance($aEvent[$CNF['FIELD_OWNER_ID']]);
+        if($oProfileOwner && $oProfileOwner->checkAllowedProfileView() !== CHECK_ACTION_RESULT_ALLOWED)
             return false;
 
-		return true;
+        return true;
     }
 
     public function isAllowedEdit($aEvent, $bPerform = false)
@@ -2798,7 +2993,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     public function isAllowedMore($aEvent, $bPerform = false)
     {
     	$oMoreMenu = $this->getManageMenuObject();
-    	$oMoreMenu->setEventById($aEvent['id']);
+    	$oMoreMenu->setEvent($aEvent);
     	return $oMoreMenu->isVisible();
     }
 
@@ -2941,34 +3136,36 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
     public function onDelete($aEvent)
     {
+        $CNF = &$this->_oConfig->CNF;
+
         $iUserId = $this->getUserId();
     	$sCommonPostPrefix = $this->_oConfig->getPrefix('common_post');
     	$sCommonPostComment = $this->_oConfig->getObject('comment');
     	
     	//--- Delete comments for Common posts.
     	if($this->_oConfig->isCommon($aEvent['type'], $aEvent['action'])) {
-            $oComments = $this->getCmtsObject($sCommonPostComment, $aEvent['id']);
+            $oComments = $this->getCmtsObject($sCommonPostComment, $aEvent[$CNF['FIELD_ID']]);
             if($oComments !== false)
-                $oComments->onObjectDelete($aEvent['id']);
+                $oComments->onObjectDelete($aEvent[$CNF['FIELD_ID']]);
     	}
 
     	//--- Delete attached photos, videos and links when common event was deleted.
     	if($aEvent['type'] == $sCommonPostPrefix . BX_TIMELINE_PARSE_TYPE_POST) {
-    		$this->_deleteMedia(BX_TIMELINE_MEDIA_PHOTO, $aEvent['id']);
-    		$this->_deleteMedia(BX_TIMELINE_MEDIA_VIDEO, $aEvent['id']);
+    		$this->_deleteMedia(BX_TIMELINE_MEDIA_PHOTO, $aEvent[$CNF['FIELD_ID']]);
+    		$this->_deleteMedia(BX_TIMELINE_MEDIA_VIDEO, $aEvent[$CNF['FIELD_ID']]);
 
-	        $this->_deleteLinks($aEvent['id']);
+	        $this->_deleteLinks($aEvent[$CNF['FIELD_ID']]);
     	}
 
     	//--- Update parent event when repost event was deleted.
     	$bRepost = $aEvent['type'] == $sCommonPostPrefix . BX_TIMELINE_PARSE_TYPE_REPOST;
         if($bRepost) {
-            $this->_oDb->deleteRepostTrack($aEvent['id']);
+            $this->_oDb->deleteRepostTrack($aEvent[$CNF['FIELD_ID']]);
 
             $aContent = unserialize($aEvent['content']);
             $aReposted = $this->_oDb->getReposted($aContent['type'], $aContent['action'], $aContent['object_id']);
             if(!empty($aReposted) && is_array($aReposted))
-                $this->_oDb->updateRepostCounter($aReposted['id'], $aReposted['reposts'], -1);
+                $this->_oDb->updateRepostCounter($aReposted[$CNF['FIELD_ID']], $aReposted['reposts'], -1);
         }
 
         //--- Find and delete repost events when parent event was deleted.
@@ -2976,28 +3173,35 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 	    $aRepostEvents = $this->_oDb->getEvents(array('browse' => 'reposted_by_descriptor', 'type' => $aEvent['type']));
 		foreach($aRepostEvents as $aRepostEvent) {
 			$aContent = unserialize($aRepostEvent['content']);
-			if(isset($aContent['type']) && $aContent['type'] == $aEvent['type'] && isset($aContent['object_id']) && (($bSystem && (int)$aContent['object_id'] == (int)$aEvent['object_id']) || (!$bSystem  && (int)$aContent['object_id'] == (int)$aEvent['id'])) && (int)$this->_oDb->deleteEvent(array('id' => (int)$aRepostEvent['id'])) > 0) {
-			    $oComments = $this->getCmtsObject($sCommonPostComment, $aRepostEvent['id']);
+			if(isset($aContent['type']) && $aContent['type'] == $aEvent['type'] && isset($aContent['object_id']) && (($bSystem && (int)$aContent['object_id'] == (int)$aEvent['object_id']) || (!$bSystem  && (int)$aContent['object_id'] == (int)$aEvent[$CNF['FIELD_ID']])) && (int)$this->_oDb->deleteEvent(array('id' => (int)$aRepostEvent[$CNF['FIELD_ID']])) > 0) {
+			    $oComments = $this->getCmtsObject($sCommonPostComment, $aRepostEvent[$CNF['FIELD_ID']]);
                 if($oComments !== false)
-                    $oComments->onObjectDelete($aRepostEvent['id']);
+                    $oComments->onObjectDelete($aRepostEvent[$CNF['FIELD_ID']]);
 
-                bx_alert($this->_oConfig->getObject('alert'), 'delete_repost', $aEvent['id'], $iUserId, array(
-                    'repost_id' => $aRepostEvent['id'],
+                bx_alert($this->_oConfig->getObject('alert'), 'delete_repost', $aEvent[$CNF['FIELD_ID']], $iUserId, array(
+                    'repost_id' => $aRepostEvent[$CNF['FIELD_ID']],
                 ));
             }
 		}
 
-		//--- Delete associated meta.
+        //--- Delete associated meta.
         $oMetatags = BxDolMetatags::getObjectInstance($this->_oConfig->getObject('metatags'));
-        $oMetatags->onDeleteContent($aEvent['id']);
+        $oMetatags->onDeleteContent($aEvent[$CNF['FIELD_ID']]);
+
+        //--- Delete feed cache.
+        $this->_oDb->deleteCache(array('event_id' => $aEvent[$CNF['FIELD_ID']]));
+        
+        //--- Delete item cache.
+        $sCacheItemKey = $this->_oConfig->getCacheItemKey($aEvent[$CNF['FIELD_ID']]);
+        $this->getCacheItemObject()->delData($sCacheItemKey);
 
         //--- Event -> Delete for Alerts Engine ---//
         if($bRepost)
-            bx_alert($this->_oConfig->getObject('alert'), 'delete_repost', $aReposted['id'], $iUserId, array(
-                'repost_id' => $aEvent['id'],
+            bx_alert($this->_oConfig->getObject('alert'), 'delete_repost', $aReposted[$CNF['FIELD_ID']], $iUserId, array(
+                'repost_id' => $aEvent[$CNF['FIELD_ID']],
             ));
         else
-            bx_alert($this->_oConfig->getObject('alert'), 'delete', $aEvent['id'], $iUserId);
+            bx_alert($this->_oConfig->getObject('alert'), 'delete', $aEvent[$CNF['FIELD_ID']], $iUserId);
         //--- Event -> Delete for Alerts Engine ---//
     }
 

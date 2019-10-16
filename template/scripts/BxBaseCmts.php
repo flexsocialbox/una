@@ -17,6 +17,9 @@ class BxBaseCmts extends BxDolCmts
     protected static $_sTmplContentDoCommentLabel;
     protected static $_sTmplContentCounter;
 
+    protected $_sTmplNameItem;
+
+    protected $_sJsObjClass;
     protected $_sJsObjName;
     protected $_sStylePrefix;
 
@@ -30,6 +33,9 @@ class BxBaseCmts extends BxDolCmts
         if (empty($sSystem))
             return;
 
+        $this->_sTmplNameItem = 'comment.html';
+                
+        $this->_sJsObjClass = 'BxDolCmts';
         $this->_sJsObjName = 'oCmts' . bx_gen_method_name($sSystem, array('_' , '-')) . $iId;
         $this->_sStylePrefix = isset($this->_aSystem['root_style_prefix']) ? $this->_aSystem['root_style_prefix'] : 'cmt';
 
@@ -99,10 +105,11 @@ class BxBaseCmts extends BxDolCmts
             'sBrowseType' => $this->_sBrowseType,
             'sDisplayType' => $this->_sDisplayType,
             'iMinPostForm' => $bMinPostForm ? 1 : 0,
+            'sStylePrefix' => $this->_sStylePrefix,
         );
 
         $this->addCssJs();
-        return $this->_oTemplate->_wrapInTagJsCode("if(window['" . $this->_sJsObjName . "'] == undefined) var " . $this->_sJsObjName . " = new BxDolCmts(" . json_encode($aParams) . "); " . $this->_sJsObjName . ".cmtInit();");
+        return $this->_oTemplate->_wrapInTagJsCode("if(window['" . $this->_sJsObjName . "'] == undefined) var " . $this->_sJsObjName . " = new " . $this->_sJsObjClass . "(" . json_encode($aParams) . "); " . $this->_sJsObjName . ".cmtInit();");
     }
 
     /**
@@ -160,7 +167,7 @@ class BxBaseCmts extends BxDolCmts
         		return MsgBox(_t('_cmt_msg_login_required', $oPermalink->permalink('page.php?i=login'), $oPermalink->permalink('page.php?i=create-account')));
         	}
 
-            return isset($aDp['show_empty']) && $aDp['show_empty'] === true ? $this->_getEmpty() : '';
+            return isset($aDp['show_empty']) && $aDp['show_empty'] === true ? $this->_getEmpty($aDp) : '';
         }
 
         $sCmts = '';
@@ -230,27 +237,31 @@ class BxBaseCmts extends BxDolCmts
         if($aCmt['cmt_author_id'] == $iUserId)
             $sClass .= ' ' . $this->_sStylePrefix . '-mine';
 
-		if(!empty($aDp['blink']) && in_array($aCmt['cmt_id'], $aDp['blink']))
-			$sClass .= ' ' . $this->_sStylePrefix . '-blink';
+        if(!empty($aDp['blink']) && in_array($aCmt['cmt_id'], $aDp['blink']))
+            $sClass .= ' ' . $this->_sStylePrefix . '-blink';
 
-		if(!empty($aDp['class_comment']))
-			$sClass .= ' ' . $aDp['class_comment'];
+        if(!empty($aDp['class_comment']))
+            $sClass .= ' ' . $aDp['class_comment'];
 
-		if(!empty($aDp['class_comment_content']))
-			$sClassCnt .= ' ' . $aDp['class_comment_content'];
-			
+        if(!empty($aDp['class_comment_content']))
+            $sClassCnt .= ' ' . $aDp['class_comment_content'];
+
         $sActions = $this->_getActionsBox($aCmt, $aDp);
 
         $aTmplReplyTo = array();
         if((int)$aCmt['cmt_parent_id'] != 0) {
             $aParent = $this->getCommentRow($aCmt['cmt_parent_id']);
-            list($sParAuthorName, $sParAuthorLink, $sParAuthorIcon) = $this->_getAuthorInfo($aParent['cmt_author_id']);
+
+            $oProfile = $this->_getAuthorObject($aParent['cmt_author_id']);
+            $sParAuthorName = $oProfile->getDisplayName();
+            $sParAuthorUnit = $oProfile->getUnit(0, array('template' => array('name' => 'unit_wo_info_links', 'size' => 'icon')));
 
             $aTmplReplyTo = array(
                 'style_prefix' => $this->_sStylePrefix,
                 'par_cmt_link' => $this->getItemUrl($aCmt['cmt_parent_id']),
-            	'par_cmt_title' => bx_html_attribute(_t('_in_reply_to', $sParAuthorName)),
-                'par_cmt_author' => $sParAuthorName
+            	'par_cmt_title' => bx_html_attribute(_t('_in_reply_to_x', $sParAuthorName)),
+                'par_cmt_author' => $sParAuthorName,
+                'par_cmt_author_unit' => $sParAuthorUnit
             );
         }
 
@@ -275,14 +286,20 @@ class BxBaseCmts extends BxDolCmts
             }
         }
 
-        return $this->_oTemplate->parseHtmlByName('comment.html', array_merge(array(
+        $sReactions = '';
+        if(($oReaction = $this->getReactionObject($aCmt['cmt_unique_id'])) !== false)
+            $sReactions = $oReaction->getCounter(array(
+                'show_counter' => true
+            ));
+
+        return $this->_oTemplate->parseHtmlByName($this->_sTmplNameItem, array_merge(array(
             'system' => $this->_sSystem,
             'style_prefix' => $this->_sStylePrefix,
             'js_object' => $this->_sJsObjName,
             'id' => $aCmt['cmt_id'],
-        	'anchor' => $this->getItemAnchor($aCmt['cmt_id']),
+            'anchor' => $this->getItemAnchor($aCmt['cmt_id']),
             'class' => $sClass,
-        	'class_cnt' => $sClassCnt,
+            'class_cnt' => $sClassCnt,
             'bx_if:show_reply_to' => array(
                 'condition' => !empty($aTmplReplyTo),
                 'content' => $aTmplReplyTo
@@ -298,8 +315,9 @@ class BxBaseCmts extends BxDolCmts
                     'attached' => $sAttachments
                 )
             ),
+            'reactions' => $sReactions,
             'actions' => $sActions,
-            'replies' =>  $sReplies
+            'replies' =>  $sReplies,
         ), $this->_getTmplVarsAuthor($aCmt), $this->_getTmplVarsText($aCmt)));
     }
 
@@ -357,9 +375,6 @@ class BxBaseCmts extends BxDolCmts
 
     function getFormBoxPost($aBp = array(), $aDp = array())
     {
-        if(!$this->isPostReplyAllowed())
-            return '';
-
         return $this->_getFormBox(BX_CMT_ACTION_POST, $aBp, $aDp);
     }
 
@@ -504,7 +519,7 @@ class BxBaseCmts extends BxDolCmts
         $iCount = $this->getCommentsCountAll();
         $bCount = (int)$iCount != 0;
 
-        $isAllowedComment = $this->isPostReplyAllowed();
+        $isAllowedComment = $this->isPostAllowed();
 
         //--- Do Comment
         $bTmplVarsDoComment = $this->_isShowDoComment($aParams, $isAllowedComment, $bCount);
@@ -724,7 +739,8 @@ class BxBaseCmts extends BxDolCmts
     {
         $iCmtParentId = isset($aBp['parent_id']) ? (int)$aBp['parent_id'] : 0;
         $sPosition = isset($aDp['position']) ? $aDp['position'] : '';
-        $bFormMin = $iCmtParentId == 0 && isset($aDp['min_post_form']) ? $aDp['min_post_form'] : false;
+        $bQuote = isset($aDp['quote']) && (bool)$aDp['quote'];
+        $bFormMin = $iCmtParentId == 0 && isset($aDp['min_post_form']) && (bool)$aDp['min_post_form'];
 
         $sPositionSystem = $this->_aSystem['post_form_position'];
         if(!empty($sPosition) && $sPositionSystem != $sPosition)
@@ -733,8 +749,16 @@ class BxBaseCmts extends BxDolCmts
         $sClass = '';
         if(!empty($sPosition))
             $sClass .= ' ' . $this->_sStylePrefix . '-reply-' . $sPosition;
+        if($bQuote)
+            $sClass .= ' ' . $this->_sStylePrefix . '-reply-quote';
         if($bFormMin)
             $sClass .= ' ' . $this->_sStylePrefix . '-reply-min';
+        if(!empty($aDp['class']))
+            $sClass .= ' ' . $aDp['class'];
+
+        $sClassBody = '';
+        if(!empty($aDp['class_body']))
+            $sClassBody .= ' ' . $aDp['class_body'];
 
         $aTmplVarsFormMin = array();
         if($bFormMin) {
@@ -747,13 +771,18 @@ class BxBaseCmts extends BxDolCmts
                 'caption' => '',
                 'attrs' => array(
                     'onclick' => 'javascript:' . $this->_sJsObjName . '.cmtShowForm(this)',
-                    'placeholder' => _t('_cmt_txt_min_form_placeholder', $sAuthorName)
+                    'placeholder' => _t($this->_aT['txt_min_form_placeholder'], $sAuthorName)
                 ),
                 'value' => '',
             );
 
+            $sClassBodyMin = '';
+            if(!empty($aDp['class_body_min']))
+                $sClassBodyMin .= ' ' . $aDp['class_body_min'];
+
             $aTmplVarsFormMin = array(
                 'js_object' => $this->_sJsObjName,
+                'class_body_min' => $sClassBodyMin,
                 'style_prefix' => $this->_sStylePrefix,
                 'author_unit' => $sAuthorUnit,
                 'placeholder' => $oForm->genRow($aInputPlaceholder)
@@ -762,11 +791,14 @@ class BxBaseCmts extends BxDolCmts
 
         $sMethod = '_getForm' . ucfirst($sType);
         $aForm = $this->$sMethod($iCmtParentId, $aDp);
+        if(empty($aForm['form']))
+            return '';
 
         return $this->_oTemplate->parseHtmlByName('comment_reply_box.html', array(
             'js_object' => $this->_sJsObjName,
             'style_prefix' => $this->_sStylePrefix,
             'class' => $sClass,
+            'class_body' => $sClassBody,
             'bx_if:show_form_min' => array(
                 'condition' => $bFormMin,
                 'content' => $aTmplVarsFormMin
@@ -778,12 +810,25 @@ class BxBaseCmts extends BxDolCmts
 
     protected function _getFormPost($iCmtParentId = 0, $aDp = array())
     {
+        $bCmtParentId = !empty($iCmtParentId);
+        if((!$bCmtParentId && !$this->isPostAllowed()) || ($bCmtParentId && !$this->isReplyAllowed($iCmtParentId)))
+            return array('msg' => _t('_Access denied'));
+
         $bDynamic = isset($aDp['dynamic_mode']) && (bool)$aDp['dynamic_mode'];
+        $bQuote = isset($aDp['quote']) && (bool)$aDp['quote'];
 
         $oForm = $this->_getForm(BX_CMT_ACTION_POST, $iCmtParentId);
         $oForm->aInputs['cmt_parent_id']['value'] = $iCmtParentId;
-        $oForm->initChecker();
 
+        if($bQuote) {
+            $aCmtParent = $this->getCommentRow((int)$iCmtParentId);
+            if(!empty($aCmtParent['cmt_text']))
+                $oForm->aInputs['cmt_text']['value'] = $this->_oTemplate->parseHtmlByName('comment_quote.html', array(
+                    'content' => $aCmtParent['cmt_text']
+                ));
+        }
+
+        $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
             $iCmtAuthorId = $this->_getAuthorId();
             $iCmtParentId = $oForm->getCleanValue('cmt_parent_id');
@@ -800,6 +845,8 @@ class BxBaseCmts extends BxDolCmts
 
             $iCmtId = (int)$oForm->insert(array('cmt_vparent_id' => $iCmtVisualParentId, 'cmt_object_id' => $this->_iId, 'cmt_author_id' => $iCmtAuthorId, 'cmt_level' => $iLevel, 'cmt_time' => time()));
             if($iCmtId != 0) {
+                $iCmtUniqId = $this->_oQuery->getUniqId($this->_aSystem['system_id'], $iCmtId, $iCmtAuthorId);
+
                 if($this->isAttachImageEnabled()) {
                     $aImages = $oForm->getCleanValue('cmt_image');
                     if(!empty($aImages) && is_array($aImages)) {
@@ -820,16 +867,16 @@ class BxBaseCmts extends BxDolCmts
 
                 $this->_triggerComment();
 
-                $this->isPostReplyAllowed(true);
+                if($bCmtParentId)
+                    $this->isReplyAllowed($iCmtParentId, true);
+                else
+                    $this->isPostAllowed(true);
 
-                if ($this->_sMetatagsObj) {
-                    $oMetatags = BxDolMetatags::getObjectInstance($this->_sMetatagsObj);
-                    $oMetatags->metaAdd($this->_oQuery->getUniqId($this->_aSystem['system_id'], $iCmtId), $sCmtText);
-                }
+                if($this->_sMetatagsObj && ($oMetatags = BxDolMetatags::getObjectInstance($this->_sMetatagsObj)) !== false)
+                    $oMetatags->metaAdd($iCmtUniqId, $sCmtText);
 
-                $this->onPostAfter($iCmtId);
-
-                return array('id' => $iCmtId, 'parent_id' => $iCmtParentId);
+                if(($mixedResult = $this->onPostAfter($iCmtId)) !== false)
+                    return $mixedResult;
             }
 
             return array('msg' => _t('_cmt_err_cannot_perform_action'));
@@ -842,7 +889,7 @@ class BxBaseCmts extends BxDolCmts
     {
         $bDynamic = isset($aDp['dynamic_mode']) && (bool)$aDp['dynamic_mode'];
 
-        $aCmt = $this->_oQuery->getCommentSimple ((int)$this->getId(), $iCmtId);
+        $aCmt = $this->getCommentSimple($iCmtId);
         if(!$aCmt)
             return array('msg' => _t('_No such comment'));
 
@@ -857,17 +904,15 @@ class BxBaseCmts extends BxDolCmts
             $sCmtText = $oForm->getCleanValue('cmt_text');
 
             if($oForm->update($iCmtId) !== false) {
+                $iCmtUniqId = $this->_oQuery->getUniqId($this->_aSystem['system_id'], $iCmtId, (int)$aCmt['cmt_author_id']);
 
                 $this->isEditAllowed($aCmt, true);
 
-                if ($this->_sMetatagsObj) {
-                    $oMetatags = BxDolMetatags::getObjectInstance($this->_sMetatagsObj);
-                    $oMetatags->metaAdd($this->_oQuery->getUniqId($this->_aSystem['system_id'], $iCmtId), $sCmtText);
-                }
+                if($this->_sMetatagsObj && ($oMetatags = BxDolMetatags::getObjectInstance($this->_sMetatagsObj)) !== false)
+                    $oMetatags->metaAdd($iCmtUniqId, $sCmtText);
 
-                $this->onEditAfter($iCmtId);
-
-                return array('id' => $iCmtId, 'text' => $this->_prepareTextForOutput($sCmtText, $iCmtId));
+                if(($mixedResult = $this->onEditAfter($iCmtId)) !== false)
+                    return $mixedResult;
             }
 
             return array('msg' => _t('_cmt_err_cannot_perform_action'));
@@ -962,10 +1007,15 @@ class BxBaseCmts extends BxDolCmts
         return $sCmts;
     }
 
-    protected function _getEmpty()
+    protected function _getEmpty($aDp = array())
     {
+        $sClass = '';
+        if(!empty($aDp['class']))
+            $sClass .= ' ' . $aDp['class'];
+
         return $this->_oTemplate->parseHtmlByName('comment_empty.html', array(
             'style_prefix' => $this->_sStylePrefix,
+            'class' => $sClass,
             'content' => MsgBox(_t('_Empty'))
         ));
     }

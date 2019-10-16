@@ -24,14 +24,17 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     protected $_sCacheItemEngine;
     protected $_iCacheItemLifetime;
     protected $_bCacheList;
+    protected $_aCacheListExceptions;
 
     protected $_iRssLength;
     protected $_iLiveUpdateLength;
+    protected $_iCharsDisplayMinTitle;
     protected $_iCharsDisplayMaxTitle;
 
     protected $_sVideosAutoplay;
     protected $_iPreloadComments;
     protected $_iPreloadCommentsMax;
+    protected $_bJumpTo;
 
     protected $_bHot;
     protected $_iHotInterval;
@@ -69,7 +72,8 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
             // database fields
             'FIELD_ID' => 'id',
             'FIELD_OWNER_ID' => 'owner_id',
-            'FIELD_OBJECT_ID' => 'object_id', //Note. For 'Direct Timeline Posts' this field contains post's author profile ID.
+            'FIELD_SYSTEM' => 'system',
+            'FIELD_OBJECT_ID' => 'object_id', //Note. For 'Direct Timeline Posts' ('system' db field == 0) this field contains post's author profile ID.
             'FIELD_OBJECT_PRIVACY_VIEW' => 'object_privacy_view',
             'FIELD_ADDED' => 'date',
             'FIELD_PUBLISHED' => 'published',
@@ -79,6 +83,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
             'FIELD_DATE' => 'date',
             'FIELD_ANONYMOUS' => 'anonymous',
             'FIELD_CONTROLS' => 'controls',
+            'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELDS_DELAYED_PROCESSING' => 'video', // can be array of fields or comma separated string of field names
 
@@ -114,6 +119,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
                 'txt_sample_single_ext' => '_bx_timeline_txt_sample_ext',
             	'txt_sample_comment_single' => '_bx_timeline_txt_sample_comment_single',
                 'txt_sample_vote_single' => '_bx_timeline_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_timeline_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_timeline_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_timeline_txt_sample_score_down_single',
                 'txt_sample_with_link' => '_bx_timeline_txt_sample_with_link',
@@ -274,6 +280,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         $this->_sCacheItemEngine = getParam($sOptionPrefix . 'cache_item_engine');
         $this->_iCacheItemLifetime = (int)getParam($sOptionPrefix . 'cache_item_lifetime');
         $this->_bCacheList = getParam($sOptionPrefix . 'enable_cache_list') == 'on';
+        $this->_aCacheListExceptions = array(BX_TIMELINE_TYPE_HOT);
 
         $this->_aPerPage = array(
             'default' => (int)getParam($sOptionPrefix . 'events_per_page'),
@@ -284,7 +291,8 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
 
         $this->_iRssLength = (int)getParam($sOptionPrefix . 'rss_length');
         $this->_iLiveUpdateLength = 10;
-        $this->_iCharsDisplayMaxTitle = 20;
+        $this->_iCharsDisplayMinTitle = 32;
+        $this->_iCharsDisplayMaxTitle = 64;
 
         $this->_sVideosAutoplay = getParam($sOptionPrefix . 'videos_autoplay');
 
@@ -292,6 +300,8 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         $this->_iPreloadComments = (int)getParam($sOptionPrefix . 'preload_comments');
         if($this->_iPreloadComments > $this->_iPreloadCommentsMax)
             $this->_iPreloadComments = $this->_iPreloadCommentsMax;
+
+        $this->_bJumpTo = getParam($sOptionPrefix . 'enable_jump_to_switcher') == 'on';
 
         $this->_bHot = getParam($sOptionPrefix . 'enable_hot') == 'on';
         $this->_iHotInterval = (int)getParam($sOptionPrefix . 'hot_interval');
@@ -358,6 +368,11 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         return $this->_bCountAllViews;
     }
 
+    public function isJumpTo()
+    {
+        return $this->_bJumpTo;
+    }
+
     public function isHot()
     {
         return $this->_bHot;
@@ -381,6 +396,11 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     public function isCacheList()
     {
         return $this->_bCacheList;
+    }
+
+    public function isCacheListException($sType)
+    {
+        return in_array($sType, $this->_aCacheListExceptions);
     }
 
     public function getCacheItemEngine()
@@ -432,6 +452,11 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         return $this->_iLiveUpdateLength;
     }
 
+    public function getCharsDisplayMinTitle()
+    {
+        return $this->_iCharsDisplayMinTitle;
+    }
+
     public function getCharsDisplayMaxTitle()
     {
         return $this->_iCharsDisplayMaxTitle;
@@ -465,8 +490,11 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
     /**
      * Ancillary functions
      */
-    public function getTitle($s, $mixedProfile = false)
+    public function getTitle($s, $mixedProfile = false, $sMethodLength = 'getCharsDisplayMaxTitle')
     {
+        if(get_mb_substr($s, 0, 1) == '_' && strcmp($s, _t($s)) != 0)
+            return $s;
+
         if($mixedProfile !== false) {
             if(is_numeric($mixedProfile))
                 $mixedProfile = BxDolProfile::getInstanceMagic((int)$mixedProfile);
@@ -477,7 +505,15 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
                 ));
         }
 
-        return strmaxtextlen($s, $this->getCharsDisplayMaxTitle(), '...');
+        if(!method_exists($this, $sMethodLength))
+            $sMethodLength = 'getCharsDisplayMaxTitle';
+
+        return strmaxtextlen($s, $this->$sMethodLength(), '...');
+    }
+
+    public function getTitleShort($s, $mixedProfile = false)
+    {
+        return $this->getTitle($s, $mixedProfile, 'getCharsDisplayMinTitle');
     }
 
     public function getTitleDefault($bL, $bP, $bV)
@@ -522,6 +558,7 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         return $this->getName() . '_live_update_' . $this->getNameView($aParams, true);
     }
 
+    //TODO: isCommon and isSystem can be updated to use new 'system' db field.
     public function isCommon($sType, $sAction)
     {
         return !$this->isSystem($sType, $sAction);
@@ -535,13 +572,9 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
 
     public function getSystemData(&$aEvent, $aBrowseParams = array())
     {
-        $sHandler = $aEvent['type'] . '_' . $aEvent['action'];
-        if(!$this->isHandler($sHandler))
+        $aHandler = $this->getHandler($aEvent);
+        if($aHandler === false)
             return false;
-
-        $aHandler = $this->getHandlers($sHandler);
-        if(empty($aHandler['module_name']) || empty($aHandler['module_class']) || empty($aHandler['module_method']))
-            return false; 
 
         return BxDolService::call($aHandler['module_name'], $aHandler['module_method'], array($aEvent, $aBrowseParams), $aHandler['module_class']);
     }

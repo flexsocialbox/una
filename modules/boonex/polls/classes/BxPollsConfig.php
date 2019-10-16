@@ -50,6 +50,7 @@ class BxPollsConfig extends BxBaseModTextConfig
             'FIELD_COMMENTS' => 'comments',
             'FIELD_STATUS' => 'status',
             'FIELD_STATUS_ADMIN' => 'status_admin',
+            'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELD_LABELS' => 'labels',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
@@ -64,6 +65,7 @@ class BxPollsConfig extends BxBaseModTextConfig
 
             'URL_HOME' => 'page.php?i=polls-home',
             'URL_POPULAR' => 'page.php?i=polls-popular',
+            'URL_TOP' => 'page.php?i=polls-top',
             'URL_UPDATED' => 'page.php?i=polls-updated',
             'URL_MANAGE_COMMON' => 'page.php?i=polls-manage',
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=polls-administration',
@@ -107,8 +109,14 @@ class BxPollsConfig extends BxBaseModTextConfig
             'OBJECT_MENU_SNIPPET_META' => 'bx_polls_snippet_meta', // menu for snippet meta info
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_polls_menu_manage_tools', //manage menu in content administration tools
             'OBJECT_GRID_ADMINISTRATION' => 'bx_polls_administration',
-        	'OBJECT_GRID_COMMON' => 'bx_polls_common',
+            'OBJECT_GRID_COMMON' => 'bx_polls_common',
             'OBJECT_UPLOADERS' => array('sys_simple', 'sys_html5'),
+
+            // styles
+            'STYLES_POLLS_EMBED_CLASS' => 'body.bx-page-iframe.bx-def-color-bg-page',
+            'STYLES_POLLS_EMBED_CONTENT' => array(
+                'background-color' => 'transparent'
+            ),
 
             // menu items which visibility depends on custom visibility checking
             'MENU_ITEM_TO_METHOD' => array (
@@ -124,6 +132,7 @@ class BxPollsConfig extends BxBaseModTextConfig
                 'txt_sample_single_with_article' => '_bx_polls_txt_sample_single_with_article',
                 'txt_sample_comment_single' => '_bx_polls_txt_sample_comment_single',
                 'txt_sample_vote_single' => '_bx_polls_txt_sample_vote_single',
+                'txt_sample_reaction_single' => '_bx_polls_txt_sample_reaction_single',
                 'txt_sample_score_up_single' => '_bx_polls_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_polls_txt_sample_score_down_single',
                 'form_field_author' => '_bx_polls_form_entry_input_author',

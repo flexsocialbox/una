@@ -1074,6 +1074,47 @@ function bx_get ($sName, $sMethod = false)
         return false;
 }
 
+function bx_set ($sName, $sValue, $sMethod = false)
+{
+    if(!$sMethod)
+        $sMethod = 'get';
+
+    $bResult = true;
+    switch($sMethod) {
+        case 'get':
+            $_GET[$sName] = $sValue;
+            break;
+        
+        case 'post':
+            $_POST[$sName] = $sValue;
+            break;
+
+        default:
+            $bResult = false;
+    }
+
+    return $bResult;
+}
+
+function bx_get_with_prefix ($sPrefix, $sMethod = false)
+{
+    $aSources = array('get' => &$_GET, 'post' => &$_POST);
+
+    $aFiltered = array();
+    foreach($aSources as $sName => $aSource)
+        if($sMethod == $sName || !$sMethod)
+            $aFiltered = array_merge($aFiltered, array_filter($aSource, function($sKey) use ($sPrefix) {
+                return strpos($sKey, $sPrefix) === 0;
+            }, ARRAY_FILTER_USE_KEY));
+
+    $aUpdated = array();
+    array_walk($aFiltered, function($sValue, $sKey) use ($sPrefix, &$aUpdated) {
+        $aUpdated[trim(str_replace($sPrefix, '', $sKey), '_-')] = $sValue;
+    });
+
+    return $aUpdated;
+}
+
 function bx_get_base_url_inline($aParams = array())
 {
     $aBaseLink = parse_url(BX_DOL_URL_ROOT);
@@ -1117,6 +1158,18 @@ function bx_get_base_url($sPageLink)
         parse_str($sPageParams, $aPageParams);
 
     return array($sPageLink, $aPageParams);
+}
+
+function bx_get_location_bounds_latlng($fLatitude, $fLongitude, $iRadiusInKm)
+{
+    $fEquatorLatInKm = 111.321;
+    $aRv = array();
+    $aRv['max_lat'] = $fLatitude + $iRadiusInKm / $fEquatorLatInKm;
+    $aRv['min_lat'] = $fLatitude - ($aRv['max_lat'] - $fLatitude);
+    $aRv['max_lng'] = $fLongitude + $iRadiusInKm / (cos($aRv['min_lat'] * M_PI / 180) * $fEquatorLatInKm);
+    $aRv['min_lng'] = $fLongitude - ($aRv['max_lng'] - $fLongitude);
+    return $aRv;
+    
 }
 
 function bx_encode_url_params ($a, $aExcludeKeys = array (), $aOnlyKeys = false)
