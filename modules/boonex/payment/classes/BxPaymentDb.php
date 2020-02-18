@@ -262,8 +262,15 @@ class BxPaymentDb extends BxBaseModPaymentDb
     public function insertOrderPending($iClientId, $sType, $sProvider, $aCartInfo, $aCustom = array())
     {
         $sItems = "";
-        foreach($aCartInfo['items'] as $aItem)
+        foreach($aCartInfo['items'] as $aItem) {
             $sItems .= $this->_oConfig->descriptorA2S(array($aCartInfo['vendor_id'], $aItem['module_id'], $aItem['id'], $aItem['quantity'])) . ':';
+
+            if(empty($aItem['addons']) || !is_array($aItem['addons']))
+                continue;
+
+            foreach($aItem['addons'] as $sAddon => $aAddon)
+                $sItems .= $this->_oConfig->descriptorA2S(array($aCartInfo['vendor_id'], $aAddon['module_id'], $aAddon['id'], $aAddon['quantity'])) . ':';
+        }
 
         return (int)$this->query("INSERT INTO `" . $this->_sPrefix . "transactions_pending` SET `client_id`=:client_id, `seller_id`=:seller_id, `type`=:type, `provider`=:provider, `items`=:items, `customs`=:customs, `amount`=:amount, `date`=UNIX_TIMESTAMP()", array(
             'client_id' => $iClientId,
@@ -297,7 +304,9 @@ class BxPaymentDb extends BxBaseModPaymentDb
     {
     	$aMethod = array('name' => 'getRow', 'params' => array(0 => 'query'));
 
+        $sSelectClause = "`tt`.`id`, `tt`.`license`, `ttp`.`type`, `tt`.`client_id`, `tt`.`seller_id`, `tt`.`module_id`, `tt`.`item_id`, `tt`.`item_count`, `tt`.`amount`, `tt`.`date`, `ttp`.`order`, `ttp`.`error_msg`, `ttp`.`provider`";
         $sWhereClause = "";
+
         switch($aParams['type']) {
             case 'id':
             	$aMethod['params'][1] = array(
@@ -310,28 +319,38 @@ class BxPaymentDb extends BxBaseModPaymentDb
             case 'new':
                 $aMethod['name'] = 'getAll';
                 $aMethod['params'][1] = array(
-                	'seller_id' => $aParams['seller_id']
+                    'seller_id' => $aParams['seller_id']
                 );
 
                 $sWhereClause = " AND `tt`.`seller_id`=:seller_id AND `tt`.`new`='1'";
                 break;
 
-			case 'pending_id':
+            case 'pending_id':
                 if(empty($aParams['with_key'])) {
-                	$aMethod['name'] = 'getAll';
-                	$aMethod['params'][1] = array(
-						'pending_id' => $aParams['pending_id']
-					);
+                    $aMethod['name'] = 'getAll';
+                    $aMethod['params'][1] = array(
+                        'pending_id' => $aParams['pending_id']
+                    );
                 }
                 else {
-                	$aMethod['name'] = 'getAllWithKey';
-					$aMethod['params'][1] = $aParams['with_key'];
-					$aMethod['params'][2] = array(
-						'pending_id' => $aParams['pending_id']
-					);
+                    $aMethod['name'] = 'getAllWithKey';
+                    $aMethod['params'][1] = $aParams['with_key'];
+                    $aMethod['params'][2] = array(
+                        'pending_id' => $aParams['pending_id']
+                    );
                 }
 
                 $sWhereClause = " AND `tt`.`pending_id`=:pending_id";
+                break;
+
+            case 'clients':
+                $aMethod['name'] = 'getColumn';
+                $aMethod['params'][1] = array(
+                    'seller_id' => $aParams['seller_id']
+                );
+
+                $sSelectClause = "DISTINCT `tt`.`client_id`";
+                $sWhereClause = " AND `tt`.`seller_id`=:seller_id";
                 break;
 
             case 'license':
@@ -352,19 +371,7 @@ class BxPaymentDb extends BxBaseModPaymentDb
         }
 
         $aMethod['params'][0] = "SELECT
-        		`tt`.`id`,
-                `tt`.`license`,
-                `ttp`.`type`,
-                `tt`.`client_id`,
-                `tt`.`seller_id`,
-                `tt`.`module_id`,
-                `tt`.`item_id`,
-                `tt`.`item_count`,
-                `tt`.`amount`,
-                `tt`.`date`,
-                `ttp`.`order`,
-                `ttp`.`error_msg`,
-                `ttp`.`provider`
+                " . $sSelectClause . "
             FROM `" . $this->_sPrefix . "transactions` AS `tt`
             LEFT JOIN `" . $this->_sPrefix . "transactions_pending` AS `ttp` ON `tt`.`pending_id`=`ttp`.`id`
             WHERE 1" . $sWhereClause;

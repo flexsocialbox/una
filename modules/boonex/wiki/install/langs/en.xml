@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources name="en" flag="gb" title="English">
+    <string name="_sys_module_wiki"><![CDATA[Wiki]]></string>
+    <string name="_bx_wiki"><![CDATA[Wiki]]></string>
+    <string name="_bx_wiki_txt_sample_single"><![CDATA[wiki]]></string>
+    <string name="_bx_wiki_object_title"><![CDATA[Wiki]]></string>
+    <string name="_bx_wiki_page_home"><![CDATA[Wiki Home]]></string>
+    <string name="_bx_wiki_block_home"><![CDATA[Wiki Home]]></string>
+    <string name="_bx_wiki_block_contents"><![CDATA[Contents]]></string>
+    <string name="_bx_wiki_block_administration"><![CDATA[Administration]]></string>
+    <string name="_bx_wiki_page_missing_translations"><![CDATA[Missing Translations]]></string>
+    <string name="_bx_wiki_block_missing_translations"><![CDATA[Missing Translations]]></string>
+    <string name="_bx_wiki_page_outdated_translations"><![CDATA[Outdated Translations]]></string>
+    <string name="_bx_wiki_block_outdated_translations"><![CDATA[Outdated Translations]]></string>
+    <string name="_bx_wiki_menu_item_title_system_home"><![CDATA[Wiki]]></string>
+    <string name="_bx_wiki_option_design_box"><![CDATA[Default design box for new block]]></string>
+	<string name="_bx_wiki_acl_action_add_page"><![CDATA[Add Page]]></string>
+	<string name="_bx_wiki_acl_action_add_block"><![CDATA[Add Block]]></string>
+	<string name="_bx_wiki_acl_action_edit_block"><![CDATA[Edit Block]]></string>
+	<string name="_bx_wiki_acl_action_translate_block"><![CDATA[Translate Block]]></string>
+	<string name="_bx_wiki_acl_action_delete_version"><![CDATA[Delete Version]]></string>
+	<string name="_bx_wiki_acl_action_delete_block"><![CDATA[Delete Block]]></string>
+	<string name="_bx_wiki_acl_action_history"><![CDATA[History]]></string>
+	<string name="_bx_wiki_acl_action_unsafe"><![CDATA[Unsafe HTML]]></string>
+</resources>
