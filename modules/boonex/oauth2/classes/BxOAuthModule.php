@@ -60,15 +60,9 @@ class BxOAuthModule extends BxDolModule
         parent::__construct($aModule);        
     }
 
-    public function initOAuth($sClientId)
+    public function checkAllowedOrigins()
     {
-        if ($this->_oStorage)
-            return;        
-
         $aClient = array();
-
-        // check cross origin request
-        
         if (isset($_SERVER['HTTP_ORIGIN']) && parse_url($_SERVER['HTTP_ORIGIN'], PHP_URL_HOST) != parse_url(BX_DOL_URL_ROOT, PHP_URL_HOST)) {
 
             $aClient = $this->_oDb->getClientByAllowedOriginUrl($_SERVER['HTTP_ORIGIN']);
@@ -86,6 +80,17 @@ class BxOAuthModule extends BxDolModule
                 exit(0);
             }            
         }
+        return $aClient;
+    }
+
+    public function initOAuth($sClientId)
+    {
+        if ($this->_oStorage)
+            return;        
+
+        // check cross origin request
+        
+        $aClient = $this->checkAllowedOrigins();
 
         // get the client data if it wasn't set before
         
@@ -114,12 +119,6 @@ class BxOAuthModule extends BxDolModule
             'scope_table'  => 'bx_oauth_scopes',
             'public_key_table'  => '',
         );
-        if (in_array('refresh_token', $aGrantTypes)) {
-            $aConfig['refresh_token'] = '';
-            $aConfig['always_issue_new_refresh_token'] = true;
-            $aConfig['unset_refresh_token_after_use'] = false;
-        }        
-        
         $this->_oStorage = new BxOAuthUserCredentialsStorage(BxDolDb::getLink(), $aConfig);
 
         $this->_oServer = new OAuth2\Server($this->_oStorage, array(
@@ -143,7 +142,10 @@ class BxOAuthModule extends BxDolModule
 
         // Add the "Refresh Token" grant type
         if (in_array('refresh_token', $aGrantTypes))
-            $this->_oServer->addGrantType(new OAuth2\GrantType\RefreshToken($this->_oStorage));
+            $this->_oServer->addGrantType(new OAuth2\GrantType\RefreshToken($this->_oStorage, array(
+                'always_issue_new_refresh_token' => true,
+                // 'unset_refresh_token_after_use' => false,
+            )));
     }    
 
     /**
@@ -179,7 +181,7 @@ class BxOAuthModule extends BxDolModule
      *    "error_description":"long error description here"
      * }
      * @endcode
-     */     
+     */
     function actionToken ()
     {
         $this->initOAuth(bx_get('client_id'));
@@ -188,6 +190,51 @@ class BxOAuthModule extends BxDolModule
         $this->_oServer->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
     }
 
+    /**
+     * Authenicated or public call to the "safe" and "public" service methods 
+     */
+    function actionCom ($sMethod)
+    {
+        if (!$this->_oAPI) {
+            bx_import('API', $this->_aModule);
+            $this->_oAPI = new BxOAuthAPI($this);
+        }
+
+        $bPublic = $this->_oAPI->isPublicAPI(bx_get('module') ? bx_get('module') : 'bx_api', $sMethod);
+        if ($bPublic) {
+            $this->checkAllowedOrigins();
+            $this->_oAPI->com($sMethod, array(), $bPublic);
+        }
+        else {
+            if (!$this->_oAPI->isSafeAPI(bx_get('module') ? bx_get('module') : 'bx_api', $sMethod)) {
+                $this->_oAPI->errorOutput(403, 'access_denied', 'Only "public" and "safe" services can be called, or method doesn\'t exist');
+                return;
+            }
+
+            $this->initOAuth($this->getClientIdFromAccessTokenHeader());
+
+            // Handle a request to a resource and authenticate the access token
+            if (!$this->_oServer->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
+                $this->_oServer->getResponse()->send();
+                return;
+            }
+
+            $aToken = $this->_oServer->getAccessTokenData(OAuth2\Request::createFromGlobals());
+
+            $aScope = explode(',', $this->_oAPI->aAction2Scope['api']);
+            $aScopeToken = explode(',', $aToken['scope']);
+            if (!array_intersect($aScopeToken, $aScope)) {
+                $this->_oAPI->errorOutput(403, 'insufficient_scope', 'The request requires higher privileges than provided by the access token');
+                return;
+            }
+
+            $this->_oAPI->com($sMethod, $aToken, false);
+        }
+    }
+
+    /**
+     * Authenicated call to the API
+     */
     function actionApi ($sAction)
     {
         $this->initOAuth($this->getClientIdFromAccessTokenHeader());
@@ -205,7 +252,7 @@ class BxOAuthModule extends BxDolModule
             $this->_oAPI = new BxOAuthAPI($this);
         }
 
-        if (!$sAction || !method_exists($this->_oAPI, $sAction) || 0 === strcasecmp('errorOutput', $sAction) || 0 === strcasecmp('output', $sAction)) {
+        if (!$sAction || !method_exists($this->_oAPI, $sAction) || in_array($sAction, $this->_oAPI->aExceptionsAPI)) {
             $this->_oAPI->errorOutput(404, 'not_found', 'No such API endpoint available');
             return;
         }
